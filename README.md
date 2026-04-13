@@ -23,7 +23,6 @@ Use $stock-research-report to analyze [TICKER]
 
 Optional parameters:
 - Focus areas: "focus on valuation" or "focus on business transformation"
-- Language: Default Chinese, add "in English" for English output
 - Bloomberg data: Attach screenshots for higher-precision analysis
 
 ## Output Format

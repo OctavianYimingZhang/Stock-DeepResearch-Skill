@@ -149,9 +149,7 @@ Compose the final report using the format in `references/report-format.md` and t
 
 5. **8-12 pages maximum.** Ruthlessly cut anything that doesn't directly serve the investment thesis. If a section doesn't change the reader's mind about buying or selling, remove it.
 
-6. **Output language follows user instruction.** Default to Chinese (matching analyst report corpus). Switch to English only if user explicitly requests it.
-
-7. **Generate .docx file.** Use the docx skill to output the final report as a Word document.
+6. **Generate .docx file.** Use the docx skill to output the final report as a Word document.
 
 ---
 

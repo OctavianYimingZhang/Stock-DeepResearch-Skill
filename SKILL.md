@@ -205,7 +205,7 @@ Compose the final report using the **themed structure** in `references/report-fo
 
 6. **Strip skill vocabulary.** Before finalizing, scan for and remove any occurrence of: "数据充分性", "value_creating", "Claim Gate", "置信度", "Red Flag Inventory", "Commercial Evidence Table", "Conditional Judgment", "概率加权公允价值", "Meta-Question Self-Reflection", "第一部分/第二部分/第三部分/第四部分" headers, "本报告不构成投资建议" (except once at the very end), "Wyckoff Spring/SOS/LPS" (translate to plain Chinese).
 
-7. **Generate .docx file.** Use the docx skill to output the final report as `[TICKER]_深度研究报告.docx`.
+7. **Output format**: Default to markdown (.md) for easy review and diff. If the user asks for a Word document OR the task requires a shareable file for stakeholders, generate .docx using the `anthropic-skills:docx` skill as `[TICKER]_深度研究报告.docx`. Respect the user's requested format when specified.
 
 ---
 
@@ -321,11 +321,13 @@ Read `references/style-guide.md` for the complete style guide. Key rules:
 
 ## ANTI-TRUNCATION VERIFICATION
 
-Before finalizing the report, run this self-check:
+Before finalizing the report, run this self-check. A "pass" is either (a) the item is present, OR (b) the item is legitimately unavailable AND the limitation is explicitly stated inline.
 
-1. **Customer names** — Did I include every named customer from the fundamental sub-report? If the sub-report named NVIDIA, Broadcom, DLA, Samsung, Hynix, TSMC, ASE, TI — are all of them in the final report?
+1. **Customer names** — Did I include every named customer from the fundamental sub-report?
+   - **Pass condition (if not disclosed)**: Statement like "客户名称未在 10-K 中披露，使用终端市场作为代理" appears inline in Block C, optionally with Tier-1 or indirect customer context.
 
-2. **Management quotes** — Did every dated, attributed quote from the fundamental sub-report appear in the final report? (Not summarized, not paraphrased into oblivion — the actual quote with date and speaker.)
+2. **Management quotes** — Did every dated, attributed quote from the fundamental sub-report appear in the final report?
+   - **Pass condition (if transcripts unavailable)**: "电话会议 transcript 未获取 — 仅使用新闻稿和披露信息" stated inline.
 
 3. **Forward catalysts** — Every dated catalyst from the fundamental sub-report: is it in 业务逻辑 / 运营逻辑 / 交易计划 somewhere?
 
@@ -337,13 +339,25 @@ Before finalizing the report, run this self-check:
 
 7. **Green flags** — Did the named green flags from the risk sub-report make it into the final report (embedded in 财务数据 or 业务逻辑)?
 
-If ANY of these fail, the synthesis is broken. Fix it by re-weaving, not by adding a new appendix.
+8. **Data anomaly flags** — If the source data contains obvious anomalies (identical EPS two years in a row, negative margin percentages, share count discrepancies): is the anomaly flagged inline?
+   - **Pass condition**: Anomaly noted in one sentence with "需用户确认数据准确性".
+
+If ANY of these fail the pass conditions, the synthesis is broken. Fix it by re-weaving, not by adding a new appendix.
 
 ---
 
 ## OUTPUT
 
-Generate the final report as a .docx file using the docx skill. The filename should be:
-`[TICKER]_深度研究报告.docx`
+**Default format: Markdown (.md)** — easy to review, diff, and iterate. The filename should be `[TICKER]_深度研究报告.md`.
+
+**When to switch to .docx**: The user explicitly asks for a Word document, the task requires a shareable stakeholder file, or the orchestrator is being run in production delivery mode. In that case, use the `anthropic-skills:docx` skill with filename `[TICKER]_深度研究报告.docx`.
 
 If the user provides Bloomberg Terminal data (screenshots or text), integrate it directly into the relevant sections rather than listing it in an appendix.
+
+## HANDLING MISSING OR AMBIGUOUS DATA
+
+**Named customers not disclosed** (e.g., DIOD, most mature semiconductor companies, many industrial names): This is a legitimate disclosure pattern — NOT a skill failure. Pass condition: write "未在公开披露中提及具体客户名称 — 使用终端市场/地理作为代理" inline in Block C (客户与订单), and use end-market percentages or geographic split as proxy. Optionally list Tier-1 customers as indirect strategic context (e.g., "ODM 广达/纬创为主要间接客户", "Tier 1 博世/大陆/安波福为主要采购渠道"). The anti-truncation checklist passes for this item as long as the limitation is explicitly stated.
+
+**Identical consecutive-year data points** (e.g., same EPS two years in a row): Flag inline with one sentence: "注意: FY2024 与 FY2025 GAAP EPS 同为 $X.XX — 需用户确认数据准确性，可能是数据源问题或真实平台期". Do not silently use potentially erroneous data as the basis for valuation.
+
+**Missing Bloomberg terminal data** (consensus, peer multiples, ownership, debt pricing): Continue writing all non-blocked sections. Mark blocked sections inline with "因终端数据缺失，此处仅做框架性估算" — do NOT start the report with a "数据充分性说明" table.

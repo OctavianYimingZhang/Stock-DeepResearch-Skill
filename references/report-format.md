@@ -49,6 +49,20 @@ The subtitle should capture the SINGLE most compelling angle. Examples from real
 - Management quotes with dates (e.g., "Greg Smith 在 Q4 2025 电话会中指出...")
 - Industry chain context woven in naturally
 - Governance observations (from risk sub-report) if structurally relevant — e.g., "公司将法人住所从蒙塔纳州变更为德克萨斯州，反映了其优化资本结构的治理逻辑"
+- **TAM + market share framing (MANDATORY)**: For each key end market or product segment, state the TAM size (or relative size) and the company's estimated market share. Explain WHY the company wins design-ins vs. competitors (at least one specific technical or relational reason). Without this, business logic becomes assertion rather than analysis.
+  - Example (TER pattern): "ATE 不是简单跟着半导体总收入走，而是更像'收入增量的导数市场'；真正驱动 ATE TAM 的，是客户为了支持更高收入增长而新增的测试产能。"
+  - Example (TSEM pattern): "超大规模云服务商对 800G 及 1.6T 光收发器的迫切需求 — SiPho TAM 预计 2027 年达 $20B，公司作为主要代工商占据 ~40% 份额。"
+
+**Must end with a section-closing summary sentence (MANDATORY)**: Every 业务逻辑 section must close with ONE bold conviction-level summary sentence in this format:
+
+> **总结**: [Company] 的核心逻辑是 [X], 当前处于 [Y] 阶段，关键验证变量是 [Z]。
+
+Examples from real analyst reports:
+- "**业务总结**: TSEM 是做 AI 数据传输基础设施，RF Infrastructure 是容器，SiPho 是核心增量。"
+- "**业务总结**: 这不是先扩产再找需求，而是需求锁死再扩产。"
+- "**业务总结**: UAMY 从早期的锑冶炼厂进化为美国本土锑产业链的唯一整合者，叠加银和铜副产品回收。"
+
+This crystallizing line forces the writer to commit to a thesis rather than leave the reader to infer one.
 
 **Patterns from real analyst reports**:
 > "TSEM 过去主要赚'传统成熟制程代工的钱'，现在主要赚'AI 基建复杂度提升的钱'。逻辑核心是：需求锁死再扩产，而不是先扩产再找需求。" (TSEM)
@@ -67,8 +81,40 @@ The subtitle should capture the SINGLE most compelling angle. Examples from real
 - Capex cadence (quarterly or annual capex numbers with guidance)
 - Utilization targets (e.g., "2026 末预计达到 85% 利用率")
 - **Bottom-up unit economics for commodity/industrial names** — see `commodity-math-template.md`
-- **Operating leverage decomposition** (incremental margin walk): "从 Q1 到 Q4 收入 +$82M，净利润 +$41M，incremental margin ~50%"
+- **Operating leverage decomposition** (incremental margin walk): "从 Q1 to Q4 收入 +$82M，净利润 +$41M，incremental margin ~50%"
 - Specific product mix shifts (e.g., "SiPho 收入从 2024 年 $106M 增至 2025 年 $228M，+115%")
+
+### MANDATORY Unit-to-EPS Derivation Chain
+
+For any company whose thesis depends on margin expansion or capacity ramp, the 运营逻辑 section MUST walk from a physical input (utilization %, unit volume, ASP) all the way to EPS — with explicit numerical links at each step. Qualitative descriptions alone are NOT enough. This is the biggest gap between Claude reports and analyst reports.
+
+**Required chain format (5 steps):**
+
+```
+Step 1 (PHYSICAL): Utilization 78% → 85% (or: Volume 1.0M lb → 2.0M lb)
+    ↓
+Step 2 (COST LEVERAGE): Fixed cost absorption improves by $XM (fixed cost base ~$YM × 7ppt uplift)
+    ↓
+Step 3 (GROSS MARGIN): GM expands from 31.2% → 34.0% (+280bp)
+    Gross profit change: $1,680M × 280bp = +$47M
+    ↓
+Step 4 (EBIT / EBITDA): Operating leverage on SG&A (largely fixed) adds additional $YM
+    EBIT change: +$47M + $YM = +$ZM
+    EBIT margin: 15% → 18%
+    ↓
+Step 5 (EPS): After-tax (~21%) / diluted share count (46M)
+    EPS change: $ZM × 0.79 / 46M = +$X per share
+    2027E EPS: $1.42 + $X = $4.00
+```
+
+**Why this chain matters**: Without it, the analyst can't connect "利用率改善" (a vague claim) to "目标价 $100" (a specific number). Every step in the chain should be a math expression the reader can verify.
+
+**Real analyst example (TSEM):**
+> "25 年硅光子产能及相关收入 396.3M，未来产能扩大 5 倍…3275.9 × 0.264 = 864.84M…EPS 2025 是 1.93，到 2027 年 7.72，复合增长率是 100%."
+
+This is exactly the level of arithmetic rigor required. The TSEM analyst derives 2027 EPS $7.72 from a physical capacity assumption — not from consensus.
+
+**Pass condition**: If you cannot do the full 5-step chain (because the physical variable is unknown), explicitly state which variable is blocking and what data would unblock it. Do NOT silently use "consensus assumes X" — that hides the analyst's job.
 
 **Capacity ramp table format**:
 ```

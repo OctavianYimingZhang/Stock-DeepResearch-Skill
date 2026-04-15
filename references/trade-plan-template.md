@@ -10,6 +10,10 @@ Every stock research report MUST end with a concrete trade plan in this exact fo
 评级: [买入 / 持有 / 观望 / 卖出]
 建议仓位: [X-Y]% of portfolio
   （reasoning: 一句话解释为什么是这个仓位大小 —— 例如 "因为波动率高但确定性强，中等仓位匹配风险回报"）
+  （MANDATORY loss-budget math:
+    最大持仓 [X]% × 止损距离 [Y]% = 组合最大亏损 [X × Y / 100]%
+    例如: 4% 仓位 × 18% 止损距离（$83→$68）= 0.72% 组合亏损
+    确认该亏损额在投资者可接受范围内）
 
 入场区间: $[X] - $[Y]
   （理由: 一句话解释为什么在这个区间入场 —— 例如 "基于 W 底颈线回踩，技术面 + 基本面支撑重合"）

@@ -44,6 +44,53 @@ Activate when the user asks for a comprehensive research report, deep dive, or a
 - `references/style-guide.md` — Tone, voice, anti-patterns, and formatting rules
 - `references/commodity-math-template.md` — Bottom-up unit-economics template for mining/energy/industrial names
 - `references/trade-plan-template.md` — Required end-of-report trade plan format
+- `references/companion-skills.md` — How to invoke 6 complementary Claude Skills from `anthropics/financial-services-plugins` (catalyst-calendar, thesis-tracker, earnings-preview, earnings-analysis, comps-analysis, dcf-model)
+- `references/investor-council.md` — Optional multi-persona bull/bear debate phase (7 investor personas ported from `virattt/ai-hedge-fund`)
+
+---
+
+## COMPANION SKILLS (Optional Extensions)
+
+Beyond the 4 core sub-skills (`stock-analysis`, `risk-analysis`, `technical-analysis`, `valuation-calculator`), this orchestrator can optionally dispatch 6 additional skills from `anthropics/financial-services-plugins` plus 1 multi-persona council pattern from `virattt/ai-hedge-fund`. Read `references/companion-skills.md` for full dispatch guidance and `references/investor-council.md` for the persona framework.
+
+### When to Call Each Companion Skill
+
+| User intent | Skill to invoke | Integration point |
+|-------------|----------------|-------------------|
+| Strengthen catalyst tracking | `catalyst-calendar` | Feeds into 催化剂 block of the final report |
+| Follow up on a prior thesis | `thesis-tracker` | Standalone — produces a thesis-update memo, not a new deep research |
+| Pre-earnings positioning | `earnings-preview` | Standalone — runs 1-2 weeks before earnings |
+| Post-earnings assessment | `earnings-analysis` | Standalone — runs 0-3 days after earnings |
+| Institutional peer comps | `comps-analysis` | Feeds into `valuation-calculator` Phase 4 (peer quartile table) |
+| Excel-grade DCF model | `dcf-model` | Feeds into `valuation-calculator` DCF sanity check |
+| Multi-persona second opinion | `investor-council` (in-file pattern) | Appended to report BEFORE 交易计划 |
+| Bull/bear debate | `investor-council` with bull/bear split | Crux verdict feeds into 交易计划 stance |
+
+### How to Dispatch Companion Skills
+
+**Direct skill invocation** (use the Skill tool):
+
+```
+Skill tool with skill: "catalyst-calendar" and args describing ticker + horizon
+Skill tool with skill: "thesis-tracker" and args describing prior thesis + new data point
+Skill tool with skill: "earnings-preview" and args describing ticker + reporting date
+Skill tool with skill: "earnings-analysis" and args describing ticker + reported results
+Skill tool with skill: "comps-analysis" and args describing target + peer set
+Skill tool with skill: "dcf-model" and args describing ticker + assumptions
+```
+
+These skills must be installed at `~/.claude/skills/` (one-time setup — see `references/companion-skills.md` §Installation).
+
+**Council mode dispatch** (N parallel Agent calls):
+
+When the user requests "council mode", "second opinion", "multi-persona", or "bull/bear debate", dispatch the investor council as an OPTIONAL additional parallel phase AFTER Phase 1 completes. Each persona runs as a separate `general-purpose` agent with the persona-specific checklist from `references/investor-council.md`. Output is a disagreement matrix + crux verdict, appended to the report BEFORE 交易计划. See `references/investor-council.md` §Council Workflow for exact dispatch pattern.
+
+### Default Mode vs Extended Mode
+
+- **Default mode** (99% of requests): Run only the 4 core sub-skills. Companion skills stay idle. Produce one deep research report.
+- **Extended mode** (explicit user request): Run 4 core sub-skills + 1-2 companion skills inline (e.g., catalyst-calendar for richer events, or investor-council for contentious names). Composition time and cost increase, but output depth increases proportionally.
+
+Do NOT default to extended mode — extra skill dispatches have meaningful cost and only pay off for complex or contentious situations.
 
 ---
 

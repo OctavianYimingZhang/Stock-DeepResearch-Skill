@@ -343,9 +343,16 @@ Bull/base/bear in prose (one sentence each) — NOT a probability-weighted table
 Multiple re-rating catalyst: what moves the stock from current to target multiple?
 For commodity companies, unit-math appears BEFORE multiple work.
 
-**CLOSING LINE REQUIREMENT**: The final sentence of 估值情况 MUST be single-number + upside multiple format:
+**CLOSING LINE REQUIREMENT**: The final sentence of 估值情况 MUST be single-number + upside multiple format, on its own line (not buried inside a bull/base/bear paragraph):
 - GOOD: "目前市值 40 亿,我们看到 100 亿,6 倍空间。" / "目标价 $140 (约 2.5×,对应 2026E EPS $5.6 × 25x)。"
-- BAD: "三法收敛 ¥7,230-8,700,主推基准 ¥8,700。" / "DCF/EV-EBITDA/SOTP 综合公允价值区间 $X-$Y。"]
+- BAD: "三法收敛 ¥7,230-8,700,主推基准 ¥8,700。" / "DCF/EV-EBITDA/SOTP 综合公允价值区间 $X-$Y。"
+
+**SCENARIO DISCIPLINE (NEW)**: Bull/base/bear scenarios are allowed BUT:
+- Each scenario is ONE line max (never a 3-row table with bold headers)
+- Scenarios appear in the MIDDLE of 估值情况, NOT at the end
+- The final line of 估值情况 is ALWAYS the single-number target (not the bull/base/bear range)
+- BAD: 牛市场景 $110亿 / 基准场景 $88亿 / 熊市场景 $65亿 presented as a formatted scenario block
+- GOOD: "牛市 $110亿 (假设数据中心订单超预期), 熊市 $65亿 (执行滞后). 基准 $88亿,~4倍空间 — 这是我的目标。"]
 
 ## 技术分析
 [1-2 paragraphs + one small price-level table, 150-200 words.

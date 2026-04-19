@@ -104,6 +104,7 @@ Run a find-and-replace pass before any output. ALL occurrences of the following 
 - 换言之
 - 综合来看
 - 值得关注的是
+- 值得注意的是 (note: this is ALSO banned — analysts do not throat-clear with this phrase)
 - 读这个表的关键一句话
 - 一句话总结
 - 业务总结：
@@ -111,6 +112,35 @@ Run a find-and-replace pass before any output. ALL occurrences of the following 
 - 核心判断：
 - 长话短说
 - 核心逻辑是
+
+### Soft-banned: "核心" overuse
+
+**"核心"** as a modifier ("核心驱动力", "核心机会所在", "核心逻辑", "核心产品", "核心竞争壁垒", "核心战略转型") is one of Claude's tell-phrases. Analysts use it sparingly — typically ≤2 times per report.
+
+**Rule**: Max **2 occurrences** of "核心" across the full report. Prefer specific terms instead:
+- "核心驱动力" → "最重要的驱动" OR "决定性的驱动"
+- "核心机会所在" → "机会在于" OR "这就是 alpha 来源"
+- "核心逻辑" → "逻辑是" OR "要点在于"
+- "核心产品" → specific product name
+- "核心竞争壁垒" → specific moat type (客户锁定/规模/许可证/等)
+
+### Defensive hedges on conviction statements
+
+When asserting a multiple, a target, or a rating, **do NOT follow it with a defensive parenthetical** that apologizes for the assertion. Conviction means taking the number without hedging.
+
+**BANNED parentheticals after conviction statements**:
+- "（远非激进）"
+- "（相对保守）"
+- "（并不夸张）"
+- "（符合历史水平）" (when the historical comparison is vague)
+- "（与同业相当）" (when the peer comparison isn't shown)
+- "（我认为这并不激进）"
+
+**Good alternatives**: State the reasoning inline without apologizing.
+- BAD: "我认为给予 15 倍是中性偏保守的假设（远非激进）" 
+- GOOD: "我认为给予 15 倍 — 对标 CoreWeave 的 20×,基础设施同业的 18×,我这里留了缓冲" OR "15 倍 — 参照 [X] 的 18×,我更倾向保守"
+
+The difference: the BAD version apologizes for the number; the GOOD version gives the peer benchmark that justifies the number.
 
 ### Stacked hedges
 

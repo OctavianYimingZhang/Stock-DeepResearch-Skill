@@ -39,6 +39,9 @@ Read these files before writing the report:
 - `references/short-seller-risk-framework.md`
 - `references/technical-analysis-framework.md`
 - `references/report-style-patterns.md`
+- `references/research-lakehouse-framework.md`
+- `references/evidence-indexing-framework.md`
+- `references/incremental-refresh-framework.md`
 - `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
@@ -81,6 +84,9 @@ Read these files before writing the report:
 13. **Ontology before prose.** Build an internal object graph before writing the
     report. Report sections are projections from evidence-backed claims, not the
     storage layer for facts.
+14. **Layered research data flow.** Preserve raw source snapshots, validate
+    evidence into claims and metrics, build analysis objects, then project the
+    report. Do not let raw text bypass the ontology gates.
 
 ## Workflow
 
@@ -119,19 +125,43 @@ For material facts in the final report, include concise source markers such as
 `[counterparty]`, or `[market data]`. The marker must make the evidence class
 clear even when a full bibliography is not requested.
 
-### 2. Ontology Object Graph
+### 2. Research Lakehouse And Evidence Index
+
+Use `references/research-lakehouse-framework.md`,
+`references/evidence-indexing-framework.md`, and
+`references/incremental-refresh-framework.md`.
+
+Process source material in layers:
+
+- Bronze: immutable `SourceSnapshot` and `SourceDocument`
+- Silver: `EvidenceItem`, `Claim`, `MetricObservation`, order, debt, and
+  dilution objects
+- Gold: business thesis, valuation, short-risk, technical setup, and trade plan
+- Report View: final sections projected from the graph
+
+Before reading long sources, use `EvidencePartition` metadata to focus context
+by company, period, source type, object type, metric, materiality, freshness,
+source strength, and conflict count.
+
+When a new source arrives, create an `IncrementalRefreshPlan`. Refresh only
+dependent objects unless the changed source invalidates a high-materiality claim
+or prevents source-priority resolution.
+
+### 3. Ontology Object Graph
 
 Use `references/ontology-framework.md` and the YAML contracts in `ontology/`.
 
 Create an internal graph with these minimum objects before report composition:
 
-- `Company`, `Security`, `SourceDocument`, `EvidenceItem`, `Claim`
+- `ResearchRun`, `Company`, `Security`, `SourceDocument`, `SourceSnapshot`
+- `EvidencePartition`, `EvidenceItem`, `Claim`, `ConflictResolution`
 - `MetricObservation`, `ContractOrder`, `OrderQualityAssessment`
 - `AssetFacility`, `DebtInstrument`, `DilutionInstrument`
 - `FinancialQualityAssessment`, `CurrentMarketImpliedBridge`
 - `ValuationMethodSelection`, `ValuationCase`
 - `ShortRiskSignal`, `ShortSellerAssessment`
-- `TechnicalSetup`, `TradePlan`, `DataGap`, `ReportSection`
+- `TechnicalSetup`, `TradePlan`, `IncrementalRefreshPlan`, `ActionExecution`
+- `DataGap`, `ReportSection`
 
 Core rule:
 
@@ -145,7 +175,10 @@ technical level, or trade conclusion.
 
 Run the ontology gates before final prose:
 
+- Lakehouse Layer Gate
 - Evidence Gate
+- Lineage Gate
+- Partition Coverage Gate
 - Source Priority Gate
 - Order Gate
 - Financial Gate
@@ -153,9 +186,11 @@ Run the ontology gates before final prose:
 - Valuation Gate
 - Short Risk Gate
 - Technical Gate
+- Freshness Gate
+- Incremental Refresh Gate
 - Data Gap Gate
 
-### 3. Business Model Logic
+### 4. Business Model Logic
 
 Use `references/business-model-framework.md`.
 
@@ -174,7 +209,7 @@ Answer in narrative form:
 The business section must end with a bold one-sentence judgment that names the
 value driver, current stage, and key observable.
 
-### 4. Valuation With Assets, Orders, And Debt
+### 5. Valuation With Assets, Orders, And Debt
 
 Use `references/valuation-framework.md`.
 
@@ -219,7 +254,7 @@ Required valuation outputs:
 
 Do not close with a range-only conclusion or probability-weighted average.
 
-### 5. Short-Seller Risk
+### 6. Short-Seller Risk
 
 Use `references/short-seller-risk-framework.md`.
 
@@ -250,7 +285,7 @@ Output:
 - if grade is C or worse, expand the short-seller section with specific evidence
   and explain how it changes valuation or position sizing
 
-### 6. Technical Analysis And Trade Plan
+### 7. Technical Analysis And Trade Plan
 
 Use `references/technical-analysis-framework.md`.
 
@@ -273,7 +308,7 @@ Required output:
 If no defensible setup exists, state that there is no clear entry point and name
 the price or catalyst that would change the setup. Do not invent levels.
 
-### 7. Quality Calibration Loop
+### 8. Quality Calibration Loop
 
 Use `references/quality-calibration-loop.md` before finalizing substantial
 reports or when improving this Skill.
@@ -293,7 +328,7 @@ Process:
 Do not commit temporary company names, tickers, or generated reports as triggers
 or reusable prompts.
 
-### 8. Final Report Composition
+### 9. Final Report Composition
 
 The final report must use this fixed structure:
 

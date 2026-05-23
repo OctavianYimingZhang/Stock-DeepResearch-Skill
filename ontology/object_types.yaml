@@ -1,5 +1,17 @@
 version: 1
 object_types:
+  - name: ResearchRun
+    purpose: Transaction-like record of one report generation or update.
+    required_properties:
+      - run_id
+      - company_id
+      - run_started_at
+      - input_sources
+      - changed_sources
+      - actions_executed
+      - gates_failed
+      - blocked_conclusions
+      - output_report_id
   - name: Company
     purpose: Legal and operating identity of the issuer.
     required_properties:
@@ -28,6 +40,30 @@ object_types:
       - period
       - locator
       - freshness_status
+  - name: SourceSnapshot
+    purpose: Immutable captured source state used in a research run.
+    required_properties:
+      - source_document_id
+      - retrieval_date
+      - source_locator
+      - document_date
+      - content_hash_or_gap
+      - version_label_or_gap
+      - freshness_status
+  - name: EvidencePartition
+    purpose: Metadata slice used to prune source evidence before reasoning.
+    required_properties:
+      - company_id
+      - fiscal_period
+      - source_type
+      - source_date
+      - object_type
+      - metric_name_or_gap
+      - materiality
+      - freshness_status
+      - source_strength
+      - claim_count
+      - conflict_count
   - name: EvidenceItem
     purpose: Extracted evidence that can support, contradict, or qualify a claim.
     required_properties:
@@ -48,6 +84,15 @@ object_types:
       - freshness_status
       - confidence
       - blocked_by_data_gap
+  - name: ConflictResolution
+    purpose: Record of how conflicting claims or metrics were resolved.
+    required_properties:
+      - conflict_id
+      - conflicting_object_ids
+      - selected_source_id
+      - source_priority_reason
+      - resolution_status
+      - remaining_gap
   - name: MetricObservation
     purpose: One observed financial, operating, market, or technical metric.
     required_properties:
@@ -187,6 +232,27 @@ object_types:
       - take_profit_2
       - catalyst
       - invalidation
+  - name: IncrementalRefreshPlan
+    purpose: Dependency-aware plan for refreshing only affected research objects.
+    required_properties:
+      - changed_source_snapshot
+      - affected_partitions
+      - stale_objects
+      - objects_to_recompute
+      - gates_to_rerun
+      - sections_to_update
+      - fallback_to_full_rerun
+  - name: ActionExecution
+    purpose: Trace of one executed research action.
+    required_properties:
+      - action_name
+      - run_id
+      - input_object_ids
+      - output_object_ids
+      - gate_results
+      - blocked_outputs
+      - timestamp
+      - error_or_gap
   - name: DataGap
     purpose: Missing input that blocks a conclusion.
     required_properties:

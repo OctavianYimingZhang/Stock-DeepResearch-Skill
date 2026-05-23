@@ -1,5 +1,13 @@
 version: 1
 link_types:
+  - name: executes
+    from: ResearchRun
+    to: ActionExecution
+    purpose: Research run records executed actions.
+  - name: uses_snapshot
+    from: ResearchRun
+    to: SourceSnapshot
+    purpose: Research run records immutable source snapshots used.
   - name: has_security
     from: Company
     to: Security
@@ -12,6 +20,22 @@ link_types:
     from: SourceDocument
     to: EvidenceItem
     purpose: Connects source documents to extracted evidence.
+  - name: derives_from
+    from: EvidenceItem
+    to: SourceSnapshot
+    purpose: Evidence is derived from an immutable source snapshot.
+  - name: pruned_by_partition
+    from: EvidencePartition
+    to: EvidenceItem
+    purpose: Partition metadata selects evidence for focused reasoning.
+  - name: supersedes
+    from: SourceSnapshot
+    to: SourceSnapshot
+    purpose: Newer source snapshot supersedes an older snapshot.
+  - name: invalidates
+    from: EvidenceItem
+    to: Claim
+    purpose: Evidence invalidates a previously usable claim.
   - name: supports
     from: EvidenceItem
     to: Claim
@@ -24,6 +48,10 @@ link_types:
     from: EvidenceItem
     to: Claim
     purpose: Evidence limits or conditions a claim.
+  - name: resolved_by
+    from: ConflictResolution
+    to: Claim
+    purpose: Conflict resolution explains which claim remains usable.
   - name: feeds_business_model
     from: Claim
     to: BusinessModelThesis
@@ -72,6 +100,14 @@ link_types:
     from: DataGap
     to: Claim
     purpose: A data gap blocks a claim or conclusion.
+  - name: refreshed_by
+    from: IncrementalRefreshPlan
+    to: ActionExecution
+    purpose: Incremental refresh plan is implemented through action executions.
+  - name: executed_action
+    from: ActionExecution
+    to: ReportSection
+    purpose: Report section records the action execution that produced it.
   - name: cites
     from: ReportSection
     to: EvidenceItem

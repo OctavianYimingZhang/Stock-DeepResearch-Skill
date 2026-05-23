@@ -1,5 +1,30 @@
 version: 1
 functions:
+  - name: extract_material_metric
+    inputs:
+      - source_document
+      - metric_name
+      - period
+    output: metric_observation
+    blocking_gaps:
+      - source_not_primary
+      - period_unresolved
+      - value_not_traceable
+  - name: classify_claim_materiality
+    inputs:
+      - claim
+      - evidence_item
+    output: materiality_and_confidence
+    blocking_gaps:
+      - unsupported_high_materiality_claim
+  - name: detect_source_conflict
+    inputs:
+      - claim
+      - evidence_item
+      - source_document
+    output: conflict_status
+    blocking_gaps:
+      - unresolved_primary_source_conflict
   - name: calculate_enterprise_value
     inputs:
       - market_cap

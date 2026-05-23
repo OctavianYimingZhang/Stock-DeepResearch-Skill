@@ -25,13 +25,21 @@ Use the lightweight ontology files in `ontology/`:
 - `ontology/functions.yaml`
 - `ontology/workflow_gates.yaml`
 
+Research objects move through the research lakehouse described in
+`references/research-lakehouse-framework.md`: Bronze source snapshots, Silver
+validated evidence, Gold analysis products, and Report View projections.
+
 Minimum object layer:
 
+- `ResearchRun`
 - `Company`
 - `Security`
 - `SourceDocument`
+- `SourceSnapshot`
+- `EvidencePartition`
 - `EvidenceItem`
 - `Claim`
+- `ConflictResolution`
 - `MetricObservation`
 - `ContractOrder`
 - `OrderQualityAssessment`
@@ -46,6 +54,8 @@ Minimum object layer:
 - `ShortSellerAssessment`
 - `TechnicalSetup`
 - `TradePlan`
+- `IncrementalRefreshPlan`
+- `ActionExecution`
 - `DataGap`
 - `Report`
 - `ReportSection`
@@ -72,8 +82,11 @@ high-materiality claims become `DataGap` objects.
 The most important links are:
 
 - `SourceDocument -> contains -> EvidenceItem`
+- `EvidenceItem -> derives_from -> SourceSnapshot`
 - `EvidenceItem -> supports -> Claim`
 - `EvidenceItem -> contradicts -> Claim`
+- `EvidenceItem -> invalidates -> Claim`
+- `EvidencePartition -> pruned_by_partition -> EvidenceItem`
 - `Claim -> feeds -> BusinessModelThesis`
 - `ContractOrder -> supports -> ValuationCase`
 - `OrderQualityAssessment -> constrains -> ValuationCase`
@@ -82,6 +95,8 @@ The most important links are:
 - `ShortRiskSignal -> discounts -> ValuationCase`
 - `TechnicalSetup -> constrains -> TradePlan`
 - `DataGap -> blocks -> Claim`
+- `IncrementalRefreshPlan -> refreshed_by -> ActionExecution`
+- `ResearchRun -> executes -> ActionExecution`
 - `ReportSection -> cites -> EvidenceItem`
 
 The link verbs matter. They force the agent to distinguish evidence, causality,
@@ -93,9 +108,12 @@ Use actions as workflow transactions:
 
 - `StartResearchRun`
 - `AttachSourceDocument`
+- `BuildEvidencePartitions`
 - `ExtractEvidence`
 - `ClassifyClaim`
 - `ResolveConflictingFacts`
+- `DetectSourceChange`
+- `IncrementalRefresh`
 - `GradeOrderQuality`
 - `ReconcileFinancials`
 - `ReconcileShareCountAndEV`
@@ -125,6 +143,9 @@ Calculations and repeatable decisions belong in functions:
 - short-risk grade
 - technical freshness check
 - position sizing from stop distance
+- source conflict detection
+- materiality classification
+- material metric extraction
 
 Functions should return either a value, a grade, or a blocking data gap.
 
@@ -132,7 +153,12 @@ Functions should return either a value, a grade, or a blocking data gap.
 
 Before report composition, pass these gates:
 
+- Lakehouse Layer Gate: Bronze, Silver, Gold, and Report View boundaries are
+  respected
 - Evidence Gate: material claims have evidence links
+- Lineage Gate: material conclusions trace to source snapshots
+- Partition Coverage Gate: relevant evidence partitions are available or
+  blocked
 - Source Priority Gate: conflicting facts follow the source-priority order
 - Order Gate: order evidence is graded and weak order signals do not support
   valuation without conversion proof
@@ -144,6 +170,9 @@ Before report composition, pass these gates:
 - Short Risk Gate: elevated short risk affects valuation or position sizing
 - Technical Gate: chart date, adjusted status, entry, stop, and take-profit are
   supported or blocked
+- Freshness Gate: stale objects cannot drive valuation or technical levels
+- Incremental Refresh Gate: changed sources refresh dependent objects or trigger
+  a full rerun
 - Data Gap Gate: blocked conclusions are not forced into the report
 
 ## Report Projection

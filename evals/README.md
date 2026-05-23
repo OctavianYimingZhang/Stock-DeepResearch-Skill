@@ -17,6 +17,8 @@ company archetypes from the user's reference-report set.
 - policy-linked manufacturing, debt/cash runway, and subsidy dependence
 - fresh outside-reference public-company calibration without committed ticker
   triggers
+- source lineage, evidence partition pruning, incremental refresh, and blocked
+  conclusions when required evidence is missing or stale
 
 ## Required Assertions
 
@@ -25,11 +27,14 @@ Each case specifies:
 - fixed report sections
 - one primary valuation method
 - asset/order/debt coverage
+- source snapshots, run lineage, and evidence partitions where source scope is
+  large or refreshed
 - short-seller risk grade
 - technical-analysis trade plan or explicit observation stance
 - forbidden method averaging
 - source markers for material numbers
 - ontology object graph and gate status
+- incremental refresh handling for changed source material
 - current-market-implied valuation bridge
 - cash-conversion reconciliation
 - technical chart freshness and adjusted-data status

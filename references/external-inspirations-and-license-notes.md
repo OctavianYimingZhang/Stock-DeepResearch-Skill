@@ -20,6 +20,8 @@ quality gates, role separation, and output contracts.
 | [tradermonty/claude-trading-skills](https://github.com/tradermonty/claude-trading-skills) | MIT license in repository | market-regime, institutional-flow, and trading-process quality gates as optional ideas |
 | [OctagonAI/skills](https://github.com/OctagonAI/skills) | MIT license in repository | modular SEC/financial/market-data skill taxonomy ideas |
 | [Palantir Foundry Ontology documentation](https://www.palantir.com/docs/foundry/ontology/overview/) | Public documentation | ontology workflow inspiration: objects, properties, links, actions, functions, and gates; no code copied |
+| [Databricks Lakehouse and Delta Lake documentation](https://docs.databricks.com/) | Public documentation | research lakehouse layering, source snapshot lineage, and data-quality expectation ideas; no code copied |
+| [Snowflake architecture documentation](https://docs.snowflake.com/) | Public documentation | metadata pruning, dynamic refresh, and compute/control separation ideas; no code copied |
 
 ## Attribution Standard
 

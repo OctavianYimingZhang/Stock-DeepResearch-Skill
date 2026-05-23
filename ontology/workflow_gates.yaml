@@ -1,5 +1,38 @@
 version: 1
 workflow_gates:
+  - name: LakehouseLayerGate
+    purpose: Research objects flow from Bronze to Silver to Gold to Report View.
+    required_objects:
+      - SourceSnapshot
+      - EvidenceItem
+      - Claim
+      - ReportSection
+    pass_conditions:
+      - bronze_source_snapshot_preserved
+      - silver_objects_have_bronze_lineage
+      - gold_objects_have_silver_lineage
+  - name: LineageGate
+    purpose: Material conclusions preserve source-to-report lineage.
+    required_objects:
+      - SourceSnapshot
+      - EvidenceItem
+      - Claim
+      - ReportSection
+      - ResearchRun
+    pass_conditions:
+      - material_claims_trace_to_source_snapshot
+      - report_sections_trace_to_claims_and_evidence
+      - research_run_records_input_sources
+  - name: PartitionCoverageGate
+    purpose: Evidence partition metadata covers the current analysis scope.
+    required_objects:
+      - EvidencePartition
+      - EvidenceItem
+      - Claim
+    pass_conditions:
+      - relevant_partitions_identified
+      - high_conflict_partitions_resolved_or_blocked
+      - stale_partitions_not_used_for_targets
   - name: EvidenceGate
     purpose: Material claims require evidence links.
     required_objects:
@@ -70,6 +103,29 @@ workflow_gates:
       - chart_date_present
       - adjusted_status_present
       - entry_stop_take_profit_present_or_blocked
+  - name: FreshnessGate
+    purpose: Stale objects cannot drive valuation or technical levels.
+    required_objects:
+      - SourceSnapshot
+      - EvidencePartition
+      - Claim
+      - TechnicalSetup
+    pass_conditions:
+      - source_snapshot_freshness_set
+      - stale_claims_marked
+      - stale_technical_levels_blocked
+  - name: IncrementalRefreshGate
+    purpose: Changed sources refresh only dependent objects unless full rerun is needed.
+    required_objects:
+      - ResearchRun
+      - SourceSnapshot
+      - IncrementalRefreshPlan
+      - ActionExecution
+    pass_conditions:
+      - changed_source_classified
+      - affected_partitions_identified
+      - dependent_objects_refreshed_or_blocked
+      - fallback_to_full_rerun_recorded_when_needed
   - name: DataGapGate
     purpose: Missing data blocks unsupported conclusions.
     required_objects:

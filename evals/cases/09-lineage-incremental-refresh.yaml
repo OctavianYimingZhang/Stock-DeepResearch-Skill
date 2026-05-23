@@ -1,0 +1,35 @@
+id: lineage-incremental-refresh
+archetype: lineage_incremental_refresh
+expected_primary_valuation: selected_after_source_refresh_or_blocked
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - source_snapshot_lineage
+  - research_run_lineage
+  - evidence_partition_pruning
+  - material_claim_conflict_resolution
+  - stale_source_detection
+  - incremental_refresh_plan
+  - blocked_conclusion_when_required_source_is_missing
+  - current_market_implied_expectation
+  - order_proxy_quality_ladder
+  - debt_cash_share_count_bridge
+  - cash_conversion_reconciliation
+  - one_primary_valuation_method
+  - short_seller_grade
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - technical_entry_stop_tp
+forbidden:
+  - stale_source_used_as_current
+  - refreshed_source_without_dependent_object_update
+  - target_without_ev_to_equity_share_bridge
+  - probability_weighted_method_average

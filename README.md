@@ -26,6 +26,11 @@ connects source documents, evidence items, claims, metrics, orders, assets,
 debt, valuation cases, short-risk signals, technical setups, data gaps, and
 report sections.
 
+The research data flow uses a lightweight lakehouse pattern: Bronze source
+snapshots, Silver validated evidence, Gold analysis objects, and Report View
+sections. Evidence partitions and incremental refresh plans keep context narrow
+when only part of the research graph changed.
+
 ## Usage
 
 ```text
@@ -74,6 +79,9 @@ only. They are not factual sources for a new report.
 - Do not invent data, dates, contracts, customers, orders, or target prices.
 - State data gaps explicitly.
 - Build the ontology object graph before drafting report prose.
+- Preserve source snapshots and run lineage for material claims.
+- Use evidence partitions before loading long source text.
+- Use incremental refresh when only a subset of source material changed.
 - Use one primary valuation method; other methods are sanity checks only.
 - Valuation must cover assets, orders/backlog, debt, cash, and dilution.
 - Short-seller risk must cover customer/contract authenticity, revenue
@@ -89,6 +97,9 @@ only. They are not factual sources for a new report.
 - `references/short-seller-risk-framework.md`
 - `references/technical-analysis-framework.md`
 - `references/report-style-patterns.md`
+- `references/research-lakehouse-framework.md`
+- `references/evidence-indexing-framework.md`
+- `references/incremental-refresh-framework.md`
 - `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
@@ -107,6 +118,10 @@ The central object is `Claim`. Material claims must link to evidence or become
 explicit data gaps. Workflow gates then check evidence, source priority, order
 quality, cash conversion, debt, valuation, short risk, technical freshness, and
 blocked conclusions before report composition.
+
+Additional ontology objects support source lineage and efficient refresh:
+`SourceSnapshot`, `EvidencePartition`, `ResearchRun`, `ActionExecution`,
+`IncrementalRefreshPlan`, and `ConflictResolution`.
 
 ## Calibration Method
 
@@ -138,6 +153,9 @@ third-party code or long prompt text. Referenced projects:
 - [Anthropic financial-services plugins](https://github.com/anthropics/financial-services-plugins)
 - [TraderMonty Claude Trading Skills](https://github.com/tradermonty/claude-trading-skills)
 - [OctagonAI skills](https://github.com/OctagonAI/skills)
+- [Palantir Foundry Ontology documentation](https://www.palantir.com/docs/foundry/ontology/overview/)
+- [Databricks documentation](https://docs.databricks.com/)
+- [Snowflake documentation](https://docs.snowflake.com/)
 
 License notes are documented in
 `references/external-inspirations-and-license-notes.md`.

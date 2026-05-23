@@ -17,6 +17,9 @@ REQUIRED_REFERENCES = [
     "references/short-seller-risk-framework.md",
     "references/technical-analysis-framework.md",
     "references/report-style-patterns.md",
+    "references/research-lakehouse-framework.md",
+    "references/evidence-indexing-framework.md",
+    "references/incremental-refresh-framework.md",
     "references/ontology-framework.md",
     "references/quality-calibration-loop.md",
     "references/external-inspirations-and-license-notes.md",
@@ -170,6 +173,7 @@ def validate_skill() -> None:
     for phrase in [
         "Quality Calibration Loop",
         "Ontology Object Graph",
+        "Research Lakehouse And Evidence Index",
         "current-market-implied",
         "source markers",
         "EV-to-equity-to-diluted-share",
@@ -213,8 +217,8 @@ def validate_evals() -> None:
     if not case_dir.exists():
         fail("missing evals/cases")
     cases = sorted(case_dir.glob("*.yaml"))
-    if len(cases) < 8:
-        fail("expected at least 8 eval case YAML files")
+    if len(cases) < 9:
+        fail("expected at least 9 eval case YAML files")
     seen_archetypes = set()
     for case in cases:
         data = load_yaml(case)
@@ -241,6 +245,7 @@ def validate_evals() -> None:
         "advanced_packaging_asset_intensive",
         "policy_linked_manufacturing",
         "fresh_outside_reference",
+        "lineage_incremental_refresh",
     }
     missing = expected - seen_archetypes
     if missing:
@@ -334,11 +339,45 @@ def validate_quality_contracts() -> None:
     for phrase in [
         "evidence-backed `Claim`",
         "object graph",
+        "Lakehouse Layer Gate",
+        "Incremental Refresh Gate",
         "Workflow Gates",
         "Report Projection",
     ]:
         if phrase not in ontology:
             fail(f"ontology framework missing quality contract: {phrase}")
+
+    lakehouse = read("references/research-lakehouse-framework.md")
+    for phrase in [
+        "Bronze",
+        "Silver",
+        "Gold",
+        "Report View",
+        "SourceSnapshot",
+        "ResearchRun",
+    ]:
+        if phrase not in lakehouse:
+            fail(f"research lakehouse framework missing quality contract: {phrase}")
+
+    indexing = read("references/evidence-indexing-framework.md")
+    for phrase in [
+        "EvidencePartition",
+        "Pruning Rules",
+        "source strength",
+        "conflict count",
+    ]:
+        if phrase not in indexing:
+            fail(f"evidence indexing framework missing quality contract: {phrase}")
+
+    refresh = read("references/incremental-refresh-framework.md")
+    for phrase in [
+        "IncrementalRefreshPlan",
+        "Source Change Routing",
+        "Stale Object Handling",
+        "IncrementalRefreshGate",
+    ]:
+        if phrase not in refresh:
+            fail(f"incremental refresh framework missing quality contract: {phrase}")
 
 
 def validate_ontology_contracts() -> None:

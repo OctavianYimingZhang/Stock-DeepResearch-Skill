@@ -3,6 +3,7 @@ action_types:
   - name: StartResearchRun
     reads: []
     writes:
+      - ResearchRun
       - Company
       - Security
       - DataGap
@@ -15,8 +16,21 @@ action_types:
       - Company
     writes:
       - SourceDocument
+      - SourceSnapshot
     required_checks:
       - source_type_classified
+      - freshness_status_set
+      - source_snapshot_created
+  - name: BuildEvidencePartitions
+    reads:
+      - SourceSnapshot
+      - EvidenceItem
+      - Claim
+    writes:
+      - EvidencePartition
+    required_checks:
+      - partition_metadata_complete
+      - conflict_count_set
       - freshness_status_set
   - name: ExtractEvidence
     reads:
@@ -44,9 +58,36 @@ action_types:
     writes:
       - Claim
       - DataGap
+      - ConflictResolution
     required_checks:
       - source_priority_applied
       - conflict_status_set
+  - name: DetectSourceChange
+    reads:
+      - SourceSnapshot
+      - ResearchRun
+    writes:
+      - IncrementalRefreshPlan
+      - DataGap
+    required_checks:
+      - changed_source_classified
+      - affected_objects_identified
+      - stale_objects_marked
+  - name: IncrementalRefresh
+    reads:
+      - IncrementalRefreshPlan
+      - EvidencePartition
+    writes:
+      - Claim
+      - MetricObservation
+      - ValuationCase
+      - TechnicalSetup
+      - ReportSection
+      - ActionExecution
+    required_checks:
+      - only_dependent_objects_refreshed
+      - stale_objects_marked
+      - gates_rerun
   - name: GradeOrderQuality
     reads:
       - ContractOrder

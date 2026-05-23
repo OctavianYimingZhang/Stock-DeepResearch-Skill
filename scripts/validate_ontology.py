@@ -9,11 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = ROOT / "ontology"
 
 REQUIRED_OBJECTS = {
+    "ResearchRun",
     "Company",
     "Security",
     "SourceDocument",
+    "SourceSnapshot",
+    "EvidencePartition",
     "EvidenceItem",
     "Claim",
+    "ConflictResolution",
     "MetricObservation",
     "ContractOrder",
     "OrderQualityAssessment",
@@ -27,16 +31,26 @@ REQUIRED_OBJECTS = {
     "ShortSellerAssessment",
     "TechnicalSetup",
     "TradePlan",
+    "IncrementalRefreshPlan",
+    "ActionExecution",
     "DataGap",
     "Report",
     "ReportSection",
 }
 
 REQUIRED_LINKS = {
+    "executes",
+    "uses_snapshot",
     "contains",
+    "derives_from",
     "supports",
     "contradicts",
+    "invalidates",
+    "pruned_by_partition",
+    "supersedes",
     "blocks_claim",
+    "refreshed_by",
+    "executed_action",
     "cites",
     "supports_valuation",
     "discounts_valuation",
@@ -45,9 +59,13 @@ REQUIRED_LINKS = {
 
 REQUIRED_ACTIONS = {
     "StartResearchRun",
+    "AttachSourceDocument",
+    "BuildEvidencePartitions",
     "ExtractEvidence",
     "ClassifyClaim",
     "ResolveConflictingFacts",
+    "DetectSourceChange",
+    "IncrementalRefresh",
     "GradeOrderQuality",
     "ReconcileFinancials",
     "ReconcileShareCountAndEV",
@@ -61,6 +79,9 @@ REQUIRED_ACTIONS = {
 }
 
 REQUIRED_FUNCTIONS = {
+    "extract_material_metric",
+    "classify_claim_materiality",
+    "detect_source_conflict",
     "calculate_enterprise_value",
     "risk_adjust_backlog_value",
     "cash_conversion_score",
@@ -73,13 +94,18 @@ REQUIRED_FUNCTIONS = {
 }
 
 REQUIRED_GATES = {
+    "LakehouseLayerGate",
     "EvidenceGate",
+    "LineageGate",
+    "PartitionCoverageGate",
     "OrderGate",
     "FinancialGate",
     "DebtGate",
     "ValuationGate",
     "ShortRiskGate",
     "TechnicalGate",
+    "FreshnessGate",
+    "IncrementalRefreshGate",
     "DataGapGate",
 }
 

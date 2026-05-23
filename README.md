@@ -1,6 +1,6 @@
 # stock-research-report
 
-A self-contained public-company deep research report Skill.
+A self-contained ontology-backed public-company deep research report Skill.
 
 The Skill produces analyst style deep research reports with four integrated
 modules:
@@ -20,6 +20,11 @@ together four standalone Skills. The Skill no longer depends at runtime on:
 
 The strongest methods from those repositories are now consolidated into this
 repository's reference framework.
+
+The final report is a projection from an evidence-backed object graph. The graph
+connects source documents, evidence items, claims, metrics, orders, assets,
+debt, valuation cases, short-risk signals, technical setups, data gaps, and
+report sections.
 
 ## Usage
 
@@ -68,6 +73,7 @@ only. They are not factual sources for a new report.
 
 - Do not invent data, dates, contracts, customers, orders, or target prices.
 - State data gaps explicitly.
+- Build the ontology object graph before drafting report prose.
 - Use one primary valuation method; other methods are sanity checks only.
 - Valuation must cover assets, orders/backlog, debt, cash, and dilution.
 - Short-seller risk must cover customer/contract authenticity, revenue
@@ -83,8 +89,24 @@ only. They are not factual sources for a new report.
 - `references/short-seller-risk-framework.md`
 - `references/technical-analysis-framework.md`
 - `references/report-style-patterns.md`
+- `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
+
+## Ontology Layer
+
+The lightweight ontology is stored in:
+
+- `ontology/object_types.yaml`
+- `ontology/link_types.yaml`
+- `ontology/action_types.yaml`
+- `ontology/functions.yaml`
+- `ontology/workflow_gates.yaml`
+
+The central object is `Claim`. Material claims must link to evidence or become
+explicit data gaps. Workflow gates then check evidence, source priority, order
+quality, cash conversion, debt, valuation, short risk, technical freshness, and
+blocked conclusions before report composition.
 
 ## Calibration Method
 
@@ -128,6 +150,12 @@ Run:
 python3 scripts/validate.py
 ```
 
+To check the ontology contracts directly:
+
+```bash
+python3 scripts/validate_ontology.py
+```
+
 To check a generated markdown report against the output contract:
 
 ```bash
@@ -146,6 +174,7 @@ The validator checks:
 - removal of old orchestration dependencies
 - absence of baked-in company names or ticker-based prompts
 - English-only repository text for Skill and GitHub-facing files
+- ontology object, link, action, function, and gate contracts
 - quality-loop contracts for source markers, implied valuation, order quality,
   cash conversion, short risk, and technical freshness
 

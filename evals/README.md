@@ -29,6 +29,7 @@ Each case specifies:
 - technical-analysis trade plan or explicit observation stance
 - forbidden method averaging
 - source markers for material numbers
+- ontology object graph and gate status
 - current-market-implied valuation bridge
 - cash-conversion reconciliation
 - technical chart freshness and adjusted-data status

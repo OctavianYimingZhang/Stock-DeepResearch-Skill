@@ -1,0 +1,209 @@
+version: 1
+object_types:
+  - name: Company
+    purpose: Legal and operating identity of the issuer.
+    required_properties:
+      - legal_name
+      - ticker
+      - exchange
+      - currency
+      - fiscal_year
+      - reporting_standard
+      - industry_archetype
+  - name: Security
+    purpose: Listed equity or listed equity equivalent being analyzed.
+    required_properties:
+      - ticker
+      - exchange
+      - share_class
+      - currency
+      - current_price
+      - market_cap_date
+  - name: SourceDocument
+    purpose: Filing, transcript, presentation, regulator record, counterparty disclosure, or market-data source.
+    required_properties:
+      - source_type
+      - issuer
+      - date
+      - period
+      - locator
+      - freshness_status
+  - name: EvidenceItem
+    purpose: Extracted evidence that can support, contradict, or qualify a claim.
+    required_properties:
+      - source_marker
+      - source_class
+      - date
+      - confidence
+      - materiality
+      - text_excerpt_or_value
+  - name: Claim
+    purpose: Verifiable or inferential research statement used by analysis functions.
+    required_properties:
+      - claim_text
+      - claim_type
+      - evidence_status
+      - source_strength
+      - materiality
+      - freshness_status
+      - confidence
+      - blocked_by_data_gap
+  - name: MetricObservation
+    purpose: One observed financial, operating, market, or technical metric.
+    required_properties:
+      - metric_name
+      - value
+      - unit
+      - period
+      - source_id
+      - adjusted_status
+  - name: BusinessModelThesis
+    purpose: Causal explanation of customer problem, product, value capture, and bottleneck.
+    required_properties:
+      - customer_problem
+      - value_capture_mechanism
+      - bottleneck
+      - verification_variable
+  - name: ValueDriverTransition
+    purpose: Old value driver to new value driver mapping.
+    required_properties:
+      - old_driver
+      - new_driver
+      - transition_evidence
+      - failure_observable
+  - name: CustomerCounterparty
+    purpose: Customer, supplier, partner, or government counterparty.
+    required_properties:
+      - name_or_disclosure_gap
+      - counterparty_type
+      - concentration
+      - evidence_source
+  - name: ContractOrder
+    purpose: Revenue, purchase order, backlog, capacity reservation, framework, pilot, or pipeline item.
+    required_properties:
+      - evidence_type
+      - amount_or_disclosure_gap
+      - timing
+      - cancellation_terms_or_gap
+      - valuation_usability
+  - name: OrderQualityAssessment
+    purpose: Grade of order evidence for valuation use.
+    required_properties:
+      - grade
+      - conversion_evidence
+      - margin_visibility
+      - haircut_required
+  - name: AssetFacility
+    purpose: Facility, mine, plant, equipment set, capacity asset, license, or restricted asset.
+    required_properties:
+      - asset_name
+      - current_status
+      - current_capacity
+      - target_capacity
+      - required_capex
+      - contracted_status
+  - name: DebtInstrument
+    purpose: Debt, lease, preferred security, note, or other senior claim.
+    required_properties:
+      - instrument_type
+      - principal
+      - maturity
+      - interest_cost
+      - covenant_or_gap
+      - equity_bridge_effect
+  - name: DilutionInstrument
+    purpose: Warrant, convertible, preferred stock, ATM, or expected share issuance.
+    required_properties:
+      - instrument_type
+      - potential_shares
+      - trigger
+      - target_price_effect
+  - name: FinancialQualityAssessment
+    purpose: Reconciliation of earnings quality, working capital, and cash conversion.
+    required_properties:
+      - ocf_vs_net_income
+      - working_capital_driver
+      - cash_conversion_score
+      - accounting_risk_note
+  - name: CurrentMarketImpliedBridge
+    purpose: What the current price or enterprise value already discounts.
+    required_properties:
+      - pricing_denominator
+      - implied_metric_or_multiple
+      - fragile_assumption
+      - analyst_difference
+  - name: ValuationMethodSelection
+    purpose: Selection of one primary valuation method and one sanity check at most.
+    required_properties:
+      - primary_method
+      - selection_reason
+      - secondary_check
+      - blocked_methods
+  - name: ValuationCase
+    purpose: Bull, base, or bear valuation case linked to evidence and assumptions.
+    required_properties:
+      - case_type
+      - primary_metric
+      - selected_multiple_or_rate
+      - target_ev
+      - target_equity_value
+      - diluted_share_count
+      - target_price_or_blocker
+  - name: ShortRiskSignal
+    purpose: Specific activist-short risk signal.
+    required_properties:
+      - signal_type
+      - evidence_status
+      - materiality
+      - valuation_effect
+  - name: ShortSellerAssessment
+    purpose: A through F short-seller risk assessment.
+    required_properties:
+      - grade
+      - attack_narrative
+      - strongest_red_flag
+      - strongest_green_flag
+      - valuation_or_size_effect
+  - name: TechnicalSetup
+    purpose: K-line trend, pattern, levels, freshness, and invalidation setup.
+    required_properties:
+      - chart_date
+      - adjusted_status
+      - monthly_trend
+      - weekly_trend
+      - daily_trend
+      - entry
+      - stop
+      - take_profit_1
+      - take_profit_2
+  - name: TradePlan
+    purpose: Final position and risk plan.
+    required_properties:
+      - stance
+      - position_size
+      - entry
+      - stop
+      - take_profit_1
+      - take_profit_2
+      - catalyst
+      - invalidation
+  - name: DataGap
+    purpose: Missing input that blocks a conclusion.
+    required_properties:
+      - missing_item
+      - blocked_conclusion
+      - required_source
+      - severity
+  - name: Report
+    purpose: Final rendered output.
+    required_properties:
+      - company_id
+      - generated_at
+      - validation_status
+  - name: ReportSection
+    purpose: Section-level projection from the object graph.
+    required_properties:
+      - section_name
+      - cited_claim_ids
+      - cited_evidence_ids
+      - blocked_status

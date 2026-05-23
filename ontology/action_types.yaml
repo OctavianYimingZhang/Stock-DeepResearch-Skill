@@ -1,0 +1,160 @@
+version: 1
+action_types:
+  - name: StartResearchRun
+    reads: []
+    writes:
+      - Company
+      - Security
+      - DataGap
+    required_checks:
+      - identity_resolved
+      - security_resolved
+      - source_classes_mapped
+  - name: AttachSourceDocument
+    reads:
+      - Company
+    writes:
+      - SourceDocument
+    required_checks:
+      - source_type_classified
+      - freshness_status_set
+  - name: ExtractEvidence
+    reads:
+      - SourceDocument
+    writes:
+      - EvidenceItem
+      - Claim
+    required_checks:
+      - source_marker_present
+      - materiality_set
+  - name: ClassifyClaim
+    reads:
+      - Claim
+      - EvidenceItem
+    writes:
+      - Claim
+    required_checks:
+      - evidence_status_set
+      - source_strength_set
+  - name: ResolveConflictingFacts
+    reads:
+      - Claim
+      - EvidenceItem
+      - SourceDocument
+    writes:
+      - Claim
+      - DataGap
+    required_checks:
+      - source_priority_applied
+      - conflict_status_set
+  - name: GradeOrderQuality
+    reads:
+      - ContractOrder
+      - EvidenceItem
+    writes:
+      - OrderQualityAssessment
+    required_checks:
+      - legal_strength_classified
+      - valuation_usability_set
+  - name: ReconcileFinancials
+    reads:
+      - MetricObservation
+    writes:
+      - FinancialQualityAssessment
+      - DataGap
+    required_checks:
+      - ocf_net_income_reconciled
+      - working_capital_explained
+  - name: ReconcileShareCountAndEV
+    reads:
+      - Security
+      - MetricObservation
+      - DebtInstrument
+      - DilutionInstrument
+    writes:
+      - ValuationCase
+      - DataGap
+    required_checks:
+      - diluted_share_count_reconciled
+      - net_debt_bridge_reconciled
+  - name: InferCurrentMarketPricing
+    reads:
+      - Security
+      - MetricObservation
+      - Claim
+    writes:
+      - CurrentMarketImpliedBridge
+    required_checks:
+      - pricing_denominator_selected
+      - fragile_assumption_named
+  - name: SelectPrimaryValuationMethod
+    reads:
+      - Company
+      - CurrentMarketImpliedBridge
+      - FinancialQualityAssessment
+    writes:
+      - ValuationMethodSelection
+    required_checks:
+      - one_primary_method
+      - secondary_check_limited
+  - name: BuildValuationCase
+    reads:
+      - ValuationMethodSelection
+      - CurrentMarketImpliedBridge
+      - MetricObservation
+      - ContractOrder
+      - DebtInstrument
+      - DilutionInstrument
+    writes:
+      - ValuationCase
+      - DataGap
+    required_checks:
+      - target_ev_present_or_blocked
+      - equity_bridge_present_or_blocked
+  - name: RunShortRiskScreen
+    reads:
+      - Claim
+      - ContractOrder
+      - FinancialQualityAssessment
+      - DebtInstrument
+      - DilutionInstrument
+    writes:
+      - ShortRiskSignal
+      - ShortSellerAssessment
+    required_checks:
+      - grade_present
+      - risk_effect_linked
+  - name: ValidateTechnicalSetup
+    reads:
+      - MetricObservation
+      - Claim
+    writes:
+      - TechnicalSetup
+      - DataGap
+    required_checks:
+      - chart_date_present
+      - adjusted_status_present
+      - levels_supported_or_blocked
+  - name: GenerateReportSection
+    reads:
+      - Claim
+      - EvidenceItem
+      - ValuationCase
+      - ShortSellerAssessment
+      - TechnicalSetup
+      - TradePlan
+      - DataGap
+    writes:
+      - ReportSection
+    required_checks:
+      - material_claims_cited
+      - blocked_conclusions_marked
+  - name: FinalizeReport
+    reads:
+      - ReportSection
+      - DataGap
+    writes:
+      - Report
+    required_checks:
+      - all_sections_present
+      - gates_passed_or_blocked

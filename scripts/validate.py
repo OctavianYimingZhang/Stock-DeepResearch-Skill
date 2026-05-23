@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -16,8 +17,17 @@ REQUIRED_REFERENCES = [
     "references/short-seller-risk-framework.md",
     "references/technical-analysis-framework.md",
     "references/report-style-patterns.md",
+    "references/ontology-framework.md",
     "references/quality-calibration-loop.md",
     "references/external-inspirations-and-license-notes.md",
+]
+
+REQUIRED_ONTOLOGY_FILES = [
+    "ontology/object_types.yaml",
+    "ontology/link_types.yaml",
+    "ontology/action_types.yaml",
+    "ontology/functions.yaml",
+    "ontology/workflow_gates.yaml",
 ]
 
 REQUIRED_SECTIONS = [
@@ -159,6 +169,7 @@ def validate_skill() -> None:
 
     for phrase in [
         "Quality Calibration Loop",
+        "Ontology Object Graph",
         "current-market-implied",
         "source markers",
         "EV-to-equity-to-diluted-share",
@@ -277,8 +288,13 @@ def validate_no_baked_case_language() -> None:
 def validate_quality_contracts() -> None:
     if not (ROOT / "scripts" / "validate_report_output.py").exists():
         fail("missing generated-report output validator")
+    if not (ROOT / "scripts" / "validate_ontology.py").exists():
+        fail("missing ontology validator")
     if not (ROOT / "evals" / "fixtures" / "report-contract-fixture.md").exists():
         fail("missing report output contract fixture")
+    for path in REQUIRED_ONTOLOGY_FILES:
+        if not (ROOT / path).exists():
+            fail(f"missing ontology contract file: {path}")
 
     valuation = read("references/valuation-framework.md")
     for phrase in [
@@ -314,6 +330,30 @@ def validate_quality_contracts() -> None:
         if phrase not in technical:
             fail(f"technical framework missing quality contract: {phrase}")
 
+    ontology = read("references/ontology-framework.md")
+    for phrase in [
+        "evidence-backed `Claim`",
+        "object graph",
+        "Workflow Gates",
+        "Report Projection",
+    ]:
+        if phrase not in ontology:
+            fail(f"ontology framework missing quality contract: {phrase}")
+
+
+def validate_ontology_contracts() -> None:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "validate_ontology.py")],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        message = result.stderr.strip() or result.stdout.strip()
+        fail(f"ontology validation failed: {message}")
+
 
 def main() -> None:
     validate_skill()
@@ -323,6 +363,7 @@ def main() -> None:
     validate_english_only_repo_text()
     validate_no_baked_case_language()
     validate_quality_contracts()
+    validate_ontology_contracts()
     print("OK: validation passed")
 
 

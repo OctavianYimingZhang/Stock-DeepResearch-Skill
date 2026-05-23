@@ -14,6 +14,7 @@ required_sections:
 required_checks:
   - current_rerating_dispute
   - source_markers_for_material_numbers
+  - ontology_gates_passed_or_blocked
   - current_market_implied_expectation
   - order_proxy_quality_ladder
   - debt_cash_share_count_bridge

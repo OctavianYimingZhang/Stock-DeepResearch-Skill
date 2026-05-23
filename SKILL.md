@@ -1,12 +1,12 @@
 ---
 name: stock-research-report
 description: >
-  Self-contained public-company deep research report skill. Produces analyst
-  style reports with four integrated pillars: business-model logic, valuation
-  with assets/orders/debt, short-seller risk, and K-line technical trade
-  planning. Uses authoritative sources first and treats user-provided
-  historical reports only as style and structure patterns, never as factual
-  evidence.
+  Self-contained ontology-backed public-company deep research report skill.
+  Produces analyst style reports with four integrated pillars: business-model
+  logic, valuation with assets/orders/debt, short-seller risk, and K-line
+  technical trade planning. Uses authoritative sources first and treats
+  user-provided historical reports only as style and structure patterns, never
+  as factual evidence.
 triggers:
   - stock research report
   - deep dive report
@@ -39,6 +39,7 @@ Read these files before writing the report:
 - `references/short-seller-risk-framework.md`
 - `references/technical-analysis-framework.md`
 - `references/report-style-patterns.md`
+- `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
 
@@ -77,6 +78,9 @@ Read these files before writing the report:
 12. **Material numbers need source markers.** Revenue, cash, debt, share count,
     backlog, customer concentration, target price, and technical levels must be
     traceable to a source or clearly labeled as an assumption.
+13. **Ontology before prose.** Build an internal object graph before writing the
+    report. Report sections are projections from evidence-backed claims, not the
+    storage layer for facts.
 
 ## Workflow
 
@@ -115,7 +119,43 @@ For material facts in the final report, include concise source markers such as
 `[counterparty]`, or `[market data]`. The marker must make the evidence class
 clear even when a full bibliography is not requested.
 
-### 2. Business Model Logic
+### 2. Ontology Object Graph
+
+Use `references/ontology-framework.md` and the YAML contracts in `ontology/`.
+
+Create an internal graph with these minimum objects before report composition:
+
+- `Company`, `Security`, `SourceDocument`, `EvidenceItem`, `Claim`
+- `MetricObservation`, `ContractOrder`, `OrderQualityAssessment`
+- `AssetFacility`, `DebtInstrument`, `DilutionInstrument`
+- `FinancialQualityAssessment`, `CurrentMarketImpliedBridge`
+- `ValuationMethodSelection`, `ValuationCase`
+- `ShortRiskSignal`, `ShortSellerAssessment`
+- `TechnicalSetup`, `TradePlan`, `DataGap`, `ReportSection`
+
+Core rule:
+
+```text
+SourceDocument -> EvidenceItem -> Claim -> analysis object -> ReportSection
+```
+
+High-materiality claims must be supported, contradicted, qualified, or blocked.
+If evidence is missing, create a data-gap object and block the affected target,
+technical level, or trade conclusion.
+
+Run the ontology gates before final prose:
+
+- Evidence Gate
+- Source Priority Gate
+- Order Gate
+- Financial Gate
+- Debt Gate
+- Valuation Gate
+- Short Risk Gate
+- Technical Gate
+- Data Gap Gate
+
+### 3. Business Model Logic
 
 Use `references/business-model-framework.md`.
 
@@ -134,7 +174,7 @@ Answer in narrative form:
 The business section must end with a bold one-sentence judgment that names the
 value driver, current stage, and key observable.
 
-### 3. Valuation With Assets, Orders, And Debt
+### 4. Valuation With Assets, Orders, And Debt
 
 Use `references/valuation-framework.md`.
 
@@ -179,7 +219,7 @@ Required valuation outputs:
 
 Do not close with a range-only conclusion or probability-weighted average.
 
-### 4. Short-Seller Risk
+### 5. Short-Seller Risk
 
 Use `references/short-seller-risk-framework.md`.
 
@@ -210,7 +250,7 @@ Output:
 - if grade is C or worse, expand the short-seller section with specific evidence
   and explain how it changes valuation or position sizing
 
-### 5. Technical Analysis And Trade Plan
+### 6. Technical Analysis And Trade Plan
 
 Use `references/technical-analysis-framework.md`.
 
@@ -233,7 +273,7 @@ Required output:
 If no defensible setup exists, state that there is no clear entry point and name
 the price or catalyst that would change the setup. Do not invent levels.
 
-### 6. Quality Calibration Loop
+### 7. Quality Calibration Loop
 
 Use `references/quality-calibration-loop.md` before finalizing substantial
 reports or when improving this Skill.
@@ -253,7 +293,7 @@ Process:
 Do not commit temporary company names, tickers, or generated reports as triggers
 or reusable prompts.
 
-### 7. Final Report Composition
+### 8. Final Report Composition
 
 The final report must use this fixed structure:
 
@@ -275,24 +315,31 @@ The final report must use this fixed structure:
 Section requirements:
 
 - `Company Overview`: 1-2 paragraphs. Start with the current investment tension,
-  not founding-date boilerplate.
+  not founding-date boilerplate. Read from `Company`, `Security`, and the
+  highest-materiality current-dispute claims.
 - `Business Model Logic`: longest section. Explain old -> new value driver,
-  value capture, TAM/share, and why now.
+  value capture, TAM/share, and why now. Read from `BusinessModelThesis` and
+  `ValueDriverTransition`.
 - `Operations, Customers, And Orders`: named facilities, capacity, utilization,
-  named customers, backlog/order table, delivery cadence, bottlenecks.
+  named customers, backlog/order table, delivery cadence, bottlenecks. Read from
+  `CustomerCounterparty`, `ContractOrder`, and `OrderQualityAssessment`.
 - `Financials, Assets, And Debt`: 3-year financial table, forward model, asset
   base, cash, debt, maturities, dilution, cash-conversion reconciliation, and
-  embedded short-seller quality note.
+  embedded short-seller quality note. Read from `MetricObservation`,
+  `AssetFacility`, `DebtInstrument`, `DilutionInstrument`, and
+  `FinancialQualityAssessment`.
 - `Valuation`: one primary method with inline arithmetic; no method averaging.
   State the current-market-implied assumption before the analyst target and show
-  the EV-to-equity-to-diluted-share bridge.
-- `Short-Seller Risk`: concise unless red flags are material.
+  the EV-to-equity-to-diluted-share bridge. Read from
+  `CurrentMarketImpliedBridge`, `ValuationMethodSelection`, and `ValuationCase`.
+- `Short-Seller Risk`: concise unless red flags are material. Read from
+  `ShortRiskSignal` and `ShortSellerAssessment`.
 - `Technical Analysis`: compact, fresh, adjusted where needed, and
-  decision-oriented.
+  decision-oriented. Read from `TechnicalSetup`.
 - `Risk Factors`: specific risk list; do not bury thesis-breaking evidence here
-  if it affects valuation.
+  if it affects valuation. Read from `DataGap` and high-risk claims.
 - `Trade Plan`: final actionable conclusion with stance, position size, entry,
-  stop, take-profit, catalyst, and invalidation.
+  stop, take-profit, catalyst, and invalidation. Read from `TradePlan`.
 
 ## Style Rules
 
@@ -326,6 +373,9 @@ blocked conclusion precisely.
 Before final output, verify:
 
 - all nine fixed sections are present
+- ontology gates have either passed or produced explicit blocked conclusions
+- every high-materiality claim used in a section has evidence, contradiction,
+  qualification, or a data-gap blocker
 - every material number has a source or is clearly labeled as an assumption
 - business logic explains value capture, not only industry growth
 - valuation uses one primary method and one secondary sanity check at most

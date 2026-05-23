@@ -19,6 +19,7 @@ quality gates, role separation, and output contracts.
 | [anthropics/financial-services-plugins](https://github.com/anthropics/financial-services-plugins) | Apache-2.0 license in repository | professional finance workflow patterns, DCF/comps/catalyst workflow ideas |
 | [tradermonty/claude-trading-skills](https://github.com/tradermonty/claude-trading-skills) | MIT license in repository | market-regime, institutional-flow, and trading-process quality gates as optional ideas |
 | [OctagonAI/skills](https://github.com/OctagonAI/skills) | MIT license in repository | modular SEC/financial/market-data skill taxonomy ideas |
+| [Palantir Foundry Ontology documentation](https://www.palantir.com/docs/foundry/ontology/overview/) | Public documentation | ontology workflow inspiration: objects, properties, links, actions, functions, and gates; no code copied |
 
 ## Attribution Standard
 

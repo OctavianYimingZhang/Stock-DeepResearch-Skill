@@ -18,5 +18,7 @@ jobs:
         run: python3 -m pip install pyyaml
       - name: Run repository validation
         run: python3 scripts/validate.py
+      - name: Run ontology validation
+        run: python3 scripts/validate_ontology.py
       - name: Run report output contract validation
         run: python3 scripts/validate_report_output.py evals/fixtures/report-contract-fixture.md

@@ -1,0 +1,119 @@
+version: 1
+functions:
+  - name: calculate_enterprise_value
+    inputs:
+      - market_cap
+      - debt
+      - preferred_stock
+      - minority_interest
+      - cash
+    output: enterprise_value
+    blocking_gaps:
+      - missing_market_cap
+      - missing_cash_or_debt
+  - name: calculate_fcff
+    inputs:
+      - ebit
+      - tax_rate
+      - depreciation_and_amortization
+      - capex
+      - change_in_net_working_capital
+    output: free_cash_flow_to_firm
+    blocking_gaps:
+      - missing_capex
+      - missing_working_capital
+  - name: calculate_fcfe
+    inputs:
+      - operating_cash_flow
+      - capex
+      - net_borrowing
+    output: free_cash_flow_to_equity
+    blocking_gaps:
+      - unstable_leverage
+      - missing_net_borrowing
+  - name: risk_adjust_backlog_value
+    inputs:
+      - backlog
+      - delivery_probability
+      - expected_gross_margin
+      - required_capex
+      - required_working_capital
+    output: risk_adjusted_backlog_value
+    blocking_gaps:
+      - weak_order_quality
+      - missing_margin
+  - name: grade_order_quality
+    inputs:
+      - evidence_type
+      - counterparty_confirmation
+      - cancellation_terms
+      - revenue_conversion_history
+    output: order_quality_grade
+    blocking_gaps:
+      - unsupported_pipeline
+  - name: cash_conversion_score
+    inputs:
+      - net_income
+      - operating_cash_flow
+      - working_capital_driver
+    output: cash_conversion_score
+    blocking_gaps:
+      - missing_cash_flow_statement
+  - name: debt_safety_score
+    inputs:
+      - cash
+      - total_debt
+      - maturity_schedule
+      - interest_cost
+      - covenant_status
+    output: debt_safety_score
+    blocking_gaps:
+      - missing_maturity_schedule
+  - name: select_valuation_method
+    inputs:
+      - industry_archetype
+      - market_pricing_mechanism
+      - cash_flow_maturity
+      - asset_intensity
+    output: valuation_method_selection
+    blocking_gaps:
+      - no_defensible_denominator
+  - name: detect_target_price_blockers
+    inputs:
+      - diluted_share_count
+      - net_debt
+      - order_quality_grade
+      - cash_runway
+    output: target_price_blockers
+    blocking_gaps:
+      - unreconciled_share_count
+      - unreconciled_net_debt
+      - weak_order_quality
+  - name: short_risk_grade
+    inputs:
+      - order_risk
+      - cash_conversion_risk
+      - governance_risk
+      - dilution_risk
+      - regulatory_risk
+    output: short_seller_grade
+    blocking_gaps:
+      - missing_governance_data
+  - name: technical_freshness_check
+    inputs:
+      - chart_date
+      - adjusted_status
+      - data_source
+    output: technical_freshness_status
+    blocking_gaps:
+      - stale_chart
+      - unverified_levels
+  - name: position_size_from_stop_distance
+    inputs:
+      - entry
+      - stop
+      - maximum_loss_budget
+      - evidence_quality
+    output: position_size
+    blocking_gaps:
+      - missing_stop

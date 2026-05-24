@@ -19,6 +19,11 @@ company archetypes from the user's reference-report set.
   triggers
 - source lineage, evidence partition pruning, incremental refresh, and blocked
   conclusions when required evidence is missing or stale
+- blocked target price when share count or debt maturity cannot be reconciled
+- blocked valuation when order evidence is too weak
+- blocked trade plan when chart data is stale
+- reduced position size when short-seller risk reaches C grade
+- source-priority resolution when material sources conflict
 
 ## Required Assertions
 
@@ -29,12 +34,16 @@ Each case specifies:
 - asset/order/debt coverage
 - source snapshots, run lineage, and evidence partitions where source scope is
   large or refreshed
+- source partitions before evidence extraction
+- equity bridge object before any per-share target
+- gate result status using pass, warn, block, fail, or not_applicable
 - short-seller risk grade
 - technical-analysis trade plan or explicit observation stance
 - forbidden method averaging
 - source markers for material numbers
 - ontology object graph and gate status
 - incremental refresh handling for changed source material
+- settings and output-view separation from factual evidence
 - current-market-implied valuation bridge
 - cash-conversion reconciliation
 - technical chart freshness and adjusted-data status

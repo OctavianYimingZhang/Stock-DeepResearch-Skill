@@ -1,7 +1,20 @@
 version: 1
 action_types:
-  - name: StartResearchRun
+  - name: CaptureResearchSettings
     reads: []
+    writes:
+      - ResearchSettings
+      - UserHypothesis
+      - OutputView
+      - DataGap
+    required_checks:
+      - settings_required_fields_present
+      - user_hypotheses_marked_not_evidence
+      - output_view_selected
+  - name: StartResearchRun
+    reads:
+      - ResearchSettings
+      - UserHypothesis
     writes:
       - ResearchRun
       - Company
@@ -21,9 +34,19 @@ action_types:
       - source_type_classified
       - freshness_status_set
       - source_snapshot_created
-  - name: BuildEvidencePartitions
+  - name: BuildSourcePartitions
     reads:
       - SourceSnapshot
+      - SourceDocument
+    writes:
+      - SourcePartition
+    required_checks:
+      - document_sections_indexed
+      - candidate_object_types_assigned
+      - freshness_status_set
+  - name: BuildEvidencePartitions
+    reads:
+      - SourcePartition
       - EvidenceItem
       - Claim
     writes:
@@ -34,6 +57,7 @@ action_types:
       - freshness_status_set
   - name: ExtractEvidence
     reads:
+      - SourcePartition
       - SourceDocument
     writes:
       - EvidenceItem
@@ -41,6 +65,23 @@ action_types:
     required_checks:
       - source_marker_present
       - materiality_set
+  - name: NormalizeOperatingObjects
+    reads:
+      - EvidenceItem
+      - Claim
+      - MetricObservation
+    writes:
+      - CustomerCounterparty
+      - ContractOrder
+      - AssetFacility
+      - DebtInstrument
+      - DilutionInstrument
+      - DataGap
+    required_checks:
+      - object_type_assigned
+      - source_marker_preserved
+      - materiality_set
+      - valuation_usability_set_or_blocked
   - name: ClassifyClaim
     reads:
       - Claim
@@ -62,6 +103,22 @@ action_types:
     required_checks:
       - source_priority_applied
       - conflict_status_set
+  - name: BuildBusinessModelThesis
+    reads:
+      - Claim
+      - CustomerCounterparty
+      - ContractOrder
+      - AssetFacility
+      - EvidenceItem
+    writes:
+      - BusinessModelThesis
+      - ValueDriverTransition
+      - DataGap
+    required_checks:
+      - customer_problem_named
+      - value_capture_mechanism_named
+      - value_driver_transition_named
+      - verification_variable_named
   - name: DetectSourceChange
     reads:
       - SourceSnapshot
@@ -113,6 +170,7 @@ action_types:
       - DebtInstrument
       - DilutionInstrument
     writes:
+      - EquityBridge
       - ValuationCase
       - DataGap
     required_checks:
@@ -152,6 +210,20 @@ action_types:
     required_checks:
       - target_ev_present_or_blocked
       - equity_bridge_present_or_blocked
+  - name: BuildEquityBridge
+    reads:
+      - Security
+      - MetricObservation
+      - DebtInstrument
+      - DilutionInstrument
+      - ValuationCase
+    writes:
+      - EquityBridge
+      - DataGap
+    required_checks:
+      - diluted_share_count_reconciled
+      - net_debt_bridge_reconciled
+      - senior_claims_included_or_blocked
   - name: RunShortRiskScreen
     reads:
       - Claim
@@ -176,8 +248,24 @@ action_types:
       - chart_date_present
       - adjusted_status_present
       - levels_supported_or_blocked
+  - name: BuildTradePlan
+    reads:
+      - ValuationCase
+      - EquityBridge
+      - ShortSellerAssessment
+      - TechnicalSetup
+      - DataGap
+    writes:
+      - TradePlan
+      - DataGap
+    required_checks:
+      - stance_tied_to_valuation_and_risk
+      - position_size_tied_to_evidence_quality_and_stop_distance
+      - entry_stop_take_profit_present_or_blocked
+      - invalidation_named
   - name: GenerateReportSection
     reads:
+      - OutputView
       - Claim
       - EvidenceItem
       - ValuationCase
@@ -190,8 +278,20 @@ action_types:
     required_checks:
       - material_claims_cited
       - blocked_conclusions_marked
+  - name: SelectOutputView
+    reads:
+      - ResearchSettings
+      - ReportSection
+      - DataGap
+    writes:
+      - OutputView
+    required_checks:
+      - view_projection_selected
+      - graph_source_of_truth_preserved
+      - omitted_sections_declared
   - name: FinalizeReport
     reads:
+      - OutputView
       - ReportSection
       - DataGap
     writes:

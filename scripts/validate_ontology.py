@@ -9,11 +9,14 @@ ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = ROOT / "ontology"
 
 REQUIRED_OBJECTS = {
+    "ResearchSettings",
+    "UserHypothesis",
     "ResearchRun",
     "Company",
     "Security",
     "SourceDocument",
     "SourceSnapshot",
+    "SourcePartition",
     "EvidencePartition",
     "EvidenceItem",
     "Claim",
@@ -26,6 +29,7 @@ REQUIRED_OBJECTS = {
     "FinancialQualityAssessment",
     "CurrentMarketImpliedBridge",
     "ValuationMethodSelection",
+    "EquityBridge",
     "ValuationCase",
     "ShortRiskSignal",
     "ShortSellerAssessment",
@@ -33,16 +37,22 @@ REQUIRED_OBJECTS = {
     "TradePlan",
     "IncrementalRefreshPlan",
     "ActionExecution",
+    "GateResult",
+    "OutputView",
     "DataGap",
     "Report",
     "ReportSection",
 }
 
 REQUIRED_LINKS = {
+    "configures_run",
+    "tests_hypothesis",
     "executes",
     "uses_snapshot",
     "contains",
     "derives_from",
+    "partitions_source",
+    "routes_to_evidence",
     "supports",
     "contradicts",
     "invalidates",
@@ -53,17 +63,26 @@ REQUIRED_LINKS = {
     "executed_action",
     "cites",
     "supports_valuation",
+    "bridges_to_target_price",
     "discounts_valuation",
     "constrains_trade_plan",
+    "valuation_constrains_trade",
+    "short_risk_constrains_trade",
+    "records_gate_result",
+    "projects_view",
 }
 
 REQUIRED_ACTIONS = {
+    "CaptureResearchSettings",
     "StartResearchRun",
     "AttachSourceDocument",
+    "BuildSourcePartitions",
     "BuildEvidencePartitions",
     "ExtractEvidence",
+    "NormalizeOperatingObjects",
     "ClassifyClaim",
     "ResolveConflictingFacts",
+    "BuildBusinessModelThesis",
     "DetectSourceChange",
     "IncrementalRefresh",
     "GradeOrderQuality",
@@ -72,13 +91,17 @@ REQUIRED_ACTIONS = {
     "InferCurrentMarketPricing",
     "SelectPrimaryValuationMethod",
     "BuildValuationCase",
+    "BuildEquityBridge",
     "RunShortRiskScreen",
     "ValidateTechnicalSetup",
+    "BuildTradePlan",
     "GenerateReportSection",
+    "SelectOutputView",
     "FinalizeReport",
 }
 
 REQUIRED_FUNCTIONS = {
+    "build_source_partition_index",
     "extract_material_metric",
     "classify_claim_materiality",
     "detect_source_conflict",
@@ -88,24 +111,30 @@ REQUIRED_FUNCTIONS = {
     "debt_safety_score",
     "select_valuation_method",
     "detect_target_price_blockers",
+    "calculate_equity_bridge",
     "short_risk_grade",
     "technical_freshness_check",
     "position_size_from_stop_distance",
+    "determine_gate_result",
+    "select_output_view",
 }
 
 REQUIRED_GATES = {
     "LakehouseLayerGate",
+    "SettingsGate",
     "EvidenceGate",
     "LineageGate",
     "PartitionCoverageGate",
     "OrderGate",
     "FinancialGate",
     "DebtGate",
+    "EquityBridgeGate",
     "ValuationGate",
     "ShortRiskGate",
     "TechnicalGate",
     "FreshnessGate",
     "IncrementalRefreshGate",
+    "OutputViewGate",
     "DataGapGate",
 }
 
@@ -197,9 +226,9 @@ def validate() -> None:
     for item in action_items:
         assert isinstance(item, dict)
         for key in ["reads", "writes", "required_checks"]:
-            if key == "reads" and item.get("name") == "StartResearchRun":
+            if key == "reads" and item.get("name") in {"CaptureResearchSettings"}:
                 if not isinstance(item.get(key), list):
-                    fail("StartResearchRun reads must be a list")
+                    fail(f"{item['name']} reads must be a list")
                 continue
             require_list(item, key, f"action {item['name']}")
         for key in ["reads", "writes"]:

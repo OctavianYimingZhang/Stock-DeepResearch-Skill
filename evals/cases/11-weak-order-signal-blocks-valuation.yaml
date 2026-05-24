@@ -1,0 +1,28 @@
+id: weak-order-signal-blocks-valuation
+archetype: weak_order_signal_blocks_valuation
+expected_primary_valuation: scenario_without_target_until_order_quality_improves
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - order_proxy_quality_ladder
+  - weak_order_signals_do_not_drive_target
+  - conversion_evidence_required
+  - current_market_implied_expectation
+  - debt_cash_share_count_bridge
+  - one_primary_valuation_method
+  - short_seller_grade
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - technical_entry_stop_tp
+forbidden:
+  - weak_pipeline_language_drives_valuation
+  - probability_weighted_method_average
+  - target_without_order_quality_support

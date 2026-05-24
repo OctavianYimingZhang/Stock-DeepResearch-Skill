@@ -1,5 +1,15 @@
 version: 1
 functions:
+  - name: build_source_partition_index
+    inputs:
+      - source_snapshot
+      - source_document
+      - source_type
+    output: source_partitions
+    blocking_gaps:
+      - source_not_sectioned
+      - source_type_unresolved
+      - freshness_unresolved
   - name: extract_material_metric
     inputs:
       - source_document
@@ -114,6 +124,20 @@ functions:
       - unreconciled_share_count
       - unreconciled_net_debt
       - weak_order_quality
+  - name: calculate_equity_bridge
+    inputs:
+      - target_enterprise_value
+      - cash
+      - debt
+      - preferred_stock
+      - minority_interest
+      - non_operating_assets
+      - diluted_share_count
+    output: equity_bridge
+    blocking_gaps:
+      - unreconciled_net_debt
+      - unreconciled_share_count
+      - missing_senior_claims
   - name: short_risk_grade
     inputs:
       - order_risk
@@ -142,3 +166,19 @@ functions:
     output: position_size
     blocking_gaps:
       - missing_stop
+  - name: determine_gate_result
+    inputs:
+      - gate_name
+      - pass_conditions
+      - blocked_conclusions
+    output: gate_result
+    blocking_gaps:
+      - gate_status_unresolved
+  - name: select_output_view
+    inputs:
+      - research_settings
+      - report_sections
+      - data_gaps
+    output: output_view
+    blocking_gaps:
+      - unsupported_output_view

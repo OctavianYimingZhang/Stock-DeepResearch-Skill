@@ -1,0 +1,43 @@
+version: 1
+presets:
+  - id: full_deep_research
+    label: Full Deep Research
+    research_mode: full_report
+    output_view: full_report
+  - id: incremental_refresh
+    label: Incremental Refresh
+    research_mode: incremental_refresh
+    output_view: incremental_refresh_summary
+  - id: valuation_memo
+    label: Valuation Memo
+    research_mode: valuation_only
+    output_view: valuation_memo
+  - id: short_seller_audit
+    label: Short-Seller Audit
+    research_mode: short_risk_only
+    output_view: short_seller_attack_memo
+  - id: trade_plan
+    label: Trade Plan
+    research_mode: technical_only
+    output_view: trade_plan_only
+  - id: evidence_gap_scan
+    label: Evidence Gap Scan
+    research_mode: gap_scan
+    output_view: evidence_gap_report
+required_inputs:
+  - ticker_or_company_identifier
+  - output_view
+  - source_policy
+  - valuation_strictness
+  - technical_requirement
+preflight_actions:
+  - resolve_security
+  - map_required_source_classes
+  - identify_blocking_gaps
+  - build_source_partitions
+  - confirm_output_view
+allowed_user_actions:
+  - run_with_blockers
+  - attach_sources
+  - switch_output_view
+  - cancel_run

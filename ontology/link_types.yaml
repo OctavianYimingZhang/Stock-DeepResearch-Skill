@@ -1,5 +1,13 @@
 version: 1
 link_types:
+  - name: configures_run
+    from: ResearchSettings
+    to: ResearchRun
+    purpose: Runtime settings configure the research run without becoming evidence.
+  - name: tests_hypothesis
+    from: UserHypothesis
+    to: Claim
+    purpose: User hypothesis is tested by claims rather than treated as fact.
   - name: executes
     from: ResearchRun
     to: ActionExecution
@@ -24,6 +32,14 @@ link_types:
     from: EvidenceItem
     to: SourceSnapshot
     purpose: Evidence is derived from an immutable source snapshot.
+  - name: partitions_source
+    from: SourcePartition
+    to: SourceSnapshot
+    purpose: Source partition indexes source snapshot sections before extraction.
+  - name: routes_to_evidence
+    from: SourcePartition
+    to: EvidenceItem
+    purpose: Source partition routes document slices to extracted evidence.
   - name: pruned_by_partition
     from: EvidencePartition
     to: EvidenceItem
@@ -78,12 +94,16 @@ link_types:
     purpose: Order quality constrains valuation confidence or haircut.
   - name: affects_equity_bridge
     from: DebtInstrument
-    to: ValuationCase
+    to: EquityBridge
     purpose: Senior claims affect target equity value.
   - name: affects_target_price
     from: DilutionInstrument
-    to: ValuationCase
+    to: EquityBridge
     purpose: Dilution affects per-share value.
+  - name: bridges_to_target_price
+    from: EquityBridge
+    to: ValuationCase
+    purpose: Equity bridge supports or blocks the per-share target.
   - name: discounts_valuation
     from: ShortRiskSignal
     to: ValuationCase
@@ -96,6 +116,14 @@ link_types:
     from: TechnicalSetup
     to: TradePlan
     purpose: Technical setup constrains entry, stop, and take-profit.
+  - name: valuation_constrains_trade
+    from: ValuationCase
+    to: TradePlan
+    purpose: Valuation case constrains stance and reward-to-risk.
+  - name: short_risk_constrains_trade
+    from: ShortSellerAssessment
+    to: TradePlan
+    purpose: Short-risk assessment constrains position size and stance.
   - name: blocks_claim
     from: DataGap
     to: Claim
@@ -108,6 +136,14 @@ link_types:
     from: ActionExecution
     to: ReportSection
     purpose: Report section records the action execution that produced it.
+  - name: records_gate_result
+    from: ActionExecution
+    to: GateResult
+    purpose: Action execution records normalized gate results.
+  - name: projects_view
+    from: OutputView
+    to: ReportSection
+    purpose: Output view projects selected report sections from the graph.
   - name: cites
     from: ReportSection
     to: EvidenceItem

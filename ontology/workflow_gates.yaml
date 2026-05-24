@@ -4,6 +4,7 @@ workflow_gates:
     purpose: Research objects flow from Bronze to Silver to Gold to Report View.
     required_objects:
       - SourceSnapshot
+      - SourcePartition
       - EvidenceItem
       - Claim
       - ReportSection
@@ -11,6 +12,16 @@ workflow_gates:
       - bronze_source_snapshot_preserved
       - silver_objects_have_bronze_lineage
       - gold_objects_have_silver_lineage
+  - name: SettingsGate
+    purpose: Runtime settings are complete and separated from factual evidence.
+    required_objects:
+      - ResearchSettings
+      - UserHypothesis
+      - ResearchRun
+    pass_conditions:
+      - required_settings_present
+      - user_hypothesis_not_treated_as_evidence
+      - output_view_selected
   - name: LineageGate
     purpose: Material conclusions preserve source-to-report lineage.
     required_objects:
@@ -26,10 +37,12 @@ workflow_gates:
   - name: PartitionCoverageGate
     purpose: Evidence partition metadata covers the current analysis scope.
     required_objects:
+      - SourcePartition
       - EvidencePartition
       - EvidenceItem
       - Claim
     pass_conditions:
+      - source_partitions_built_before_extraction
       - relevant_partitions_identified
       - high_conflict_partitions_resolved_or_blocked
       - stale_partitions_not_used_for_targets
@@ -71,17 +84,30 @@ workflow_gates:
     required_objects:
       - DebtInstrument
       - DilutionInstrument
-      - ValuationCase
+      - EquityBridge
     pass_conditions:
       - net_debt_bridge_present
       - diluted_share_count_present
       - maturity_wall_addressed
+  - name: EquityBridgeGate
+    purpose: Per-share target is blocked unless EV-to-equity bridge reconciles.
+    required_objects:
+      - EquityBridge
+      - DebtInstrument
+      - DilutionInstrument
+      - ValuationCase
+    pass_conditions:
+      - senior_claims_included_or_blocked
+      - net_debt_reconciled_or_blocked
+      - diluted_share_count_reconciled_or_blocked
+      - target_price_blocked_when_bridge_unresolved
   - name: ValuationGate
     purpose: Current-market-implied expectation precedes target value.
     required_objects:
       - CurrentMarketImpliedBridge
       - ValuationMethodSelection
       - ValuationCase
+      - EquityBridge
     pass_conditions:
       - current_implied_bridge_present
       - one_primary_method_only
@@ -107,6 +133,7 @@ workflow_gates:
     purpose: Stale objects cannot drive valuation or technical levels.
     required_objects:
       - SourceSnapshot
+      - SourcePartition
       - EvidencePartition
       - Claim
       - TechnicalSetup
@@ -114,6 +141,16 @@ workflow_gates:
       - source_snapshot_freshness_set
       - stale_claims_marked
       - stale_technical_levels_blocked
+  - name: OutputViewGate
+    purpose: Output view changes projection without changing the source graph.
+    required_objects:
+      - ResearchSettings
+      - OutputView
+      - ReportSection
+    pass_conditions:
+      - view_projection_selected
+      - required_sections_present_for_view
+      - source_graph_unchanged_by_projection
   - name: IncrementalRefreshGate
     purpose: Changed sources refresh only dependent objects unless full rerun is needed.
     required_objects:

@@ -7,6 +7,9 @@ description: >
   technical trade planning. Uses authoritative sources first and treats
   user-provided historical reports only as style and structure patterns, never
   as factual evidence.
+homepage: https://github.com/OctavianYimingZhang/Stock-DeepResearch-Skill
+user-invocable: true
+metadata: {"settings_schema":"config/settings.schema.json","onboarding_flow":"config/onboarding.flow.yaml","default_profile":"config/profiles/default.json"}
 triggers:
   - stock research report
   - deep dive report
@@ -42,6 +45,7 @@ Read these files before writing the report:
 - `references/research-lakehouse-framework.md`
 - `references/evidence-indexing-framework.md`
 - `references/incremental-refresh-framework.md`
+- `references/user-intake-settings-framework.md`
 - `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
@@ -81,16 +85,36 @@ Read these files before writing the report:
 12. **Material numbers need source markers.** Revenue, cash, debt, share count,
     backlog, customer concentration, target price, and technical levels must be
     traceable to a source or clearly labeled as an assumption.
-13. **Ontology before prose.** Build an internal object graph before writing the
+13. **Runtime settings are not evidence.** User settings and user hypotheses
+    configure the research run. They never validate a factual claim.
+14. **Ontology before prose.** Build an internal object graph before writing the
     report. Report sections are projections from evidence-backed claims, not the
     storage layer for facts.
-14. **Layered research data flow.** Preserve raw source snapshots, validate
+15. **Layered research data flow.** Preserve raw source snapshots, validate
     evidence into claims and metrics, build analysis objects, then project the
     report. Do not let raw text bypass the ontology gates.
 
 ## Workflow
 
-### 1. Scope And Source Map
+### 1. Runtime Settings And Source Map
+
+Use `references/user-intake-settings-framework.md`.
+
+Capture `ResearchSettings` before source work:
+
+- research mode
+- output view
+- source policy
+- valuation strictness
+- short-risk threshold
+- technical requirement
+- incremental-refresh mode
+- citation detail
+- interaction level
+
+Capture any user thesis as `UserHypothesis`. Treat it as a question to test,
+not as evidence. A user-uploaded document may become `SourceDocument`; a user
+opinion may only become `UserHypothesis`.
 
 Identify:
 
@@ -134,14 +158,19 @@ Use `references/research-lakehouse-framework.md`,
 Process source material in layers:
 
 - Bronze: immutable `SourceSnapshot` and `SourceDocument`
-- Silver: `EvidenceItem`, `Claim`, `MetricObservation`, order, debt, and
-  dilution objects
-- Gold: business thesis, valuation, short-risk, technical setup, and trade plan
+- Source Index: `SourcePartition` slices used before extraction
+- Silver: `EvidencePartition`, `EvidenceItem`, `Claim`, `MetricObservation`,
+  order, debt, and dilution objects
+- Gold: business thesis, equity bridge, valuation, short-risk, technical setup,
+  and trade plan
 - Report View: final sections projected from the graph
 
-Before reading long sources, use `EvidencePartition` metadata to focus context
-by company, period, source type, object type, metric, materiality, freshness,
-source strength, and conflict count.
+Before reading long sources, use `SourcePartition` metadata to route source
+sections by document section, period, candidate object type, candidate metric,
+freshness, and estimated materiality. After extraction, use
+`EvidencePartition` metadata to focus context by company, period, source type,
+object type, metric, materiality, freshness, source strength, and conflict
+count.
 
 When a new source arrives, create an `IncrementalRefreshPlan`. Refresh only
 dependent objects unless the changed source invalidates a high-materiality claim
@@ -153,15 +182,16 @@ Use `references/ontology-framework.md` and the YAML contracts in `ontology/`.
 
 Create an internal graph with these minimum objects before report composition:
 
-- `ResearchRun`, `Company`, `Security`, `SourceDocument`, `SourceSnapshot`
+- `ResearchSettings`, `UserHypothesis`, `ResearchRun`, `Company`, `Security`
+- `SourceDocument`, `SourceSnapshot`, `SourcePartition`
 - `EvidencePartition`, `EvidenceItem`, `Claim`, `ConflictResolution`
 - `MetricObservation`, `ContractOrder`, `OrderQualityAssessment`
 - `AssetFacility`, `DebtInstrument`, `DilutionInstrument`
-- `FinancialQualityAssessment`, `CurrentMarketImpliedBridge`
+- `FinancialQualityAssessment`, `CurrentMarketImpliedBridge`, `EquityBridge`
 - `ValuationMethodSelection`, `ValuationCase`
 - `ShortRiskSignal`, `ShortSellerAssessment`
 - `TechnicalSetup`, `TradePlan`, `IncrementalRefreshPlan`, `ActionExecution`
-- `DataGap`, `ReportSection`
+- `GateResult`, `OutputView`, `DataGap`, `ReportSection`
 
 Core rule:
 
@@ -176,6 +206,7 @@ technical level, or trade conclusion.
 Run the ontology gates before final prose:
 
 - Lakehouse Layer Gate
+- Settings Gate
 - Evidence Gate
 - Lineage Gate
 - Partition Coverage Gate
@@ -183,11 +214,13 @@ Run the ontology gates before final prose:
 - Order Gate
 - Financial Gate
 - Debt Gate
+- Equity Bridge Gate
 - Valuation Gate
 - Short Risk Gate
 - Technical Gate
 - Freshness Gate
 - Incremental Refresh Gate
+- Output View Gate
 - Data Gap Gate
 
 ### 4. Business Model Logic
@@ -247,7 +280,8 @@ Required valuation outputs:
 - net income to operating cash flow reconciliation and working-capital movement
 - current-market-implied expectation before the analyst target
 - primary valuation derivation with inline arithmetic
-- EV-to-equity-to-diluted-share bridge for any per-share target
+- explicit `EquityBridge` from EV to equity value to diluted shares for any
+  per-share target
 - bull/base/bear cases, each tied to a concrete observable
 - one target price or target market cap, unless evidence is insufficient
 - short sanity check from one secondary method
@@ -330,7 +364,7 @@ or reusable prompts.
 
 ### 9. Final Report Composition
 
-The final report must use this fixed structure:
+The default `full_report` output view must use this fixed structure:
 
 ```markdown
 # [Company Name] ([Ticker]) Deep Research Report:
@@ -366,7 +400,8 @@ Section requirements:
 - `Valuation`: one primary method with inline arithmetic; no method averaging.
   State the current-market-implied assumption before the analyst target and show
   the EV-to-equity-to-diluted-share bridge. Read from
-  `CurrentMarketImpliedBridge`, `ValuationMethodSelection`, and `ValuationCase`.
+  `CurrentMarketImpliedBridge`, `ValuationMethodSelection`, `EquityBridge`, and
+  `ValuationCase`.
 - `Short-Seller Risk`: concise unless red flags are material. Read from
   `ShortRiskSignal` and `ShortSellerAssessment`.
 - `Technical Analysis`: compact, fresh, adjusted where needed, and
@@ -379,6 +414,7 @@ Section requirements:
 ## Style Rules
 
 - Use the language requested by the user for the final report.
+- Use the configured `OutputView`; change projection only, not the source graph.
 - Use concrete numbers, dates, and source attribution.
 - Prefer narrative paragraphs plus a few compact tables.
 - Use inline arithmetic in prose for important valuation and operating leverage
@@ -409,6 +445,7 @@ Before final output, verify:
 
 - all nine fixed sections are present
 - ontology gates have either passed or produced explicit blocked conclusions
+- each gate result is `pass`, `warn`, `block`, `fail`, or `not_applicable`
 - every high-materiality claim used in a section has evidence, contradiction,
   qualification, or a data-gap blocker
 - every material number has a source or is clearly labeled as an assumption

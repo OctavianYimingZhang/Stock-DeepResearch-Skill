@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT_SUFFIXES = {".md", ".yaml", ".yml", ".py"}
+TEXT_SUFFIXES = {".md", ".yaml", ".yml", ".py", ".json"}
 
 
 REQUIRED_REFERENCES = [
@@ -20,9 +20,16 @@ REQUIRED_REFERENCES = [
     "references/research-lakehouse-framework.md",
     "references/evidence-indexing-framework.md",
     "references/incremental-refresh-framework.md",
+    "references/user-intake-settings-framework.md",
     "references/ontology-framework.md",
     "references/quality-calibration-loop.md",
     "references/external-inspirations-and-license-notes.md",
+]
+
+REQUIRED_CONFIG_FILES = [
+    "config/settings.schema.json",
+    "config/profiles/default.json",
+    "config/onboarding.flow.yaml",
 ]
 
 REQUIRED_ONTOLOGY_FILES = [
@@ -80,6 +87,7 @@ FORBIDDEN_REFERENCE_CASES = [
 ]
 
 FORBIDDEN_LANGUAGE_CONFLICTS = [
+    "Ch" + "inese",
     "Ch" + "inese " + "prose",
     "plain " + "Ch" + "inese",
 ]
@@ -174,6 +182,7 @@ def validate_skill() -> None:
         "Quality Calibration Loop",
         "Ontology Object Graph",
         "Research Lakehouse And Evidence Index",
+        "Runtime Settings And Source Map",
         "current-market-implied",
         "source markers",
         "EV-to-equity-to-diluted-share",
@@ -188,6 +197,9 @@ def validate_readme() -> None:
     for ref in REQUIRED_REFERENCES:
         if ref not in readme:
             fail(f"README.md does not reference {ref}")
+    for path in REQUIRED_CONFIG_FILES:
+        if path not in readme:
+            fail(f"README.md does not reference {path}")
     if "no longer depends at runtime" not in readme:
         fail("README.md must state that old standalone Skill dependencies were removed")
 
@@ -217,8 +229,8 @@ def validate_evals() -> None:
     if not case_dir.exists():
         fail("missing evals/cases")
     cases = sorted(case_dir.glob("*.yaml"))
-    if len(cases) < 9:
-        fail("expected at least 9 eval case YAML files")
+    if len(cases) < 15:
+        fail("expected at least 15 eval case YAML files")
     seen_archetypes = set()
     for case in cases:
         data = load_yaml(case)
@@ -246,6 +258,12 @@ def validate_evals() -> None:
         "policy_linked_manufacturing",
         "fresh_outside_reference",
         "lineage_incremental_refresh",
+        "unreconciled_share_count_blocks_target",
+        "weak_order_signal_blocks_valuation",
+        "stale_chart_blocks_trade_plan",
+        "short_risk_c_grade_reduces_position_size",
+        "conflicting_source_priority_resolution",
+        "missing_debt_maturity_blocks_equity_bridge",
     }
     missing = expected - seen_archetypes
     if missing:
@@ -300,6 +318,18 @@ def validate_quality_contracts() -> None:
     for path in REQUIRED_ONTOLOGY_FILES:
         if not (ROOT / path).exists():
             fail(f"missing ontology contract file: {path}")
+    for path in REQUIRED_CONFIG_FILES:
+        if not (ROOT / path).exists():
+            fail(f"missing config contract file: {path}")
+    for path in [
+        "scripts/validate_settings.py",
+        "scripts/validate_research_manifest.py",
+        "scripts/validate_report_against_manifest.py",
+        "scripts/build_prompt_from_settings.py",
+        "evals/fixtures/report-contract-fixture.manifest.json",
+    ]:
+        if not (ROOT / path).exists():
+            fail(f"missing productization contract file: {path}")
 
     valuation = read("references/valuation-framework.md")
     for phrase in [
@@ -340,7 +370,11 @@ def validate_quality_contracts() -> None:
         "evidence-backed `Claim`",
         "object graph",
         "Lakehouse Layer Gate",
+        "Settings Gate",
+        "Equity Bridge Gate",
         "Incremental Refresh Gate",
+        "Output View Gate",
+        "Gate results use",
         "Workflow Gates",
         "Report Projection",
     ]:
@@ -350,6 +384,7 @@ def validate_quality_contracts() -> None:
     lakehouse = read("references/research-lakehouse-framework.md")
     for phrase in [
         "Bronze",
+        "Source Index",
         "Silver",
         "Gold",
         "Report View",
@@ -361,6 +396,7 @@ def validate_quality_contracts() -> None:
 
     indexing = read("references/evidence-indexing-framework.md")
     for phrase in [
+        "SourcePartition",
         "EvidencePartition",
         "Pruning Rules",
         "source strength",
@@ -379,6 +415,17 @@ def validate_quality_contracts() -> None:
         if phrase not in refresh:
             fail(f"incremental refresh framework missing quality contract: {phrase}")
 
+    intake = read("references/user-intake-settings-framework.md")
+    for phrase in [
+        "ResearchSettings",
+        "UserHypothesis",
+        "Output Views",
+        "Preflight Contract",
+        "Prompt Builder Contract",
+    ]:
+        if phrase not in intake:
+            fail(f"user intake framework missing quality contract: {phrase}")
+
 
 def validate_ontology_contracts() -> None:
     result = subprocess.run(
@@ -394,6 +441,45 @@ def validate_ontology_contracts() -> None:
         fail(f"ontology validation failed: {message}")
 
 
+def validate_settings_contracts() -> None:
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "validate_settings.py")],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        message = result.stderr.strip() or result.stdout.strip()
+        fail(f"settings validation failed: {message}")
+
+
+def validate_manifest_contracts() -> None:
+    manifest = ROOT / "evals" / "fixtures" / "report-contract-fixture.manifest.json"
+    report = ROOT / "evals" / "fixtures" / "report-contract-fixture.md"
+    for command in [
+        [sys.executable, str(ROOT / "scripts" / "validate_research_manifest.py"), str(manifest)],
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "validate_report_against_manifest.py"),
+            str(report),
+            str(manifest),
+        ],
+    ]:
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+        if result.returncode != 0:
+            message = result.stderr.strip() or result.stdout.strip()
+            fail(f"manifest validation failed: {message}")
+
+
 def main() -> None:
     validate_skill()
     validate_readme()
@@ -403,6 +489,8 @@ def main() -> None:
     validate_no_baked_case_language()
     validate_quality_contracts()
     validate_ontology_contracts()
+    validate_settings_contracts()
+    validate_manifest_contracts()
     print("OK: validation passed")
 
 

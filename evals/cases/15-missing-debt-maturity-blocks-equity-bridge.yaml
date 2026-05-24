@@ -1,0 +1,29 @@
+id: missing-debt-maturity-blocks-equity-bridge
+archetype: missing_debt_maturity_blocks_equity_bridge
+expected_primary_valuation: target_blocked_until_debt_maturity_reconciles
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - debt_maturity_schedule_required
+  - equity_bridge_present_or_blocked
+  - senior_claims_included_or_blocked
+  - target_price_blocked_when_debt_maturity_missing
+  - current_market_implied_expectation
+  - debt_cash_share_count_bridge
+  - one_primary_valuation_method
+  - short_seller_grade
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - technical_entry_stop_tp
+forbidden:
+  - target_without_debt_maturity_review
+  - target_without_ev_to_equity_share_bridge
+  - probability_weighted_method_average

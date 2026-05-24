@@ -9,8 +9,9 @@ refresh is enough.
 New information should refresh only dependent objects unless a source change
 invalidates the whole thesis.
 
-Use `SourceSnapshot`, `ResearchRun`, `EvidencePartition`, and
-`IncrementalRefreshPlan` to determine what changed and what must be recomputed.
+Use `SourceSnapshot`, `SourcePartition`, `ResearchRun`, `EvidencePartition`,
+and `IncrementalRefreshPlan` to determine what changed and what must be
+recomputed.
 
 ## Source Change Routing
 
@@ -29,6 +30,7 @@ Use `SourceSnapshot`, `ResearchRun`, `EvidencePartition`, and
 An `IncrementalRefreshPlan` must state:
 
 - changed source snapshot
+- affected source partitions
 - affected partitions
 - stale objects
 - objects to recompute
@@ -53,6 +55,7 @@ When a source supersedes an older source:
 The `IncrementalRefreshGate` passes only when:
 
 - changed source class is identified
+- affected source partitions are identified
 - affected partitions are identified
 - stale objects are marked
 - dependent objects are recomputed or explicitly blocked

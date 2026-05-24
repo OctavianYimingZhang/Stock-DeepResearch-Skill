@@ -6,20 +6,23 @@ conviction report.
 
 ## Layer Model
 
-Use four layers:
+Use five layers:
 
 | Layer | Purpose | Objects |
 |---|---|---|
 | Bronze | Preserve raw source fidelity | `SourceSnapshot`, `SourceDocument`, raw filing, transcript, presentation, regulator record, OHLCV, screenshot |
-| Silver | Clean and validate extracted evidence | `EvidenceItem`, `Claim`, `MetricObservation`, `ContractOrder`, `DebtInstrument`, `DilutionInstrument` |
-| Gold | Analysis-ready research products | `BusinessModelThesis`, `CurrentMarketImpliedBridge`, `ValuationCase`, `ShortSellerAssessment`, `TechnicalSetup`, `TradePlan` |
+| Source Index | Route source slices before extraction | `SourcePartition` |
+| Silver | Clean and validate extracted evidence | `EvidencePartition`, `EvidenceItem`, `Claim`, `MetricObservation`, `ContractOrder`, `DebtInstrument`, `DilutionInstrument` |
+| Gold | Analysis-ready research products | `BusinessModelThesis`, `CurrentMarketImpliedBridge`, `EquityBridge`, `ValuationCase`, `ShortSellerAssessment`, `TechnicalSetup`, `TradePlan` |
 | Report View | Final user-facing projection | `Report`, `ReportSection` |
 
 ## Layer Rules
 
 - Report View reads Gold objects and cited evidence only.
 - Gold reads Silver and must preserve links to the Silver objects used.
-- Silver reads Bronze and must preserve source snapshot lineage.
+- Silver reads Source Index and Bronze and must preserve source snapshot lineage.
+- Source Index reads Bronze and exists before long source text is loaded for
+  extraction.
 - Bronze is never rewritten. If a source changes, create a new snapshot.
 - A high-conviction conclusion cannot skip layers.
 
@@ -53,11 +56,22 @@ trail.
 
 ## Data Quality Expectations
 
-Every workflow gate should return one of three outcomes:
+Every workflow gate should return one of five outcomes:
 
+- `pass`: requirements are satisfied
 - `warn`: allowed into report with low-conviction caveat
 - `block`: conclusion cannot be made until a source or object is supplied
 - `fail`: report contract is violated and must be fixed before final output
+- `not_applicable`: gate is not relevant to this run or output view
+
+Each `GateResult` must include:
+
+- gate name
+- status
+- reason
+- affected objects
+- blocked conclusions
+- required user input
 
 Typical `fail` outcomes:
 

@@ -1,0 +1,27 @@
+id: stale-chart-blocks-trade-plan
+archetype: stale_chart_blocks_trade_plan
+expected_primary_valuation: selected_from_fundamentals_with_trade_plan_blocked
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - current_market_implied_expectation
+  - debt_cash_share_count_bridge
+  - one_primary_valuation_method
+  - short_seller_grade
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - stale_chart_blocks_entry_stop_tp
+  - trade_plan_observation_stance
+forbidden:
+  - stale_chart_levels
+  - invented_entry
+  - invented_stop
+  - probability_weighted_method_average

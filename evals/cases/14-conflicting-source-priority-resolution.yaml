@@ -1,0 +1,28 @@
+id: conflicting-source-priority-resolution
+archetype: conflicting_source_priority_resolution
+expected_primary_valuation: selected_after_conflict_resolution_or_blocked
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - source_priority_gate
+  - conflict_resolution_recorded
+  - conflicting_claims_resolved_or_blocked
+  - current_market_implied_expectation
+  - debt_cash_share_count_bridge
+  - one_primary_valuation_method
+  - short_seller_grade
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - technical_entry_stop_tp
+forbidden:
+  - lower_priority_source_overrides_primary_without_reason
+  - unresolved_conflict_drives_target
+  - probability_weighted_method_average

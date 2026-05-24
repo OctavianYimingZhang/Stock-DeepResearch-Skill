@@ -27,9 +27,10 @@ debt, valuation cases, short-risk signals, technical setups, data gaps, and
 report sections.
 
 The research data flow uses a lightweight lakehouse pattern: Bronze source
-snapshots, Silver validated evidence, Gold analysis objects, and Report View
-sections. Evidence partitions and incremental refresh plans keep context narrow
-when only part of the research graph changed.
+snapshots, Source Index partitions, Silver validated evidence, Gold analysis
+objects, and Report View sections. Source partitions, evidence partitions, and
+incremental refresh plans keep context narrow when only part of the research
+graph changed.
 
 ## Usage
 
@@ -46,9 +47,13 @@ Optional inputs:
 - user focus areas such as valuation, short-seller risk, order quality, or
   technical entry
 
+Runtime settings can also be supplied through `config/settings.schema.json`.
+The default profile is `config/profiles/default.json`, and the onboarding flow
+is `config/onboarding.flow.yaml`.
+
 ## Output Structure
 
-The report uses this fixed structure:
+The default `full_report` output view uses this fixed structure:
 
 1. Company Overview
 2. Business Model Logic
@@ -79,10 +84,14 @@ only. They are not factual sources for a new report.
 - Do not invent data, dates, contracts, customers, orders, or target prices.
 - State data gaps explicitly.
 - Build the ontology object graph before drafting report prose.
+- Capture runtime settings and user hypotheses before source work.
+- Treat user hypotheses as questions to test, not as evidence.
 - Preserve source snapshots and run lineage for material claims.
-- Use evidence partitions before loading long source text.
+- Use source partitions before loading long source text, then use evidence
+  partitions after extraction.
 - Use incremental refresh when only a subset of source material changed.
 - Use one primary valuation method; other methods are sanity checks only.
+- Build an explicit equity bridge before allowing a per-share target.
 - Valuation must cover assets, orders/backlog, debt, cash, and dilution.
 - Short-seller risk must cover customer/contract authenticity, revenue
   recognition, cash-flow quality, related parties, audit quality, insider
@@ -100,6 +109,7 @@ only. They are not factual sources for a new report.
 - `references/research-lakehouse-framework.md`
 - `references/evidence-indexing-framework.md`
 - `references/incremental-refresh-framework.md`
+- `references/user-intake-settings-framework.md`
 - `references/ontology-framework.md`
 - `references/quality-calibration-loop.md`
 - `references/external-inspirations-and-license-notes.md`
@@ -120,8 +130,12 @@ quality, cash conversion, debt, valuation, short risk, technical freshness, and
 blocked conclusions before report composition.
 
 Additional ontology objects support source lineage and efficient refresh:
-`SourceSnapshot`, `EvidencePartition`, `ResearchRun`, `ActionExecution`,
-`IncrementalRefreshPlan`, and `ConflictResolution`.
+`ResearchSettings`, `UserHypothesis`, `SourceSnapshot`, `SourcePartition`,
+`EvidencePartition`, `ResearchRun`, `ActionExecution`, `GateResult`,
+`OutputView`, `IncrementalRefreshPlan`, `EquityBridge`, and
+`ConflictResolution`.
+
+Gate results use `pass`, `warn`, `block`, `fail`, or `not_applicable`.
 
 ## Calibration Method
 
@@ -156,6 +170,7 @@ third-party code or long prompt text. Referenced projects:
 - [Palantir Foundry Ontology documentation](https://www.palantir.com/docs/foundry/ontology/overview/)
 - [Databricks documentation](https://docs.databricks.com/)
 - [Snowflake documentation](https://docs.snowflake.com/)
+- [OpenClaw skills documentation](https://docs.openclaw.ai/tools/skills)
 
 License notes are documented in
 `references/external-inspirations-and-license-notes.md`.
@@ -180,8 +195,18 @@ To check a generated markdown report against the output contract:
 python3 scripts/validate_report_output.py path/to/report.md
 ```
 
+To check settings and the optional research manifest contract:
+
+```bash
+python3 scripts/validate_settings.py
+python3 scripts/validate_research_manifest.py evals/fixtures/report-contract-fixture.manifest.json
+python3 scripts/validate_report_against_manifest.py evals/fixtures/report-contract-fixture.md evals/fixtures/report-contract-fixture.manifest.json
+```
+
 The repository includes `evals/fixtures/report-contract-fixture.md` as a
-minimal contract fixture for CI.
+minimal report contract fixture for CI and
+`evals/fixtures/report-contract-fixture.manifest.json` as the matching object
+manifest fixture.
 
 The validator checks:
 
@@ -193,6 +218,8 @@ The validator checks:
 - absence of baked-in company names or ticker-based prompts
 - English-only repository text for Skill and GitHub-facing files
 - ontology object, link, action, function, and gate contracts
+- settings schema and onboarding flow contracts
+- manifest lineage and report-manifest consistency
 - quality-loop contracts for source markers, implied valuation, order quality,
   cash conversion, short risk, and technical freshness
 

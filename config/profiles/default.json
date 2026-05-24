@@ -1,0 +1,39 @@
+{
+  "report_language": "user_requested",
+  "research_mode": "full_report",
+  "output_view": "full_report",
+  "horizon": "6-18 months",
+  "source_policy": {
+    "mode": "mixed",
+    "primary_source_strictness": "strict",
+    "secondary_research": "context_only",
+    "historical_reports": "style_only",
+    "freshness": "latest_available"
+  },
+  "valuation_policy": {
+    "require_current_market_implied_bridge": true,
+    "one_primary_method_only": true,
+    "block_target_if_share_count_unresolved": true,
+    "block_target_if_net_debt_unresolved": true,
+    "block_target_if_senior_claims_unresolved": true,
+    "block_target_if_order_quality_weak": true,
+    "allow_scenario_without_target": true
+  },
+  "short_risk_policy": {
+    "run_screen": true,
+    "expand_threshold": "C_or_worse",
+    "require_fact_inference_separation": true,
+    "apply_risk_to_valuation_or_size": true
+  },
+  "technical_policy": {
+    "require_current_ohlcv": true,
+    "require_chart_date": true,
+    "require_adjusted_status": true,
+    "require_entry_stop_take_profit": true,
+    "position_sizing_basis": "stop_distance_and_evidence_quality"
+  },
+  "incremental_refresh_mode": "auto",
+  "user_risk_budget_or_gap": "gap",
+  "citation_detail_level": "markers",
+  "interaction_level": "preflight_only"
+}

@@ -25,6 +25,11 @@ Before valuation, reconcile:
 If diluted share count, net debt, or order quality cannot be reconciled, do not
 present a high-conviction target price.
 
+Create an `EquityBridge` object before any per-share target. The bridge must
+stand apart from `ValuationCase` so validators can block target prices when
+cash, debt, senior claims, non-operating assets, or diluted shares do not
+reconcile.
+
 ## Market Pricing Mechanism
 
 Reverse-engineer what the market is pricing before selecting the model:
@@ -158,6 +163,23 @@ equity value =
 ```
 
 Use only when segments have materially different economics.
+
+### Equity Bridge
+
+```text
+target equity value =
+  target EV
+  + cash and short-term investments
+  + non-operating assets
+  - debt
+  - preferred or convertible senior claims
+  - minority interest
+target price = target equity value / diluted or pro-forma shares
+```
+
+The `EquityBridge` must state whether each adjustment is verified, assumed, or
+blocked. If senior claims or diluted share count are unresolved, the bridge
+outputs a blocker rather than a target price.
 
 ### Commodity/Resource Unit Math
 

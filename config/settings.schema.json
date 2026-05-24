@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stock Deep Research Settings",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_language",
+    "research_mode",
+    "output_view",
+    "horizon",
+    "source_policy",
+    "valuation_policy",
+    "short_risk_policy",
+    "technical_policy",
+    "incremental_refresh_mode",
+    "citation_detail_level",
+    "interaction_level"
+  ],
+  "properties": {
+    "report_language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "research_mode": {
+      "type": "string",
+      "enum": [
+        "full_report",
+        "incremental_refresh",
+        "valuation_only",
+        "short_risk_only",
+        "technical_only",
+        "gap_scan"
+      ]
+    },
+    "output_view": {
+      "type": "string",
+      "enum": [
+        "full_report",
+        "valuation_memo",
+        "short_seller_attack_memo",
+        "trade_plan_only",
+        "evidence_gap_report",
+        "source_conflict_report",
+        "incremental_refresh_summary"
+      ]
+    },
+    "horizon": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "primary_source_strictness",
+        "secondary_research",
+        "historical_reports",
+        "freshness"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "public_sources",
+            "user_uploads_first",
+            "user_uploads_only",
+            "mixed"
+          ]
+        },
+        "primary_source_strictness": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "strict"
+          ]
+        },
+        "secondary_research": {
+          "type": "string",
+          "enum": [
+            "context_only",
+            "allow_if_no_primary",
+            "disallow"
+          ]
+        },
+        "historical_reports": {
+          "type": "string",
+          "enum": [
+            "style_only"
+          ]
+        },
+        "freshness": {
+          "type": "string",
+          "enum": [
+            "latest_available",
+            "user_supplied_date",
+            "as_of_date"
+          ]
+        }
+      }
+    },
+    "valuation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_current_market_implied_bridge",
+        "one_primary_method_only",
+        "block_target_if_share_count_unresolved",
+        "block_target_if_net_debt_unresolved",
+        "block_target_if_senior_claims_unresolved",
+        "block_target_if_order_quality_weak",
+        "allow_scenario_without_target"
+      ],
+      "properties": {
+        "require_current_market_implied_bridge": {
+          "type": "boolean"
+        },
+        "one_primary_method_only": {
+          "type": "boolean"
+        },
+        "block_target_if_share_count_unresolved": {
+          "type": "boolean"
+        },
+        "block_target_if_net_debt_unresolved": {
+          "type": "boolean"
+        },
+        "block_target_if_senior_claims_unresolved": {
+          "type": "boolean"
+        },
+        "block_target_if_order_quality_weak": {
+          "type": "boolean"
+        },
+        "allow_scenario_without_target": {
+          "type": "boolean"
+        }
+      }
+    },
+    "short_risk_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_screen",
+        "expand_threshold",
+        "require_fact_inference_separation",
+        "apply_risk_to_valuation_or_size"
+      ],
+      "properties": {
+        "run_screen": {
+          "type": "boolean"
+        },
+        "expand_threshold": {
+          "type": "string",
+          "enum": [
+            "C_or_worse",
+            "D_or_worse"
+          ]
+        },
+        "require_fact_inference_separation": {
+          "type": "boolean"
+        },
+        "apply_risk_to_valuation_or_size": {
+          "type": "boolean"
+        }
+      }
+    },
+    "technical_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "require_current_ohlcv",
+        "require_chart_date",
+        "require_adjusted_status",
+        "require_entry_stop_take_profit",
+        "position_sizing_basis"
+      ],
+      "properties": {
+        "require_current_ohlcv": {
+          "type": "boolean"
+        },
+        "require_chart_date": {
+          "type": "boolean"
+        },
+        "require_adjusted_status": {
+          "type": "boolean"
+        },
+        "require_entry_stop_take_profit": {
+          "type": "boolean"
+        },
+        "position_sizing_basis": {
+          "type": "string",
+          "enum": [
+            "stop_distance_and_evidence_quality"
+          ]
+        }
+      }
+    },
+    "incremental_refresh_mode": {
+      "type": "string",
+      "enum": [
+        "off",
+        "auto",
+        "force"
+      ]
+    },
+    "user_risk_budget_or_gap": {
+      "type": "string"
+    },
+    "citation_detail_level": {
+      "type": "string",
+      "enum": [
+        "markers",
+        "source_map"
+      ]
+    },
+    "interaction_level": {
+      "type": "string",
+      "enum": [
+        "batch",
+        "preflight_only",
+        "step_by_step"
+      ]
+    }
+  }
+}

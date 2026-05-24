@@ -26,16 +26,20 @@ Use the lightweight ontology files in `ontology/`:
 - `ontology/workflow_gates.yaml`
 
 Research objects move through the research lakehouse described in
-`references/research-lakehouse-framework.md`: Bronze source snapshots, Silver
-validated evidence, Gold analysis products, and Report View projections.
+`references/research-lakehouse-framework.md`: Bronze source snapshots, Source
+Index partitions, Silver validated evidence, Gold analysis products, and Report
+View projections.
 
 Minimum object layer:
 
+- `ResearchSettings`
+- `UserHypothesis`
 - `ResearchRun`
 - `Company`
 - `Security`
 - `SourceDocument`
 - `SourceSnapshot`
+- `SourcePartition`
 - `EvidencePartition`
 - `EvidenceItem`
 - `Claim`
@@ -49,6 +53,7 @@ Minimum object layer:
 - `FinancialQualityAssessment`
 - `CurrentMarketImpliedBridge`
 - `ValuationMethodSelection`
+- `EquityBridge`
 - `ValuationCase`
 - `ShortRiskSignal`
 - `ShortSellerAssessment`
@@ -56,6 +61,8 @@ Minimum object layer:
 - `TradePlan`
 - `IncrementalRefreshPlan`
 - `ActionExecution`
+- `GateResult`
+- `OutputView`
 - `DataGap`
 - `Report`
 - `ReportSection`
@@ -81,7 +88,11 @@ high-materiality claims become `DataGap` objects.
 
 The most important links are:
 
+- `ResearchSettings -> configures_run -> ResearchRun`
+- `UserHypothesis -> tests_hypothesis -> Claim`
 - `SourceDocument -> contains -> EvidenceItem`
+- `SourcePartition -> partitions_source -> SourceSnapshot`
+- `SourcePartition -> routes_to_evidence -> EvidenceItem`
 - `EvidenceItem -> derives_from -> SourceSnapshot`
 - `EvidenceItem -> supports -> Claim`
 - `EvidenceItem -> contradicts -> Claim`
@@ -90,13 +101,18 @@ The most important links are:
 - `Claim -> feeds -> BusinessModelThesis`
 - `ContractOrder -> supports -> ValuationCase`
 - `OrderQualityAssessment -> constrains -> ValuationCase`
-- `DebtInstrument -> affects -> EquityBridge`
-- `DilutionInstrument -> affects -> TargetPrice`
+- `DebtInstrument -> affects_equity_bridge -> EquityBridge`
+- `DilutionInstrument -> affects_target_price -> EquityBridge`
+- `EquityBridge -> bridges_to_target_price -> ValuationCase`
 - `ShortRiskSignal -> discounts -> ValuationCase`
 - `TechnicalSetup -> constrains -> TradePlan`
+- `ValuationCase -> valuation_constrains_trade -> TradePlan`
+- `ShortSellerAssessment -> short_risk_constrains_trade -> TradePlan`
 - `DataGap -> blocks -> Claim`
 - `IncrementalRefreshPlan -> refreshed_by -> ActionExecution`
 - `ResearchRun -> executes -> ActionExecution`
+- `ActionExecution -> records_gate_result -> GateResult`
+- `OutputView -> projects_view -> ReportSection`
 - `ReportSection -> cites -> EvidenceItem`
 
 The link verbs matter. They force the agent to distinguish evidence, causality,
@@ -106,12 +122,16 @@ valuation effects, blockers, and final report citations.
 
 Use actions as workflow transactions:
 
+- `CaptureResearchSettings`
 - `StartResearchRun`
 - `AttachSourceDocument`
+- `BuildSourcePartitions`
 - `BuildEvidencePartitions`
 - `ExtractEvidence`
+- `NormalizeOperatingObjects`
 - `ClassifyClaim`
 - `ResolveConflictingFacts`
+- `BuildBusinessModelThesis`
 - `DetectSourceChange`
 - `IncrementalRefresh`
 - `GradeOrderQuality`
@@ -120,9 +140,12 @@ Use actions as workflow transactions:
 - `InferCurrentMarketPricing`
 - `SelectPrimaryValuationMethod`
 - `BuildValuationCase`
+- `BuildEquityBridge`
 - `RunShortRiskScreen`
 - `ValidateTechnicalSetup`
+- `BuildTradePlan`
 - `GenerateReportSection`
+- `SelectOutputView`
 - `FinalizeReport`
 
 Each action reads defined object types and writes defined object types. This
@@ -140,12 +163,15 @@ Calculations and repeatable decisions belong in functions:
 - debt-safety score
 - valuation-method selection
 - target-price blocker detection
+- explicit equity bridge calculation
 - short-risk grade
 - technical freshness check
 - position sizing from stop distance
 - source conflict detection
 - materiality classification
 - material metric extraction
+- gate-result classification
+- output-view selection
 
 Functions should return either a value, a grade, or a blocking data gap.
 
@@ -153,8 +179,10 @@ Functions should return either a value, a grade, or a blocking data gap.
 
 Before report composition, pass these gates:
 
-- Lakehouse Layer Gate: Bronze, Silver, Gold, and Report View boundaries are
-  respected
+- Lakehouse Layer Gate: Bronze, Source Index, Silver, Gold, and Report View
+  boundaries are respected
+- Settings Gate: runtime settings are complete and user hypotheses are not
+  treated as evidence
 - Evidence Gate: material claims have evidence links
 - Lineage Gate: material conclusions trace to source snapshots
 - Partition Coverage Gate: relevant evidence partitions are available or
@@ -166,6 +194,8 @@ Before report composition, pass these gates:
   reconciled
 - Debt Gate: cash, debt, maturity, interest, dilution, and share count feed the
   equity bridge
+- Equity Bridge Gate: target price is blocked unless EV, cash, senior claims,
+  non-operating assets, and diluted shares reconcile
 - Valuation Gate: current-market-implied expectation appears before the target
 - Short Risk Gate: elevated short risk affects valuation or position sizing
 - Technical Gate: chart date, adjusted status, entry, stop, and take-profit are
@@ -173,7 +203,13 @@ Before report composition, pass these gates:
 - Freshness Gate: stale objects cannot drive valuation or technical levels
 - Incremental Refresh Gate: changed sources refresh dependent objects or trigger
   a full rerun
+- Output View Gate: output view changes projection without changing the source
+  graph
 - Data Gap Gate: blocked conclusions are not forced into the report
+
+Gate results use `pass`, `warn`, `block`, `fail`, or `not_applicable`. Store the
+status, reason, affected objects, blocked conclusions, and required user input
+in `GateResult` through `ActionExecution`.
 
 ## Report Projection
 
@@ -185,8 +221,8 @@ The final report sections should read from the object graph:
   quality
 - `Financials, Assets, And Debt`: metrics, assets, debt, dilution, financial
   quality
-- `Valuation`: current-implied bridge, selected method, valuation cases, equity
-  bridge
+- `Valuation`: current-implied bridge, selected method, equity bridge,
+  valuation cases
 - `Short-Seller Risk`: short-risk signals and short-seller assessment
 - `Technical Analysis`: technical setup and freshness gate
 - `Risk Factors`: data gaps and high-risk claims

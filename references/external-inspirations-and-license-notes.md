@@ -22,6 +22,7 @@ quality gates, role separation, and output contracts.
 | [Palantir Foundry Ontology documentation](https://www.palantir.com/docs/foundry/ontology/overview/) | Public documentation | ontology workflow inspiration: objects, properties, links, actions, functions, and gates; no code copied |
 | [Databricks Lakehouse and Delta Lake documentation](https://docs.databricks.com/) | Public documentation | research lakehouse layering, source snapshot lineage, and data-quality expectation ideas; no code copied |
 | [Snowflake architecture documentation](https://docs.snowflake.com/) | Public documentation | metadata pruning, dynamic refresh, and compute/control separation ideas; no code copied |
+| [OpenClaw skills documentation](https://docs.openclaw.ai/tools/skills) | Public documentation | settings and onboarding metadata ideas for skill invocation; no code copied |
 
 ## Attribution Standard
 

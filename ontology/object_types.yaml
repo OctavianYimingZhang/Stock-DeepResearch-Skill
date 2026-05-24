@@ -1,9 +1,32 @@
 version: 1
 object_types:
+  - name: ResearchSettings
+    purpose: User-selected runtime configuration for one research run.
+    required_properties:
+      - report_language
+      - research_mode
+      - output_view
+      - source_policy
+      - valuation_strictness
+      - short_risk_threshold
+      - technical_requirement
+      - incremental_refresh_mode
+      - user_risk_budget_or_gap
+      - citation_detail_level
+      - interaction_level
+  - name: UserHypothesis
+    purpose: User-provided thesis or concern to test against evidence.
+    required_properties:
+      - hypothesis_text
+      - user_confidence
+      - affected_sections
+      - evidence_needed
+      - status
   - name: ResearchRun
     purpose: Transaction-like record of one report generation or update.
     required_properties:
       - run_id
+      - settings_id
       - company_id
       - run_started_at
       - input_sources
@@ -50,8 +73,20 @@ object_types:
       - content_hash_or_gap
       - version_label_or_gap
       - freshness_status
+  - name: SourcePartition
+    purpose: Pre-extraction document slice for routing long sources before evidence extraction.
+    required_properties:
+      - source_snapshot_id
+      - document_section
+      - page_or_line_range_or_gap
+      - source_type
+      - period
+      - candidate_object_type
+      - candidate_metric_name_or_gap
+      - freshness_status
+      - estimated_materiality
   - name: EvidencePartition
-    purpose: Metadata slice used to prune source evidence before reasoning.
+    purpose: Post-extraction metadata slice for validated evidence and claims.
     required_properties:
       - company_id
       - fiscal_period
@@ -184,6 +219,19 @@ object_types:
       - selection_reason
       - secondary_check
       - blocked_methods
+  - name: EquityBridge
+    purpose: Explicit bridge from enterprise value to per-share equity value.
+    required_properties:
+      - starting_enterprise_value
+      - cash_and_short_term_investments
+      - debt
+      - preferred_or_convertible_claims
+      - minority_interest_or_gap
+      - non_operating_assets_or_gap
+      - target_equity_value
+      - diluted_or_pro_forma_share_count
+      - target_price_or_blocker
+      - blocker_reason_or_gap
   - name: ValuationCase
     purpose: Bull, base, or bear valuation case linked to evidence and assumptions.
     required_properties:
@@ -253,6 +301,23 @@ object_types:
       - blocked_outputs
       - timestamp
       - error_or_gap
+  - name: GateResult
+    purpose: Normalized workflow-gate outcome attached to an action execution.
+    required_properties:
+      - gate_name
+      - status
+      - reason
+      - affected_objects
+      - blocked_conclusions
+      - required_user_input
+  - name: OutputView
+    purpose: Projection mode for rendering the research graph.
+    required_properties:
+      - view_name
+      - included_sections
+      - omitted_sections
+      - source_graph_id
+      - projection_rules
   - name: DataGap
     purpose: Missing input that blocks a conclusion.
     required_properties:

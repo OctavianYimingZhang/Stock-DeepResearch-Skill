@@ -1,0 +1,27 @@
+id: short-risk-c-grade-reduces-position-size
+archetype: short_risk_c_grade_reduces_position_size
+expected_primary_valuation: valuation_kept_but_position_size_reduced
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - current_market_implied_expectation
+  - debt_cash_share_count_bridge
+  - cash_conversion_reconciliation
+  - one_primary_valuation_method
+  - short_seller_grade
+  - short_risk_grade_c_changes_position_size
+  - verified_fact_vs_inference_labels
+  - technical_chart_freshness
+  - technical_entry_stop_tp
+forbidden:
+  - elevated_short_risk_without_trade_effect
+  - probability_weighted_method_average
+  - unexplained_position_size

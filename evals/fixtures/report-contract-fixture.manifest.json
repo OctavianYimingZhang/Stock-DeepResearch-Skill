@@ -1,0 +1,167 @@
+{
+  "research_run": {
+    "run_id": "fixture-run",
+    "company_id": "fixture-company",
+    "input_sources": [
+      "snapshot-filing"
+    ],
+    "changed_sources": [],
+    "gate_results": [
+      {
+        "gate_name": "EvidenceGate",
+        "status": "pass",
+        "reason": "material claims cite evidence",
+        "affected_objects": [
+          "claim-revenue"
+        ],
+        "blocked_conclusions": [],
+        "required_user_input": []
+      },
+      {
+        "gate_name": "IncrementalRefreshGate",
+        "status": "not_applicable",
+        "reason": "fresh run",
+        "affected_objects": [],
+        "blocked_conclusions": [],
+        "required_user_input": []
+      }
+    ]
+  },
+  "source_snapshots": [
+    {
+      "id": "snapshot-filing",
+      "source_document_id": "source-filing",
+      "freshness_status": "current"
+    }
+  ],
+  "source_partitions": [
+    {
+      "id": "source-partition-financials",
+      "source_snapshot_id": "snapshot-filing",
+      "candidate_object_type": "MetricObservation",
+      "freshness_status": "current"
+    }
+  ],
+  "evidence_items": [
+    {
+      "id": "evidence-revenue",
+      "source_snapshot_id": "snapshot-filing",
+      "source_partition_id": "source-partition-financials",
+      "source_marker": "filing",
+      "materiality": "high"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-revenue",
+      "materiality": "high",
+      "evidence_ids": [
+        "evidence-revenue"
+      ],
+      "data_gap_ids": []
+    }
+  ],
+  "data_gaps": [],
+  "valuation_cases": [
+    {
+      "id": "valuation-base",
+      "equity_bridge_id": "equity-bridge-base",
+      "case_type": "base"
+    }
+  ],
+  "equity_bridges": [
+    {
+      "id": "equity-bridge-base",
+      "valuation_case_id": "valuation-base",
+      "target_price_or_blocker": "unblocked",
+      "blocker_reason_or_gap": "none"
+    }
+  ],
+  "technical_setups": [
+    {
+      "id": "technical-current",
+      "freshness_status": "current",
+      "drives_trade_plan": true
+    }
+  ],
+  "trade_plans": [
+    {
+      "id": "trade-plan-base",
+      "valuation_case_id": "valuation-base",
+      "technical_setup_id": "technical-current",
+      "short_seller_assessment_id": "short-assessment-base"
+    }
+  ],
+  "short_seller_assessments": [
+    {
+      "id": "short-assessment-base",
+      "grade": "B",
+      "valuation_or_size_effect": "position size limited by evidence quality"
+    }
+  ],
+  "report_sections": [
+    {
+      "section_name": "Company Overview",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Business Model Logic",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Operations, Customers, And Orders",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Financials, Assets, And Debt",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Valuation",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Short-Seller Risk",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Technical Analysis",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Risk Factors",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    },
+    {
+      "section_name": "Trade Plan",
+      "claim_ids": [
+        "claim-revenue"
+      ],
+      "blocked_status": "clear"
+    }
+  ]
+}

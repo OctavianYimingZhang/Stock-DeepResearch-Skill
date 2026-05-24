@@ -1,14 +1,95 @@
-# stock-research-report
+# Stock DeepResearch Skill
 
-A self-contained ontology-backed public-company deep research report Skill.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Validation](https://img.shields.io/badge/validation-local%20contracts-brightgreen.svg)](#validation)
+[![Language](https://img.shields.io/badge/repository%20text-English%20only-lightgrey.svg)](#core-rules)
 
-The Skill produces analyst style deep research reports with four integrated
-modules:
+`stock-research-report` is a self-contained Codex Skill for producing
+evidence-first public-company deep research reports. It combines business-model
+analysis, valuation, short-seller risk review, and technical trade planning into
+one ontology-backed research workflow.
+
+The project is designed for analysts who need a report that says what can be
+verified, what is only an inference, what is still blocked by missing data, and
+how valuation and trade conclusions change when evidence quality is weak.
+
+## What It Produces
+
+The Skill generates analyst-style reports with four integrated pillars:
 
 1. business-model logic
-2. valuation, including assets, orders/backlog, debt, and dilution
+2. valuation, including assets, orders/backlog, debt, dilution, and an explicit
+   equity bridge
 3. short-seller risk
 4. technical analysis and trade planning
+
+The default report has nine sections: company overview, business model,
+operations and orders, financials and debt, valuation, short-seller risk,
+technical analysis, risk factors, and trade plan.
+
+## Why This Exists
+
+Most AI-generated equity reports fail in predictable ways: they mix facts with
+opinions, treat weak order language as backlog, skip the EV-to-equity bridge,
+ignore debt and dilution, or invent trade levels from stale charts. This
+repository turns those failure modes into object contracts, gates, and
+validators.
+
+The final report is not written directly from raw text. It is projected from an
+evidence-backed object graph that connects source snapshots, source partitions,
+evidence items, claims, metrics, orders, assets, debt, valuation cases,
+short-risk signals, technical setups, data gaps, gate results, and report
+sections.
+
+## Architecture At A Glance
+
+```text
+ResearchSettings
+  -> SourceSnapshot
+  -> SourcePartition
+  -> EvidenceItem
+  -> Claim
+  -> analysis objects
+  -> ReportSection
+```
+
+The research data flow uses a lightweight lakehouse pattern:
+
+- Bronze: immutable source snapshots
+- Source Index: pre-extraction source partitions
+- Silver: validated evidence, claims, metrics, orders, debt, and dilution
+- Gold: business thesis, equity bridge, valuation, short risk, technical setup,
+  and trade plan
+- Report View: final output sections
+
+Gate results are explicit: `pass`, `warn`, `block`, `fail`, or
+`not_applicable`. A blocked target price, blocked trade plan, or blocked
+high-conviction conclusion is treated as a correct output when evidence is
+insufficient.
+
+This repository provides a research workflow and validation framework. It does
+not provide investment advice, trading advice, or a guarantee that source data
+is complete or current.
+
+## Quick Start
+
+```text
+Use $stock-research-report to analyze [TICKER]
+```
+
+Useful optional inputs:
+
+- company name, exchange, and currency
+- filings, investor presentations, or earnings-call transcripts
+- terminal screenshots for price, market cap, EV, share count, cash, debt, and
+  peer multiples
+- K-line screenshots or OHLCV data with chart date and adjusted status
+- user focus areas such as valuation, short-seller risk, order quality, debt,
+  dilution, or technical entry
+
+Runtime settings can also be supplied through `config/settings.schema.json`.
+The default profile is `config/profiles/default.json`, and the onboarding flow
+is `config/onboarding.flow.yaml`.
 
 This repository has been refactored from the old architecture that stitched
 together four standalone Skills. The Skill no longer depends at runtime on:
@@ -20,36 +101,6 @@ together four standalone Skills. The Skill no longer depends at runtime on:
 
 The strongest methods from those repositories are now consolidated into this
 repository's reference framework.
-
-The final report is a projection from an evidence-backed object graph. The graph
-connects source documents, evidence items, claims, metrics, orders, assets,
-debt, valuation cases, short-risk signals, technical setups, data gaps, and
-report sections.
-
-The research data flow uses a lightweight lakehouse pattern: Bronze source
-snapshots, Source Index partitions, Silver validated evidence, Gold analysis
-objects, and Report View sections. Source partitions, evidence partitions, and
-incremental refresh plans keep context narrow when only part of the research
-graph changed.
-
-## Usage
-
-```text
-Use $stock-research-report to analyze [TICKER]
-```
-
-Optional inputs:
-
-- company name, exchange, and currency
-- Bloomberg, FactSet, or Capital IQ screenshots
-- filings, investor presentations, or earnings-call transcripts
-- K-line screenshots or OHLCV data
-- user focus areas such as valuation, short-seller risk, order quality, or
-  technical entry
-
-Runtime settings can also be supplied through `config/settings.schema.json`.
-The default profile is `config/profiles/default.json`, and the onboarding flow
-is `config/onboarding.flow.yaml`.
 
 ## Output Structure
 

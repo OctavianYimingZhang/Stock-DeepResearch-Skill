@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "skill_id": "stock-research-report",
+  "repo": "OctavianYimingZhang/Stock-DeepResearch-Skill",
+  "branch": "main",
+  "entrypoint": "SKILL.md",
+  "health_commands": [
+    "python3 scripts/validate.py",
+    "python3 scripts/validate_ontology.py",
+    "python3 scripts/validate_settings.py",
+    "python3 scripts/validate_report_output.py evals/fixtures/report-contract-fixture.md",
+    "python3 scripts/validate_research_manifest.py evals/fixtures/report-contract-fixture.manifest.json",
+    "python3 scripts/validate_report_against_manifest.py evals/fixtures/report-contract-fixture.md evals/fixtures/report-contract-fixture.manifest.json"
+  ],
+  "post_update_commands": [
+    "python3 -m pip install -r requirements.txt"
+  ]
+}

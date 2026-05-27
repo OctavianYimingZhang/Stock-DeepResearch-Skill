@@ -89,6 +89,10 @@ machine-readable version of the workflow.
     configure the run and must be tested against sources.
 16. Ontology before prose. Build the object graph first; report sections are
     projections from evidence-backed claims.
+17. Maintenance is explicit. Use `skill_manifest.json` and
+    `scripts/skill_maintenance.py` for doctor checks, dry-run update previews,
+    explicit updates, and proposal-only improvement planning. Do not silently
+    update, rewrite, or push repository state from normal report generation.
 
 ## Workflow
 
@@ -265,7 +269,24 @@ structure gaps, or validation gaps until no actionable gap remains.
 Do not commit temporary issuer names, tickers, or generated reports as triggers
 or reusable prompts.
 
-### 12. Final Report Composition
+### 12. Skill Health And Maintenance
+
+Use `skill_manifest.json` as the repository contract for Skill identity,
+entrypoint, branch, health commands, and post-update commands.
+
+Use `scripts/skill_maintenance.py doctor --json` for read-only health checks.
+Use `scripts/skill_maintenance.py update --dry-run --json` to preview remote
+update state. Use `scripts/skill_maintenance.py update --yes` only when the
+user explicitly requests an update; it must create a backup, use a
+fast-forward-only update, run validation, and roll back on failed health checks.
+Use `scripts/skill_maintenance.py proposal` to produce maintenance proposals
+without changing files.
+
+Maintenance logic is operational support. It must not change the report
+contract, evidence hierarchy, ontology graph, or English-only repository rule
+without corresponding documentation and validation updates.
+
+### 13. Final Report Composition
 
 The default `full_report` output view must use this fixed structure:
 

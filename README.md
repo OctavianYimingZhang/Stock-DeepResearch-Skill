@@ -243,9 +243,36 @@ third-party code or long prompt text. Referenced projects:
 - [Databricks documentation](https://docs.databricks.com/)
 - [Snowflake documentation](https://docs.snowflake.com/)
 - [OpenClaw skills documentation](https://docs.openclaw.ai/tools/skills)
+- [User-provided ChatGPT Pro design discussion](https://chatgpt.com/share/6a1779ca-13b0-83eb-a9f0-157203a052f1)
 
 License notes are documented in
 `references/external-inspirations-and-license-notes.md`.
+
+## Skill Health And Maintenance
+
+The maintenance contract is explicit and separate from normal report
+generation:
+
+- `skill_manifest.json` declares the Skill id, GitHub repository, branch,
+  entrypoint, health commands, and post-update commands.
+- `requirements.txt` records validation dependencies.
+- `scripts/skill_maintenance.py` provides read-only doctor checks, dry-run
+  update previews, explicit update execution, and proposal-only maintenance
+  planning.
+- `.github/workflows/skill-health.yml` runs the doctor and dry-run preview in
+  CI with read-only repository permissions.
+
+Commands:
+
+```bash
+python3 scripts/skill_maintenance.py doctor --json
+python3 scripts/skill_maintenance.py update --dry-run --json
+python3 scripts/skill_maintenance.py proposal --json
+```
+
+`python3 scripts/skill_maintenance.py update --yes` is reserved for explicit
+update requests. It creates a backup, attempts a fast-forward-only update, runs
+the manifest health commands, and rolls back if health checks fail.
 
 ## Validation
 
@@ -273,6 +300,7 @@ To check settings and the optional research manifest contract:
 python3 scripts/validate_settings.py
 python3 scripts/validate_research_manifest.py evals/fixtures/report-contract-fixture.manifest.json
 python3 scripts/validate_report_against_manifest.py evals/fixtures/report-contract-fixture.md evals/fixtures/report-contract-fixture.manifest.json
+python3 scripts/skill_maintenance.py doctor --json
 ```
 
 The repository includes `evals/fixtures/report-contract-fixture.md` as a
@@ -292,6 +320,7 @@ The validator checks:
 - ontology object, link, action, function, and gate contracts
 - settings schema and onboarding flow contracts
 - manifest lineage and report-manifest consistency
+- Skill maintenance manifest, doctor, dry-run update, and CI health contracts
 - quality-loop contracts for source markers, implied valuation, order quality,
   cash conversion, short risk, and technical freshness
 

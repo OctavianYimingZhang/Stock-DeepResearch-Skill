@@ -1,27 +1,30 @@
-name: Validate
+name: Skill Health
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  doctor:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - name: Install dependencies
         run: python3 -m pip install -r requirements.txt
-      - name: Run repository validation
-        run: python3 scripts/validate.py
-      - name: Run ontology validation
-        run: python3 scripts/validate_ontology.py
-      - name: Run report output contract validation
-        run: python3 scripts/validate_report_output.py evals/fixtures/report-contract-fixture.md
+      - name: Run read-only skill doctor
+        run: python3 scripts/skill_maintenance.py doctor --json
+      - name: Preview remote update state
+        run: python3 scripts/skill_maintenance.py update --dry-run --json

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -40,6 +41,13 @@ REQUIRED_ONTOLOGY_FILES = [
     "ontology/action_types.yaml",
     "ontology/functions.yaml",
     "ontology/workflow_gates.yaml",
+]
+
+REQUIRED_MAINTENANCE_FILES = [
+    "skill_manifest.json",
+    "requirements.txt",
+    "scripts/skill_maintenance.py",
+    ".github/workflows/skill-health.yml",
 ]
 
 REQUIRED_SECTIONS = [
@@ -204,6 +212,9 @@ def validate_readme() -> None:
     for path in REQUIRED_CONFIG_FILES:
         if path not in readme:
             fail(f"README.md does not reference {path}")
+    for path in REQUIRED_MAINTENANCE_FILES:
+        if path not in readme:
+            fail(f"README.md does not reference {path}")
     if "no longer depends at runtime" not in readme:
         fail("README.md must state that old standalone Skill dependencies were removed")
 
@@ -345,6 +356,9 @@ def validate_quality_contracts() -> None:
     ]:
         if not (ROOT / path).exists():
             fail(f"missing productization contract file: {path}")
+    for path in REQUIRED_MAINTENANCE_FILES:
+        if not (ROOT / path).exists():
+            fail(f"missing maintenance contract file: {path}")
 
     valuation = read("references/valuation-framework.md")
     for phrase in [
@@ -493,6 +507,68 @@ def validate_quality_contracts() -> None:
             fail(f"user intake framework missing quality contract: {phrase}")
 
 
+def validate_maintenance_contracts() -> None:
+    manifest = json.loads(read("skill_manifest.json"))
+    if manifest.get("schema_version") != 1:
+        fail("skill_manifest.json schema_version must be 1")
+    if manifest.get("skill_id") != "stock-research-report":
+        fail("skill_manifest.json skill_id must be stock-research-report")
+    if manifest.get("repo") != "OctavianYimingZhang/Stock-DeepResearch-Skill":
+        fail("skill_manifest.json repo is not aligned with GitHub")
+    if manifest.get("branch") != "main":
+        fail("skill_manifest.json branch must be main")
+    if manifest.get("entrypoint") != "SKILL.md":
+        fail("skill_manifest.json entrypoint must be SKILL.md")
+
+    health = "\n".join(manifest.get("health_commands", []))
+    for command in [
+        "python3 scripts/validate.py",
+        "python3 scripts/validate_ontology.py",
+        "python3 scripts/validate_settings.py",
+        "python3 scripts/validate_report_output.py evals/fixtures/report-contract-fixture.md",
+        "python3 scripts/validate_research_manifest.py evals/fixtures/report-contract-fixture.manifest.json",
+        "python3 scripts/validate_report_against_manifest.py evals/fixtures/report-contract-fixture.md evals/fixtures/report-contract-fixture.manifest.json",
+    ]:
+        if command not in health:
+            fail(f"skill_manifest.json missing health command: {command}")
+    post_update = "\n".join(manifest.get("post_update_commands", []))
+    if "python3 -m pip install -r requirements.txt" not in post_update:
+        fail("skill_manifest.json missing requirements installation command")
+
+    requirements = read("requirements.txt").lower()
+    if "pyyaml" not in requirements:
+        fail("requirements.txt must include pyyaml")
+
+    maintenance = read("scripts/skill_maintenance.py")
+    for phrase in [
+        "doctor",
+        "read-only",
+        "dry-run",
+        "--yes",
+        "backup",
+        "--ff-only",
+        "health_commands",
+        "rolled_back_to",
+        "proposal-only",
+    ]:
+        if phrase not in maintenance:
+            fail(f"scripts/skill_maintenance.py missing maintenance phrase: {phrase}")
+    if "git push" in maintenance:
+        fail("scripts/skill_maintenance.py must not push changes")
+
+    workflow = read(".github/workflows/skill-health.yml")
+    for phrase in [
+        "permissions:",
+        "contents: read",
+        "scripts/skill_maintenance.py doctor --json",
+        "scripts/skill_maintenance.py update --dry-run --json",
+    ]:
+        if phrase not in workflow:
+            fail(f"skill-health workflow missing phrase: {phrase}")
+    if "contents: write" in workflow:
+        fail("skill-health workflow must not request write permissions")
+
+
 def validate_ontology_contracts() -> None:
     result = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "validate_ontology.py")],
@@ -554,6 +630,7 @@ def main() -> None:
     validate_english_only_repo_text()
     validate_no_baked_case_language()
     validate_quality_contracts()
+    validate_maintenance_contracts()
     validate_ontology_contracts()
     validate_settings_contracts()
     validate_manifest_contracts()

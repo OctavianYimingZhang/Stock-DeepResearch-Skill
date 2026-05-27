@@ -115,10 +115,12 @@ action_types:
       - ValueDriverTransition
       - DataGap
     required_checks:
+      - industry_to_company_bridge_present
       - customer_problem_named
       - value_capture_mechanism_named
       - value_driver_transition_named
       - verification_variable_named
+      - falsification_observable_named
   - name: DetectSourceChange
     reads:
       - SourceSnapshot
@@ -154,6 +156,8 @@ action_types:
     required_checks:
       - legal_strength_classified
       - valuation_usability_set
+      - order_to_revenue_path_named
+      - capacity_and_funding_match_checked
   - name: ReconcileFinancials
     reads:
       - MetricObservation
@@ -230,6 +234,8 @@ action_types:
     required_checks:
       - target_ev_present_or_blocked
       - equity_bridge_present_or_blocked
+      - re_rating_bridge_present_or_blocked
+      - funding_bridge_present_when_ramp_depends_on_capex
   - name: BuildEquityBridge
     reads:
       - Security
@@ -309,6 +315,7 @@ action_types:
       - stance_tied_to_valuation_and_risk
       - position_size_tied_to_evidence_quality_and_stop_distance
       - entry_stop_take_profit_present_or_blocked
+      - trim_or_add_plan_named
       - invalidation_named
   - name: GenerateReportSection
     reads:

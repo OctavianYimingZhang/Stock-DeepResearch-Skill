@@ -52,6 +52,29 @@ these quality tests:
   numeric score averaging
 - the final trade plan ties position size to evidence quality and stop distance
 
+## Layer Depth Standard
+
+Each layer must contain a judgment, not only a description:
+
+- Business layer: identify the structural bottleneck, value-capture mechanism,
+  and falsification observable.
+- Operations layer: connect capacity, utilization, capex, customer funding,
+  delivery cadence, and margin at scale.
+- Customer/order layer: separate revenue, binding orders, funded reservations,
+  framework agreements, pipeline, and management guidance.
+- Financial layer: connect cash, debt, capex, working capital, dilution, and
+  owner FCF.
+- Valuation layer: show current-implied expectations, re-rating bridge, one
+  primary method, and EV-to-equity-to-share bridge.
+- Short-risk layer: state the activist-short attack narrative and the monitoring
+  fact pattern that would strengthen it.
+- Technical layer: turn monthly/weekly/daily structure into entry, stop, TP1,
+  TP2, trim/add logic, and position size.
+- Scorecard layer: separate business thesis strength from trade action grade.
+
+The report should feel like an integrated investment memo. Do not let sections
+become independent checklists.
+
 ## Section Rhythm
 
 Use these sections in order:

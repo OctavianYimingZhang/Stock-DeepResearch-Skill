@@ -28,6 +28,8 @@ company archetypes from the user's reference-report set.
   capex, SBC, dilution, and FCF per share
 - decision scorecard caps from valuation stretch, momentum overextension, and
   unresolved high-materiality evidence gaps
+- layer-depth checks for business transition, order-to-revenue ramp, re-rating
+  bridge, funding bridge, falsification lens, and trim/add trade logic
 
 ## Required Assertions
 
@@ -52,6 +54,9 @@ Each case specifies:
 - cash-conversion reconciliation
 - profit/cash-flow quality analysis
 - decision scorecard action grade and binding cap reason
+- re-rating bridge and funding bridge
+- short-risk falsification lens
+- trim/add or observation logic in the trade plan
 - technical chart freshness and adjusted-data status
 
 Run:

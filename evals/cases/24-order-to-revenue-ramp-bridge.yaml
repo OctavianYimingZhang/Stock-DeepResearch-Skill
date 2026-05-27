@@ -1,0 +1,25 @@
+id: order-to-revenue-ramp-bridge
+archetype: order_to_revenue_ramp_bridge
+expected_primary_valuation: order_based_valuation_haircut_until_delivery_and_margin_are_visible
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - order_to_revenue_path
+  - delivery_capacity_match
+  - customer_funding_or_prepayment
+  - working_capital_burden
+  - one_primary_valuation_method
+  - short_seller_grade
+  - decision_scorecard_action_grade
+forbidden:
+  - announced_orders_treated_as_revenue
+  - backlog_valuation_without_margin_and_capacity
+  - numeric_score_average

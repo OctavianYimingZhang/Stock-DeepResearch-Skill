@@ -275,6 +275,10 @@ def validate_evals() -> None:
         "valuation_stretch_scorecard_cap",
         "momentum_overextension_scorecard_cap",
         "unresolved_evidence_blocks_scorecard",
+        "business_transition_layer_depth",
+        "order_to_revenue_ramp_bridge",
+        "re_rating_and_funding_bridge",
+        "falsification_lens_trim_plan",
     }
     missing = expected - seen_archetypes
     if missing:
@@ -351,9 +355,22 @@ def validate_quality_contracts() -> None:
         "order-proxy ladder",
         "ProfitCashFlowQualityAnalysis",
         "owner FCF per share",
+        "Re-Rating Bridge",
+        "Forward Ramp Math",
+        "funding bridge",
     ]:
         if phrase not in valuation:
             fail(f"valuation framework missing quality contract: {phrase}")
+
+    business = read("references/business-model-framework.md")
+    for phrase in [
+        "industry-to-company bridge",
+        "Strategic Transition Tests",
+        "operating ramp bridge",
+        "order-to-revenue path",
+    ]:
+        if phrase not in business:
+            fail(f"business-model framework missing quality contract: {phrase}")
 
     profit_cash = read("references/profit-cash-flow-quality-framework.md")
     for phrase in [
@@ -376,6 +393,7 @@ def validate_quality_contracts() -> None:
         "unanswered question",
         "short interest",
         "activist-short attack narrative",
+        "Falsification Lens",
     ]:
         if phrase not in short:
             fail(f"short-seller framework missing quality contract: {phrase}")
@@ -387,9 +405,18 @@ def validate_quality_contracts() -> None:
         "dividend-adjusted",
         "stale",
         "adjusted/unadjusted status",
+        "Trade-Execution Calibration",
     ]:
         if phrase not in technical:
             fail(f"technical framework missing quality contract: {phrase}")
+
+    style = read("references/report-style-patterns.md")
+    for phrase in [
+        "Layer Depth Standard",
+        "separate business thesis strength from trade action grade",
+    ]:
+        if phrase not in style:
+            fail(f"report style framework missing quality contract: {phrase}")
 
     scorecard = read("references/scorecard-decision-framework.md")
     for phrase in [

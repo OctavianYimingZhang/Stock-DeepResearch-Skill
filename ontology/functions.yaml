@@ -77,6 +77,19 @@ functions:
     blocking_gaps:
       - weak_order_quality
       - missing_margin
+  - name: build_order_to_revenue_bridge
+    inputs:
+      - order_evidence_type
+      - customer_funding
+      - delivery_cadence
+      - available_capacity
+      - expected_margin
+      - working_capital_burden
+    output: order_to_revenue_bridge
+    blocking_gaps:
+      - weak_order_quality
+      - missing_delivery_cadence
+      - capacity_not_reconciled
   - name: grade_order_quality
     inputs:
       - evidence_type
@@ -148,6 +161,31 @@ functions:
     output: valuation_method_selection
     blocking_gaps:
       - no_defensible_denominator
+  - name: build_re_rating_bridge
+    inputs:
+      - old_market_bucket
+      - new_market_bucket
+      - transition_evidence
+      - current_implied_multiple
+      - proof_event
+    output: re_rating_bridge
+    blocking_gaps:
+      - missing_transition_evidence
+      - current_implied_not_reconciled
+  - name: build_funding_bridge
+    inputs:
+      - cash
+      - expected_operating_cash_flow
+      - customer_prepayments
+      - grants_or_credits
+      - committed_capex
+      - working_capital_build
+      - debt_maturities
+    output: funding_surplus_or_gap
+    blocking_gaps:
+      - missing_capex_commitment
+      - missing_cash_or_debt
+      - unverified_customer_funding
   - name: detect_target_price_blockers
     inputs:
       - diluted_share_count
@@ -183,6 +221,16 @@ functions:
     output: short_seller_grade
     blocking_gaps:
       - missing_governance_data
+  - name: build_falsification_lens
+    inputs:
+      - main_upside_thesis
+      - order_conversion_evidence
+      - cash_flow_quality
+      - customer_concentration
+      - policy_dependency
+    output: falsification_lens
+    blocking_gaps:
+      - upside_thesis_not_named
   - name: build_decision_scorecard
     inputs:
       - business_model_thesis

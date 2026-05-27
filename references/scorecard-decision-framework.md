@@ -106,6 +106,37 @@ include weak order evidence, unexplained OCF shortfall, share-count uncertainty,
 debt maturity risk, elevated short-seller risk, stale technical levels, or
 valuation already pricing the upside scenario.
 
+## Thesis Grade Versus Trade Grade
+
+Separate business attractiveness from trade action. A company can have a strong
+business thesis and a lower action grade if the chart is extended, current price
+already discounts the ramp, customer conversion is not yet visible, or dilution
+is unresolved.
+
+Use this decision chain:
+
+```text
+business quality -> operating proof -> cash-flow proof -> valuation odds ->
+short-risk filter -> momentum state -> action grade
+```
+
+The `binding_cap_reason` must be the first issue that prevents a higher action
+grade. Do not let a compelling industry narrative override a weak cap reason.
+
+## Position-Size Translation
+
+Translate grade into action:
+
+- `A`: normal maximum size only if valuation upside and technical invalidation
+  are both clear.
+- `B`: constructive but use partial size or wait for a better entry.
+- `C`: reduced size, milestone-dependent, or trade only around defined levels.
+- `D`: observe, avoid new long exposure, or wait for evidence repair.
+- `F`: no actionable long stance.
+
+When TP1 is close to major resistance, the scorecard should allow partial
+profit-taking even if the business thesis remains intact.
+
 ## Report Placement
 
 Do not add a tenth default report section. Place the compact scorecard summary

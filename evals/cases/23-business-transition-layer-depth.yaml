@@ -1,0 +1,26 @@
+id: business-transition-layer-depth
+archetype: business_transition_layer_depth
+expected_primary_valuation: valuation_allowed_only_after_transition_evidence_is_named
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - industry_to_company_bridge
+  - old_driver_new_driver_transition
+  - value_capture_mechanism
+  - falsification_observable
+  - one_primary_valuation_method
+  - short_seller_grade
+  - decision_scorecard_action_grade
+  - binding_cap_reason
+forbidden:
+  - industry_growth_without_company_capture
+  - transition_claim_without_operating_evidence
+  - numeric_score_average

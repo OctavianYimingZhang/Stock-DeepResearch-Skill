@@ -1,0 +1,25 @@
+id: re-rating-and-funding-bridge
+archetype: re_rating_and_funding_bridge
+expected_primary_valuation: multiple_expansion_requires_transition_proof_and_funded_ramp
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - current_market_implied_expectation
+  - re_rating_bridge
+  - funding_bridge
+  - equity_bridge_present_or_blocked
+  - one_primary_valuation_method
+  - short_seller_grade
+  - binding_cap_reason
+forbidden:
+  - multiple_expansion_without_proof_event
+  - target_without_funding_bridge_for_capex_ramp
+  - probability_weighted_method_average

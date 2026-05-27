@@ -157,6 +157,9 @@ only. They are not factual sources for a new report.
   loss, and take-profit levels.
 - Decision scorecard grading must use qualitative action grades with a binding
   cap reason rather than numeric score averaging.
+- Each analysis layer must make a judgment: business transition, operating ramp,
+  order-to-revenue path, funding bridge, valuation re-rating condition,
+  short-risk falsification lens, and trim/add trade logic.
 
 ## Reference Files
 
@@ -210,7 +213,7 @@ prior reference-report set. The temporary company name, ticker, and generated
 draft are intentionally not committed, because company-specific cases must not
 become runtime triggers.
 
-The comparison found gaps in five areas:
+The comparison found gaps in six areas:
 
 - valuation needed a current-market-implied expectation before the analyst
   target
@@ -218,6 +221,8 @@ The comparison found gaps in five areas:
 - financial quality needed net-income-to-operating-cash-flow reconciliation
 - technical analysis needed chart-date freshness and adjusted-OHLCV controls
 - trade planning needed an explicit decision scorecard and action-grade cap
+- layer depth needed stronger links between structural thesis, operating proof,
+  cash funding, valuation re-rating, and executable trade management
 
 Those gaps are now encoded in the Skill, reference framework, eval metadata, and
 validation script.

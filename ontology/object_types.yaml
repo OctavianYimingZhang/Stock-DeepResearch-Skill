@@ -140,10 +140,14 @@ object_types:
   - name: BusinessModelThesis
     purpose: Causal explanation of customer problem, product, value capture, and bottleneck.
     required_properties:
+      - industry_to_company_bridge
       - customer_problem
       - value_capture_mechanism
+      - monetization_denominator
       - bottleneck
+      - margin_mechanism
       - verification_variable
+      - falsification_observable
   - name: ValueDriverTransition
     purpose: Old value driver to new value driver mapping.
     required_properties:
@@ -165,13 +169,18 @@ object_types:
       - amount_or_disclosure_gap
       - timing
       - cancellation_terms_or_gap
+      - delivery_cadence_or_gap
+      - customer_funding_or_gap
+      - working_capital_burden_or_gap
       - valuation_usability
   - name: OrderQualityAssessment
     purpose: Grade of order evidence for valuation use.
     required_properties:
       - grade
       - conversion_evidence
+      - delivery_capacity_match
       - margin_visibility
+      - funding_support
       - haircut_required
   - name: AssetFacility
     purpose: Facility, mine, plant, equipment set, capacity asset, license, or restricted asset.
@@ -182,6 +191,7 @@ object_types:
       - target_capacity
       - required_capex
       - contracted_status
+      - ramp_bottleneck_or_gap
   - name: DebtInstrument
     purpose: Debt, lease, preferred security, note, or other senior claim.
     required_properties:
@@ -226,6 +236,7 @@ object_types:
     required_properties:
       - pricing_denominator
       - implied_metric_or_multiple
+      - re_rating_bridge
       - fragile_assumption
       - analyst_difference
   - name: ValuationMethodSelection
@@ -254,6 +265,9 @@ object_types:
       - case_type
       - primary_metric
       - selected_multiple_or_rate
+      - current_implied_gap
+      - re_rating_condition
+      - funding_bridge
       - target_ev
       - target_equity_value
       - diluted_share_count
@@ -270,6 +284,7 @@ object_types:
     required_properties:
       - grade
       - attack_narrative
+      - falsification_lens
       - strongest_red_flag
       - strongest_green_flag
       - valuation_or_size_effect
@@ -339,6 +354,7 @@ object_types:
       - stop
       - take_profit_1
       - take_profit_2
+      - trim_or_add_plan
       - catalyst
       - invalidation
   - name: IncrementalRefreshPlan

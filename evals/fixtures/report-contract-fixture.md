@@ -17,7 +17,9 @@ verified fact from inference and names one verification variable.
 
 Order quality is graded through recognized revenue, binding contract evidence,
 purchase obligation disclosure, and weaker pipeline language. Backlog is not
-treated as profit.
+treated as profit. The operating ramp discussion links capacity, utilization,
+facility readiness, order delivery cadence, and production timing before the
+order signal is used in valuation.
 
 ## Financials, Assets, And Debt
 
@@ -31,20 +33,24 @@ included before owner cash flow is used in valuation.
 ## Valuation
 
 The current-market-implied bridge states that the market implies 10x EBITDA.
-The primary method is EV/EBITDA. Target equity value equals target EV minus net
-debt plus non-operating assets, and target price uses diluted shares. A
-secondary check is used only as a sanity check.
+The re-rating bridge states that multiple expansion requires verified revenue
+conversion. The funding bridge shows cash runway against committed capex and
+working-capital need. The primary method is EV/EBITDA. Target equity value
+equals target EV minus net debt plus non-operating assets, and target price
+uses diluted shares. A secondary check is used only as a sanity check.
 
 ## Short-Seller Risk
 
 Short-Seller Risk: B grade. The section separates verified fact, allegation,
 inference, and unanswered question, then states how the risk affects position
-size.
+size. The falsification lens says delayed order conversion would break the
+thesis and is a monitoring item.
 
 ## Technical Analysis
 
 Chart date: current. OHLCV is adjusted. Entry is 10, stop is 8, first
-take-profit is 12, and TP2 is 14.
+take-profit is 12, and TP2 is 14. The plan trims at TP1 and adds only after a
+confirmed retest.
 
 ## Risk Factors
 

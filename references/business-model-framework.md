@@ -42,6 +42,24 @@ Do not stop at labels such as "AI beneficiary", "defense supplier",
 "turnaround", "platform", or "scarce resource". Labels are allowed only after
 the mechanism is explicit.
 
+## Layer Calibration Standard
+
+The strongest reports build an industry-to-company bridge before describing the
+issuer. Use this order:
+
+1. structural industry bottleneck or policy shock
+2. customer pain, cost, or operational risk created by that bottleneck
+3. company asset, process, certification, channel, or relationship that can
+   solve the pain
+4. monetization denominator: unit, capacity, order, contract, take rate,
+   throughput, or service attach
+5. margin and cash-flow mechanism
+6. falsification observable
+
+The section should make clear whether the company is selling scarce capacity,
+technical qualification, cost reduction, supply assurance, yield protection,
+regulatory compliance, distribution access, or mission-critical reliability.
+
 ## Old Driver To New Driver
 
 Strong reports usually identify a concrete transition rather than a generic
@@ -80,6 +98,26 @@ Use at least two of these tests:
 If none can be verified, say the thesis is industry-beta rather than company
 alpha.
 
+## Strategic Transition Tests
+
+For transition stories, identify the old economic identity and the new one.
+Then prove whether the transition has crossed from narrative into operating
+evidence.
+
+Useful tests:
+
+- revenue mix has shifted toward the new driver
+- capacity or facilities have been reconfigured for the new driver
+- customer base has moved from related-party or legacy buyers to independent
+  strategic customers
+- order evidence has moved from pipeline language to funded demand
+- gross margin or operating leverage reflects higher-value work
+- management incentives, capex, and partnerships align with the new driver
+- legacy assets are being exited, repurposed, or explicitly ring-fenced
+
+If the transition is not yet proven, state the next observable that would prove
+it.
+
 ## TAM And Market Share
 
 For each key market:
@@ -108,6 +146,16 @@ Show how the business logic turns into P&L:
 - bottleneck: the one physical, regulatory, commercial, or financial constraint
   that can block the thesis
 
+Add the operating ramp bridge when relevant:
+
+```text
+current capacity -> available utilization -> funded expansion -> customer
+commitment -> revenue conversion -> margin at scale -> cash funding need
+```
+
+For asset-heavy companies, name whether capex is speculative, customer-backed,
+policy-funded, internally funded, or debt-funded.
+
 ## Customers And Orders
 
 Use named customers when disclosed. If not disclosed, use segment, geography,
@@ -124,6 +172,21 @@ pilot/MOU/LOI > management aspiration
 Only recognized revenue, binding POs, firm backlog, or paid reservations can
 normally support a valuation denominator. IDIQ/framework agreements can support
 scenario discussion but need conversion evidence.
+
+For order-heavy stories, analyze the order-to-revenue path:
+
+- customer identity or disclosure gap
+- procurement authority and budget source
+- legal strength of the commitment
+- cancellation or delay rights
+- delivery cadence and capacity match
+- customer prepayment or capex support
+- gross margin visibility
+- working-capital burden before shipment
+- whether orders cover one quarter, one year, or a multi-year runway
+
+Do not treat large announced orders as high quality until delivery, margin, and
+cash conversion are addressed.
 
 ## Required Business Tables
 

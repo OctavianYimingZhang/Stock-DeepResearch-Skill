@@ -50,6 +50,29 @@ Reverse-engineer what the market is pricing before selecting the model:
 The primary valuation method must match both company economics and the market's
 actual pricing mechanism.
 
+## Re-Rating Bridge
+
+Reference-caliber reports explain why the market might change the multiple, not
+only why the company might grow. Build a re-rating bridge:
+
+```text
+old market bucket -> new market bucket -> evidence of transition ->
+future denominator -> target multiple condition -> blocker
+```
+
+Use this bridge when the thesis depends on the market moving from one valuation
+identity to another, such as cyclical supplier to strategic infrastructure,
+commodity processor to sovereign supply asset, low-margin manufacturing to
+technology premium, or small growth story to funded order conversion.
+
+The bridge must answer:
+
+- what the old multiple or denominator was
+- what the new denominator should be
+- which verified event justifies the change
+- whether current price already discounts the new identity
+- what would prevent the multiple from expanding
+
 ## Current-Price-Implied Bridge
 
 Before giving an analyst target, state what the current share price already
@@ -75,6 +98,11 @@ current price implies [metric or multiple]; the report's base case assumes
 If the current price already discounts the upside scenario, say so and do not
 force a bullish target.
 
+If the company looks expensive on trailing numbers, state whether the market is
+pricing forward capacity, backlog conversion, EPS ramp, EBITDA ramp, strategic
+scarcity, or balance-sheet optionality. Expensive is not a conclusion by itself;
+the report must say which future event is already in the price.
+
 ## Method Selection
 
 Use one primary method.
@@ -93,6 +121,32 @@ Use one primary method.
 
 Do not average methods. A secondary method can invalidate or sanity-check the
 primary method, but it is not an equal vote.
+
+## Forward Ramp Math
+
+For companies being repriced on a ramp rather than current earnings, model the
+path explicitly:
+
+```text
+capacity or units x utilization x ASP or realized price = revenue
+revenue x gross margin = gross profit
+gross profit - fixed operating cost = EBITDA or operating income
+EBITDA or EPS x selected multiple = target EV or equity value
+```
+
+Use the ramp only if capacity, timing, customer demand, funding, and gross
+margin have enough evidence. If any link is weak, make the link a scenario
+assumption and cap conviction.
+
+For EPS-led cases:
+
+```text
+future EPS x justified P/E = future share value
+```
+
+The P/E must be tied to growth durability, cycle position, peer set, and rate
+environment. Do not use historical average P/E without explaining why the future
+business mix deserves that multiple.
 
 ## Profit And Cash-Flow Quality Before Method Selection
 
@@ -283,6 +337,19 @@ Every valuation must address:
 - lease liabilities if material
 
 Debt can change the equity thesis even if enterprise value looks attractive.
+
+For growth companies with large capex needs, build a funding bridge:
+
+```text
+cash + expected OCF + customer prepayments + grants or credits + available
+credit - committed capex - working-capital build - debt maturities = funding
+surplus or gap
+```
+
+If the funding bridge depends on future equity issuance, the valuation must show
+the pro-forma share count effect before stating per-share upside. If the bridge
+depends on government funding or customer prepayments, state the evidence class
+and timing risk.
 
 ## Inline Arithmetic Standard
 

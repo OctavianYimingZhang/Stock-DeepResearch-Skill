@@ -1,0 +1,26 @@
+id: falsification-lens-trim-plan
+archetype: falsification_lens_trim_plan
+expected_primary_valuation: trade_size_capped_until_thesis_survives_falsification_tests
+required_sections:
+  - Company Overview
+  - Business Model Logic
+  - Operations, Customers, And Orders
+  - Financials, Assets, And Debt
+  - Valuation
+  - Short-Seller Risk
+  - Technical Analysis
+  - Risk Factors
+  - Trade Plan
+required_checks:
+  - short_seller_grade
+  - falsification_lens
+  - monitoring_item_named
+  - one_primary_valuation_method
+  - technical_entry_stop_tp
+  - trim_or_add_plan
+  - decision_scorecard_action_grade
+  - binding_cap_reason
+forbidden:
+  - upside_thesis_without_failure_pattern
+  - full_size_position_without_trim_or_add_logic
+  - numeric_score_average

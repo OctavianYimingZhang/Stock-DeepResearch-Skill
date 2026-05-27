@@ -154,11 +154,10 @@ and DecisionScorecardGate. Each gate result must be `pass`, `warn`, `block`,
 
 Use `references/business-model-framework.md`.
 
-Explain what economic problem the company solves, who pays, what cost the buyer
-avoids, why the value driver is changing now, how the company captures value,
-and what observable would prove or disprove the thesis. End the section with a
-bold one-sentence judgment naming the value driver, current stage, and key
-observable.
+Explain the industry-to-company bridge: structural bottleneck, customer pain,
+company solution, value capture, revenue denominator, margin mechanism, and
+falsification observable. End the section with a bold one-sentence judgment
+naming the value driver, current stage, and key observable.
 
 ### 5. Operations, Customers, And Orders
 
@@ -168,7 +167,9 @@ Use `references/business-model-framework.md` and
 Separate recognized revenue, firm backlog, purchase orders, capacity
 reservations, framework agreements, customer concentration, pipeline language,
 and management guidance. Grade order quality before any order-based valuation
-use. Weak order signals can support a narrative but cannot drive a target.
+use. Tie orders to delivery cadence, capacity match, margin visibility,
+working-capital burden, and customer funding. Weak order signals can support a
+narrative but cannot drive a target.
 
 ### 6. Profit Cash Flow Quality Analysis
 
@@ -338,18 +339,24 @@ Before final output, verify:
 
 - all nine fixed sections are present
 - ontology gates have passed or produced explicit blocked conclusions
+- every layer contains a judgment, not only a description
 - high-materiality claims have evidence, contradiction, qualification, or a
   data-gap blocker
 - material numbers have source markers or are labeled assumptions
 - business logic explains value capture rather than industry growth alone
+- operations connect capacity, utilization, customer funding, and revenue
+  conversion
 - assets, orders/backlog, debt, maturity, dilution, and share count are covered
 - profit and cash-flow quality reconciles OCF, EBITDA, FCF, SBC, capex,
   working capital, and FCF per share
 - valuation uses one primary method and one secondary sanity check at most
+- valuation explains current-implied expectation, re-rating bridge, and funding
+  bridge when relevant
 - the EV-to-equity-to-diluted-share bridge is complete or target value is
   blocked
 - short-seller risk has a grade, attack narrative, red flags, and green flags
+- short-seller risk includes a falsification lens for the main upside thesis
 - technical analysis has fresh trend, pattern, levels, entry, stop, and TP
-  levels, or a clear observation stance
+  levels, trim/add logic, or a clear observation stance
 - decision scorecard has an action grade and binding cap reason
 - final trade plan contains stance, catalyst, invalidation, and position sizing

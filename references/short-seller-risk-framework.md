@@ -64,11 +64,17 @@ Check:
 - contract form: revenue, PO, backlog, capacity reservation, IDIQ, framework,
   MOU, pilot, LOI
 - delivery schedule vs. recognized revenue
+- customer prepayments, take-or-pay terms, cancellation rights, and procurement
+  authority
 - concentration above 10%, 20%, and 50%
 - customer credit quality and procurement authority
 
 Common risk pattern: promotional contract announcements without disclosed value,
 counterparty confirmation, revenue conversion, or purchase obligation.
+
+For government, policy-linked, or procurement-led demand, verify budget source,
+award status, prime/subcontract position, certification requirement, and whether
+the company is selling directly or through another vendor.
 
 ### 2. Revenue Recognition And Round-Tripping
 
@@ -153,6 +159,11 @@ Check:
 
 Promotion is a risk only when it outruns verifiable execution.
 
+Compare every major narrative claim with one execution metric: shipped units,
+recognized revenue, gross margin, OCF, customer payment, capacity utilization,
+or recurring reorder. A narrative that cannot be tied to an execution metric is
+a short-risk monitoring item.
+
 ### 7. Legal, Regulatory, Sanctions, And Policy
 
 Check:
@@ -165,6 +176,23 @@ Check:
 
 If policy is central to valuation, specify what happens if policy support
 changes.
+
+## Falsification Lens
+
+For each major upside thesis, name the fact pattern that would make a short
+seller's attack stronger:
+
+- announced orders do not convert into revenue
+- revenue converts but gross margin or OCF disappoints
+- capex rises faster than customer funding
+- customer concentration increases instead of diversifying
+- policy support changes or certification is delayed
+- related-party sales, purchases, or financing become material
+- dilution funds operating losses rather than asset-backed expansion
+- inventory builds ahead of sell-through evidence
+
+Use these as risk tests, not accusations. The final report should state what
+would need to be monitored after publication.
 
 ## Red Flag Inventory
 

@@ -179,11 +179,15 @@ Calculations and repeatable decisions belong in functions:
 - cash-quality bridge
 - working-capital cycle assessment
 - SBC-adjusted FCF per share
+- order-to-revenue bridge
+- re-rating bridge
+- funding bridge
 - debt-safety score
 - valuation-method selection
 - target-price blocker detection
 - explicit equity bridge calculation
 - short-risk grade
+- falsification lens
 - decision scorecard construction
 - action-grade cap determination
 - technical freshness check

@@ -70,6 +70,10 @@ Positive quality signals:
 - FCF remains positive after maintenance capex.
 - Working-capital release is not the main source of cash generation.
 - Capex supports visible customer demand or asset productivity.
+- Customer prepayments, grants, or paid reservations fund expansion before the
+  company carries the full cash burden.
+- Inventory build is matched to signed orders, production ramps, or disclosed
+  delivery schedules.
 - Diluted share count is stable or accretion offsets dilution.
 - SBC-adjusted FCF remains positive.
 
@@ -80,6 +84,8 @@ Negative quality signals:
   revenue.
 - FCF depends on delayed payables, deferred capex, or one-time cash inflows.
 - Capex is described as growth but is required to maintain operations.
+- Inventory or contract assets rise before evidence of customer conversion.
+- Customer-funded capex is assumed but not supported by payment terms.
 - SBC or financing dilution turns firm-level cash flow into weak per-share cash
   flow.
 - The company reports strong adjusted EBITDA while cash flow stays weak.
@@ -108,6 +114,32 @@ owner FCF per share = owner FCF / diluted or pro-forma shares
 
 If maintenance capex cannot be separated from growth capex, state the gap and
 use total capex as the conservative default for sanity checking.
+
+## Ramp-Stage Cash Discipline
+
+For companies transitioning from small revenue to contracted ramp, separate
+strategic cash from operating cash:
+
+- cash raised for expansion
+- cash produced by operations
+- cash locked in working capital
+- cash required for committed capex
+- cash protected by customer prepayment, grants, or credits
+- cash consumed before the next revenue milestone
+
+Use this bridge:
+
+```text
+net cash runway = cash and marketable securities + expected near-term OCF
+  + verified customer funding or grants
+  - committed capex
+  - working-capital build
+  - debt maturities
+```
+
+If cash runway is strong but per-share dilution is large, state both facts. A
+fortress balance sheet can reduce bankruptcy risk while still capping per-share
+upside.
 
 ## Short-Seller And Scorecard Integration
 

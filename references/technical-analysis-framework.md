@@ -149,3 +149,22 @@ maximum loss = position size x (entry price - stop price) / entry price
 If the stop is far from entry, reduce position size or wait for a better entry.
 Do not recommend a large position when the technical invalidation point creates
 excessive downside.
+
+## Trade-Execution Calibration
+
+Reference-caliber reports use the chart to decide what to do with a fundamentally
+attractive but volatile stock. Apply this sequence:
+
+1. Identify whether the monthly structure is base-building, breakout,
+   overextended, or broken.
+2. Use the weekly chart for the real decision level: cup-and-handle neckline,
+   W-bottom breakout, prior high, gap zone, or failed breakout.
+3. Use the daily chart only for execution timing near the weekly level.
+4. If the first target is near a major resistance zone, explicitly state whether
+   to trim, hold, or wait for a retest.
+5. Position size must shrink when valuation is stretched, short-risk grade is
+   elevated, chart is extended, or the stop is far from entry.
+
+For speculative or high-volatility names, the default trade plan should favor
+smaller initial size, partial profit-taking at TP1, and adding only after a
+confirmed retest or catalyst.

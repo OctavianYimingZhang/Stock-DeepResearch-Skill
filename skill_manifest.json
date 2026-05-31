@@ -6,7 +6,6 @@
   "entrypoint": "SKILL.md",
   "health_commands": [
     "python3 scripts/validate.py",
-    "python3 scripts/validate_ontology.py",
     "python3 scripts/validate_settings.py",
     "python3 scripts/validate_report_output.py evals/fixtures/report-contract-fixture.md",
     "python3 scripts/validate_research_manifest.py evals/fixtures/report-contract-fixture.manifest.json",

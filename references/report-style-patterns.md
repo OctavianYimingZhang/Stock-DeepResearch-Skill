@@ -38,6 +38,84 @@ If outside research or user notes motivated the ticker, the opening should say
 what market question those sources raised, then immediately separate verified
 facts from unverified narrative.
 
+## Readability Standard
+
+A final report must not read like an audit log. The object graph may contain
+labels such as `verified_fact`, `inference`, and `scenario_assumption`, but final
+prose should translate those labels into readable paragraphs.
+
+Use this paragraph pattern:
+
+```text
+claim -> evidence -> mechanism -> investment judgment
+```
+
+The source marker should support the sentence, not replace the sentence. Avoid
+long runs of colon labels such as `Verified fact:`, `Inference:`, `Unanswered
+question:`, and `ArticleThesisMap note:`. Those labels are useful internally, but
+heavy use makes the memo hard to read and too compressed.
+
+Preferred final prose:
+
+```text
+Revenue growth matters only if it converts into cash after working capital and
+capex. The latest filing shows revenue acceleration, but OCF remains negative
+because inventory and receivables consumed cash [filing]. That means the growth
+story is still investable only as an order-conversion thesis, not yet as an owner
+cash-flow thesis.
+```
+
+Weak final prose:
+
+```text
+Verified fact: revenue increased. Inference: growth is positive. Data gap: FCF.
+```
+
+Use short labels only inside compact tables, scorecards, or blocked-conclusion
+notes. The main body should use complete causal paragraphs.
+
+## Output Depth Standard
+
+A full report should be materially deeper than a summary. If enough evidence is
+available, target roughly 18,000 to 35,000 visible characters for a full report.
+A report below that range is acceptable only when source access is genuinely
+blocked, and it must say which sections are blocked and why.
+
+Depth should come from reasoning, not filler. Add detail where it changes the
+investment conclusion:
+
+- industry-chain context that explains the scarce node
+- customer pain and why the customer pays
+- order quality and order-to-revenue conversion
+- capacity, utilization, capex, and ramp timing
+- working capital, cash conversion, debt, and dilution
+- current-market-implied expectation and re-rating condition
+- falsification pattern and trade execution
+
+Default paragraph counts for `full_report`:
+
+- `Core Conclusion`: 3 to 5 dense paragraphs or a short decision block plus
+  explanatory prose.
+- `Why This Stock Exists Now`: at least 4 paragraphs.
+- `Industry Chain And Bottleneck`: at least 5 paragraphs when the thesis is
+  technical or policy-driven.
+- `Company Position In The Chain`: at least 4 paragraphs.
+- `Business Model Logic`: at least 5 paragraphs.
+- `Scarcity And Moat Assessment`: at least 4 paragraphs plus a compact table if
+  helpful.
+- `Customers, Orders, And Commercialization Path`: at least 5 paragraphs.
+- `Operations, Capacity, And Execution Quality`: at least 4 paragraphs.
+- `Financial Quality, Assets, Debt, And Dilution`: at least 5 paragraphs.
+- `Valuation And Market-Implied Expectation`: at least 5 paragraphs with inline
+  arithmetic.
+- `Catalysts, Risks, And Falsification`: at least 4 paragraphs.
+- `Technical Structure And Trade Plan`: at least 3 paragraphs or a complete
+  blocked setup.
+
+Do not satisfy depth by adding generic background. A paragraph is useful only if
+it contains at least one of: source-backed fact, mechanism, implication,
+contradiction, blocker, or action judgment.
+
 ## Reference-Caliber Memo Assembly
 
 A strong report should be assembled as one causal memo, not as a sequence of
@@ -109,6 +187,9 @@ these quality tests:
 - the decision scorecard states action grade and binding cap reason without
   numeric score averaging
 - the final trade plan ties position size to evidence quality and stop distance
+- the final report contains enough prose depth to explain mechanisms, not only
+  list conclusions
+- the final report avoids compressed audit-label style in the main body
 
 ## Layer Depth Standard
 
@@ -183,6 +264,22 @@ Each section must output one decision-useful conclusion:
 - `Technical Structure And Trade Plan`: trade stance, entry, stop, TP1, TP2,
   trim/add logic, and size.
 
+## Section Exit Judgment
+
+Every major section should close with a short judgment sentence. Use the same
+language as the report. The sentence should say what the section changes about
+the investment view.
+
+Pattern:
+
+```text
+Section judgment: this evidence strengthens / weakens / caps the thesis because
+[specific mechanism].
+```
+
+Do not overuse this label if it makes the prose stiff. The important rule is
+that each section ends with a decision-useful judgment.
+
 ## Business Logic Prose
 
 Strong reports explain:
@@ -215,6 +312,10 @@ After a draft exists, run this repair pass before final output:
 6. Convert every risk into either a thesis-breaker, a valuation haircut, or a
    position-size cap.
 7. Convert every technical comment into an action or a blocked setup.
+8. Expand any one-paragraph section that compresses evidence, mechanism,
+   valuation, and action into the same paragraph.
+9. Replace repeated audit labels with readable prose unless the label marks a
+   blocked conclusion.
 
 A report that still reads like headings filled with facts has failed this pass.
 
@@ -282,6 +383,9 @@ Avoid:
 - conclusion without trade plan
 - technical analysis without price levels
 - target price without share count and net debt bridge
+- one-paragraph sections in a full report
+- repeated audit-label sentences in the main body
+- a report that has headings but not enough explanatory prose
 
 ## Data Gap Style
 

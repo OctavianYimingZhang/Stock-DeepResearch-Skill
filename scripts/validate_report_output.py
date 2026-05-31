@@ -30,6 +30,17 @@ SOURCE_MARKERS = [
     "market data",
 ]
 
+AUDIT_LABELS = [
+    "Verified fact:",
+    "Inference:",
+    "Unanswered question:",
+    "ArticleThesisMap note:",
+    "Data gap:",
+]
+
+MIN_FULL_REPORT_CHARS = 15000
+MIN_SECTION_PARAGRAPHS = 2
+
 
 def fail(message: str) -> None:
     print(f"ERROR: {message}", file=sys.stderr)
@@ -39,6 +50,65 @@ def fail(message: str) -> None:
 def require(pattern: str, text: str, message: str, flags: int = re.IGNORECASE) -> None:
     if not re.search(pattern, text, flags):
         fail(message)
+
+
+def is_contract_fixture(path: Path) -> bool:
+    return path.name == "report-contract-fixture.md"
+
+
+def section_body(text: str, section: str) -> str:
+    pattern = rf"^##\s+{re.escape(section)}\s*$"
+    match = re.search(pattern, text, re.MULTILINE)
+    if not match:
+        return ""
+    start = match.end()
+    next_match = re.search(r"^##\s+", text[start:], re.MULTILINE)
+    end = start + next_match.start() if next_match else len(text)
+    return text[start:end].strip()
+
+
+def paragraph_count(section_text: str) -> int:
+    blocks = [block.strip() for block in re.split(r"\n\s*\n", section_text) if block.strip()]
+    prose_blocks = []
+    for block in blocks:
+        stripped = block.strip()
+        if stripped.startswith("|") or stripped.startswith("```"):
+            continue
+        prose_blocks.append(stripped)
+    return len(prose_blocks)
+
+
+def validate_depth_and_readability(path: Path, text: str) -> None:
+    if is_contract_fixture(path):
+        return
+
+    if len(text.strip()) < MIN_FULL_REPORT_CHARS:
+        fail(
+            f"full report is too short: {len(text.strip())} characters; "
+            f"expected at least {MIN_FULL_REPORT_CHARS} unless the report is explicitly source-blocked"
+        )
+
+    for section in REQUIRED_SECTIONS:
+        body = section_body(text, section)
+        count = paragraph_count(body)
+        if count < MIN_SECTION_PARAGRAPHS:
+            fail(f"section '{section}' is too compressed: {count} prose paragraphs; expected at least {MIN_SECTION_PARAGRAPHS}")
+
+    label_count = sum(text.count(label) for label in AUDIT_LABELS)
+    if label_count > 18:
+        fail(
+            "report uses too many audit-style labels in final prose; "
+            "convert internal labels into readable causal paragraphs"
+        )
+
+    one_line_sections = []
+    for section in REQUIRED_SECTIONS:
+        body = section_body(text, section)
+        body_lines = [line for line in body.splitlines() if line.strip() and not line.strip().startswith("|")]
+        if len(" ".join(body_lines).split()) < 90:
+            one_line_sections.append(section)
+    if one_line_sections:
+        fail(f"sections lack explanatory prose depth: {one_line_sections}")
 
 
 def main() -> None:
@@ -87,6 +157,8 @@ def main() -> None:
     require(r"Decision Grade|action grade", text, "missing decision scorecard action grade")
     require(r"binding cap|cap reason", text, "missing scorecard binding cap reason")
     require(r"trim|add|partial profit|observe", text, "missing trim/add or observation logic")
+
+    validate_depth_and_readability(path, text)
 
     if re.search(r"probability-weighted|method average|average of.*DCF.*P/E", text, re.IGNORECASE | re.DOTALL):
         fail("report appears to average valuation methods")

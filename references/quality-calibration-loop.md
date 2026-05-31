@@ -7,9 +7,33 @@ reference company names, tickers, or trigger phrases into the Skill.
 
 The Skill should be calibrated against prior high-quality reports by extracting
 methods, not by copying companies. Prior reports are used to identify structural
-patterns: opening tension, business-model depth, valuation mechanics, order and
-debt treatment, profit/cash-flow quality, short-risk thinking, decision
+patterns: opening tension, business-model depth, industry-chain bottleneck
+logic, order and commercialization quality, operations and capacity execution,
+profit/cash-flow quality, valuation mechanics, short-risk thinking, decision
 scorecard discipline, and trade-plan usefulness.
+
+Historical reports are not factual sources. They are only a benchmark for how a
+research path becomes a causal investment memo.
+
+## Calibration Target
+
+A reference-caliber report should not merely complete headings. It should answer
+one investable question:
+
+```text
+what is being repriced now, why the company sits at the scarce node, whether the
+commercial evidence can become revenue and cash, and whether the current price
+already discounts that outcome
+```
+
+The Skill must therefore force this sequence before final prose:
+
+```text
+outside thesis path -> independent verification -> opportunity archetype
+-> demand expansion -> scaling difficulty -> bottleneck scarcity
+-> order/commercialization visibility -> operating and financial conversion
+-> current-implied valuation -> falsification -> trade plan
+```
 
 ## Fresh-Company Test
 
@@ -25,11 +49,15 @@ The test must check whether the Skill forces the analyst to produce:
 - opportunity archetype routing before report section emphasis
 - demand expansion, scaling difficulty, bottleneck scarcity, and
   commercialization visibility for any high-conviction thesis
+- industry primer only when it clarifies the bottleneck or policy mechanism
 - old value driver, new value driver, and one verification variable
 - industry-to-company bridge and explicit value-capture mechanism
 - source markers for material facts and numbers
 - order evidence graded by legal and financial quality
-- order-to-revenue path, customer funding, and capacity match
+- order-to-revenue path, customer funding, capacity match, margin visibility,
+  working-capital burden, and cash conversion
+- operations analysis that ties facility status, utilization, capex, ramp date,
+  bottleneck, and margin at scale to the thesis
 - cash, debt, maturity, dilution, and share-count bridge
 - net income to operating cash flow reconciliation
 - EBITDA-to-OCF-to-FCF bridge, capex quality, SBC-adjusted FCF, and FCF per
@@ -45,6 +73,54 @@ The test must check whether the Skill forces the analyst to produce:
 - entry, stop, first take-profit, second take-profit, position size, and
   invalidation
 
+## Reference-Caliber Memo Test
+
+After the first draft, compress the report into one thesis kernel:
+
+```text
+repricing dispute -> demand shock -> scarce node -> issuer control point
+-> commercial proof -> operating proof -> cash proof -> valuation implication
+-> action cap -> execution plan
+```
+
+The draft passes only if each section advances that kernel. If a section can be
+removed without weakening the investment conclusion, the section is filler and
+must be rewritten or deleted.
+
+A passing draft has these features:
+
+- the reader understands why the stock matters before reading corporate history
+- industry context explains the bottleneck, not the entire industry
+- company positioning separates company alpha from industry beta
+- customer and order discussion separates binding demand from pipeline
+- operations show whether the company can deliver the demand it claims
+- financial quality shows whether growth converts to owner cash flow
+- valuation starts from what the current price already implies
+- risks include a plausible short-seller attack narrative
+- the trade plan contains actual action logic, not only commentary
+
+## Anti-Checklist Reconstruction Pass
+
+Before final output, run this repair pass:
+
+1. Remove any paragraph that could apply to most peers in the same industry.
+2. Move industry context ahead of company description only when it explains the
+   bottleneck.
+3. Convert every generic catalyst into a dated or source-linked observable.
+4. Convert every order claim into an order-quality level and revenue-conversion
+   path.
+5. Convert every operating claim into capacity, utilization, funding, ramp date,
+   and failure signal.
+6. Convert every financial claim into a cash-conversion, capex, dilution, or
+   senior-claim effect.
+7. Convert every valuation multiple into a current-implied expectation and one
+   re-rating condition.
+8. Convert every risk into either a thesis-breaker, valuation haircut, or
+   position-size cap.
+9. Convert every technical comment into an action or a blocked setup.
+
+A report that still reads like headings filled with facts has failed this pass.
+
 ## Gap Diagnosis
 
 After drafting the test report, compare it against the quality bar:
@@ -55,9 +131,12 @@ After drafting the test report, compare it against the quality bar:
 | outside thesis is untested | article narrative becomes fact | require thesis-path replay and primary verification |
 | opportunity route is missing | every issuer receives the same emphasis | require opportunity archetype routing |
 | opportunity test is shallow | demand, scaling, scarcity, or commercialization is not tested | require four-part opportunity assessment |
+| industry primer is generic | explains the whole industry instead of the scarce node | require bottleneck-only primer |
 | business logic is shallow | lists products without value capture | require causal chain and verification variable |
 | transition is vague | old and new value drivers are not separated | require strategic transition tests |
+| scarcity is unsupported | calls a theme scarce without replication analysis | require scarcity type, duration, and replication barrier |
 | orders are overstated | treats pipeline as backlog | require order-proxy ladder and haircut |
+| commercialization is vague | order evidence is not linked to revenue and cash | require order-to-revenue and cash-conversion bridge |
 | operating ramp is vague | capacity growth is not tied to customers and funding | require operating ramp bridge |
 | valuation is mechanical | gives target without current implied assumption | require current-price-implied bridge |
 | re-rating is asserted | multiple expansion lacks proof event | require re-rating bridge |
@@ -82,6 +161,8 @@ Acceptable residual limits:
 - a company-specific fact gap can remain if the report names the exact missing
   source
 - no company-specific test name or ticker may be committed as a trigger
+- no outside article thesis may drive valuation unless independently verified or
+  clearly labeled as a scenario assumption
 
 ## Repository Explanation Standard
 

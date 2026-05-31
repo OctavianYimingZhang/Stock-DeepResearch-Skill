@@ -10,7 +10,7 @@ Use these source classes in order:
 
 1. issuer filings and audited reports
 2. issuer investor presentations and earnings-call transcripts
-3. regulator, exchange, government, or court records
+3. regulator, exchange, court, or formal public records
 4. customer, supplier, partner, or counterparty disclosures
 5. reliable market data and industry datasets
 6. high-quality secondary research
@@ -49,6 +49,36 @@ Do not stop at labels such as "AI beneficiary", "defense supplier",
 "turnaround", "platform", or "scarce resource". Labels are allowed only after
 the mechanism is explicit.
 
+## Thesis Kernel Link
+
+The business section must attach to the report thesis kernel:
+
+```text
+repricing dispute -> demand shock -> scaling constraint -> scarce node
+-> issuer control point -> commercial proof -> operating proof
+-> cash proof -> valuation implication -> action cap
+```
+
+The issuer description should enter only after the scarce node and control point
+are visible. If the reader cannot see why the company captures value, the
+section is still background, not analysis.
+
+## Industry Primer Rule
+
+Add an industry primer only when technical, supply-chain, policy, or asset
+context is required to understand the bottleneck.
+
+The primer must stay narrow:
+
+- what the bottleneck mechanism does
+- why it became urgent now
+- how money moves through the chain
+- which node controls price, delivery, reliability, compliance, yield, or
+  customer timing
+
+The primer should end by locating the issuer at the scarce node. It should not
+become a broad industry essay.
+
 ## Layer Calibration Standard
 
 The strongest reports build an industry-to-company bridge before describing the
@@ -78,7 +108,7 @@ theme. Abstract transition types include:
 - legacy end-market cycle -> higher-complexity end-market
 - low-value manufacturing -> technology/process premium
 - third-party supply dependency -> controlled domestic or strategic supply
-- retail/channel business -> enterprise or government procurement
+- retail/channel business -> enterprise or public-sector procurement
 - single-product exposure -> multi-product cash-flow base
 - concept-stage capacity -> contracted production
 - commodity beta -> integrated resource and processing margin
@@ -87,12 +117,12 @@ For a new company, identify whether a real transition exists. If there is no
 transition, explicitly state the steady-state business logic and the margin
 variable that matters now.
 
-## Value Capture Tests
+## Alpha Versus Beta Test
 
 Industry growth is not enough. The report must show why the company captures
 some of that growth.
 
-Use at least two of these tests:
+Company alpha requires at least one verified control point:
 
 - customer switching cost
 - certification or qualification status
@@ -104,9 +134,28 @@ Use at least two of these tests:
 - backlog/order visibility
 - recurring consumable or service attachment
 - scarce license, permit, or regulated asset
+- customer-funded capacity or prepayment
 
 If none can be verified, say the thesis is industry-beta rather than company
-alpha.
+alpha and cap the action grade.
+
+## Scarcity-To-Economics Bridge
+
+Scarcity must create measurable economics. For each scarcity claim, map it to at
+least one effect:
+
+- price or mix improvement
+- higher utilization
+- customer prepayment or funded capacity
+- shorter delivery time for the customer
+- lower customer scrap, downtime, compliance risk, or delay cost
+- repeat consumable or service revenue
+- higher gross margin or incremental margin
+- lower funding risk
+- stronger downside floor through assets, cash, or contracted demand
+
+If scarcity cannot be tied to economics, it can support narrative interest but
+not valuation conviction.
 
 ## Opportunity Archetype Link
 
@@ -200,6 +249,19 @@ commitment -> revenue conversion -> margin at scale -> cash funding need
 For asset-heavy companies, name whether capex is speculative, customer-backed,
 policy-funded, internally funded, or debt-funded.
 
+## Operating Proof Standard
+
+The operating section must prove whether the issuer can deliver the demand it
+claims. Do not stop at announced capacity. Map:
+
+```text
+facility status -> equipment or asset readiness -> qualification -> customer
+commitment -> utilization -> revenue recognition -> gross margin -> OCF -> FCF
+```
+
+For ramp stories, include the date or quarter when failure becomes visible. A
+ramp without a visible failure signal should cap confidence.
+
 ## Customers And Orders
 
 Use named customers when disclosed. If not disclosed, use segment, geography,
@@ -208,14 +270,15 @@ or end-market proxies and state the limitation.
 Order quality hierarchy:
 
 ```text
-recognized revenue > binding purchase order > firm backlog >
-commercial contract > capacity reservation with payment > IDIQ/framework >
-pilot/MOU/LOI > management aspiration
+recognized revenue > binding purchase order > firm backlog > paid capacity
+reservation > customer prepayment > commercial contract > IDIQ/framework
+> pilot/MOU/LOI > management aspiration
 ```
 
-Only recognized revenue, binding POs, firm backlog, or paid reservations can
-normally support a valuation denominator. IDIQ/framework agreements can support
-scenario discussion but need conversion evidence.
+Only recognized revenue, binding POs, firm backlog, paid reservations, customer
+prepayments, or customer-funded capacity can normally support a valuation
+denominator. IDIQ/framework agreements can support scenario discussion but need
+conversion evidence.
 
 For order-heavy stories, analyze the order-to-revenue path:
 
@@ -231,6 +294,19 @@ For order-heavy stories, analyze the order-to-revenue path:
 
 Do not treat large announced orders as high quality until delivery, margin, and
 cash conversion are addressed.
+
+## Business Judgment Requirements
+
+End the business section with four direct judgments:
+
+- `Business judgment`: the value change depends on the new driver, current
+  stage, and verification variable.
+- `Alpha/beta judgment`: whether the issuer has company alpha or only industry
+  beta.
+- `Scarcity judgment`: whether the scarce node has economics or only narrative
+  value.
+- `Commercialization judgment`: whether order evidence can support base-case
+  valuation or only upside optionality.
 
 ## Required Business Tables
 
@@ -260,6 +336,7 @@ The section is complete only if a reader can answer:
 - why this company captures value
 - what variable most changes revenue and margin
 - what observable would break the thesis
+- why the thesis is company-specific rather than only industry-wide
 
 End with:
 

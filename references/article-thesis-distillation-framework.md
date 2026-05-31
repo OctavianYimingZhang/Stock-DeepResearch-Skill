@@ -16,8 +16,8 @@ outside thesis -> causal chain -> claimed proof -> missing proof
 ```
 
 The goal is not to copy language. The goal is to identify which question the
-market is trying to answer and which evidence would make that question
-investable.
+market is trying to answer, which evidence would make that question investable,
+and which parts of the market narrative fail when checked.
 
 ## ArticleThesisMap
 
@@ -43,6 +43,23 @@ Required fields:
 
 Classify `verification_status` as `confirmed`, `partially_supported`,
 `unsupported`, `contradicted`, or `blocked_by_missing_source`.
+
+## Market Thesis Map
+
+When several outside sources discuss the same stock, do not summarize them one
+by one in the final report. First build a market thesis map:
+
+- what the bull side believes
+- what the bear side believes
+- what the market is already pricing
+- which catalyst created attention
+- which fact is repeatedly cited but weakly sourced
+- which fact appears only in company filings or direct disclosures
+- which fact would change valuation if confirmed
+
+The market thesis map should not become a report section unless the user asks
+for it. It is a research instrument that helps the final memo start from the
+current repricing dispute.
 
 ## ThesisPathReplay
 
@@ -81,6 +98,22 @@ Run two distillations:
 Only overlapping or explicitly resolved claims may support a high-conviction
 conclusion. Contradictions create `ConflictResolution` or `DataGap` objects.
 
+## Claim Use Rules
+
+Use this rule set when deciding where an article claim can appear:
+
+| Verification result | Final report use |
+|---|---|
+| confirmed by primary source | may support base-case thesis |
+| confirmed by high-quality non-primary source only | may support qualified thesis language |
+| partially supported | may support upside case or open question only |
+| unsupported | omit or place in risk section |
+| contradicted | state as rejected thesis path if material |
+| blocked by missing source | mark as data gap and cap action grade if decision-critical |
+
+The final report should never use article conviction as a substitute for source
+quality.
+
 ## ArticleMapGate
 
 The gate passes only when:
@@ -90,7 +123,23 @@ The gate passes only when:
 - each outside thesis lists missing evidence
 - no outside thesis is used as fact without primary verification
 - the surviving thesis path is selected, rejected, or blocked
+- the final opening reflects the verified repricing dispute, not the article's
+  rhetoric
 
 If a stock is moving because of a narrative that cannot be verified, the report
 can still discuss the narrative, but valuation confidence and position size must
 be capped.
+
+## Output Standard
+
+Before drafting, produce one compact internal table:
+
+| Claim | Outside thesis says | Source check says | Verdict | Report use |
+|---|---|---|---|---|
+| demand driver | filled or gap | filled or gap | confirmed / partial / rejected / blocked | base / upside / risk / omitted |
+| bottleneck | filled or gap | filled or gap | confirmed / partial / rejected / blocked | base / upside / risk / omitted |
+| commercial proof | filled or gap | filled or gap | confirmed / partial / rejected / blocked | base / upside / risk / omitted |
+| valuation anchor | filled or gap | filled or gap | confirmed / partial / rejected / blocked | base / upside / risk / omitted |
+
+The table is not normally shown. It exists to prevent unsupported market stories
+from entering the final memo.
